@@ -3,35 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Omnistore Black Edition</title>
+    <title>Omnistore Pro</title>
     <style>
         /* ==========================================
-           1. VARIÁVEIS - TEMA BLACK & BLUE
+           1. VARIÁVEIS E TIPOGRAFIA
            ========================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         :root {
             --bg-app: #000000;         
-            --bg-card: #0A0A0C;        
-            --bg-nav: #0A0A0C;         
-            --bg-input: #121214;       
+            --bg-card: #0F0F11;        
+            --bg-nav: rgba(10, 10, 12, 0.85);         
+            --bg-input: #1A1A1E;       
             
-            --primary: #007AFF;        
-            --primary-hover: #0056b3;
-            --success: #32D74B;        
+            --primary: #0A84FF;        
+            --primary-hover: #0066CC;
+            --success: #30D158;        
             --danger: #FF453A;         
             
             --text-main: #FFFFFF;      
             --text-secundary: #8E8E93; 
-            --border: #1C1C1E;         
+            --border: #232326;         
             
-            --radius-card: 16px;
+            --radius-card: 18px;
             --radius-input: 12px;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -41,6 +44,7 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            overflow: hidden; /* Controlado pelo app-container */
         }
 
         .app-container {
@@ -51,6 +55,7 @@
             flex-direction: column;
             position: relative;
             background-color: var(--bg-app);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
         svg {
@@ -59,22 +64,27 @@
         }
 
         /* ==========================================
-           2. CABEÇALHO
+           2. CABEÇALHO (GLASSMORPHISM)
            ========================================== */
         header {
-            padding: 30px 20px 15px;
-            background-color: var(--bg-app);
+            padding: 25px 20px 15px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 10;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
         }
+        .header-scrolled { border-bottom: 1px solid var(--border); }
 
         header h1 {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 600;
             color: var(--text-main);
             text-align: center;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         /* ==========================================
@@ -84,14 +94,13 @@
             flex: 1;
             overflow-y: auto;
             padding: 10px 20px 100px 20px;
+            scroll-behavior: smooth;
         }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-        .tela { display: none; animation: fadeIn 0.2s ease forwards; opacity: 0; }
+        .tela { display: none; animation: fadeIn 0.3s ease forwards; opacity: 0; }
         .tela.ativa { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
             background-color: var(--bg-card);
@@ -99,6 +108,7 @@
             padding: 20px;
             margin-bottom: 20px;
             border: 1px solid var(--border);
+            box-shadow: var(--shadow-subtle);
         }
 
         .section-title {
@@ -116,227 +126,132 @@
         /* ==========================================
            4. PAINEL DE INÍCIO
            ========================================== */
-        .user-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .user-avatar {
-            width: 44px;
-            height: 44px;
-            background-color: rgba(0, 122, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--primary);
-        }
-        .user-text span {
-            display: block;
-            font-size: 0.7rem;
-            color: var(--text-secundary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .user-text strong {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            font-weight: 600;
-        }
-        .date-badge {
-            background-color: var(--bg-input);
-            color: var(--text-secundary);
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            border: 1px solid var(--border);
-        }
-
-        .balance-section { text-align: center; padding: 20px 0; }
-        .balance-section .label { font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 5px; }
-        .balance-section .value { font-size: 2.5rem; font-weight: 600; color: var(--success); letter-spacing: -1px; }
+        .user-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 46px; height: 46px; background: linear-gradient(135deg, rgba(10,132,255,0.2), rgba(10,132,255,0.05)); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--primary); border: 1px solid rgba(10,132,255,0.3); }
+        .user-text span { display: block; font-size: 0.7rem; color: var(--text-secundary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .user-text strong { font-size: 1.15rem; color: var(--text-main); font-weight: 600; }
+        
+        .date-badge { background-color: var(--bg-input); color: var(--text-secundary); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; border: 1px solid var(--border); }
+        
+        .balance-section { text-align: center; padding: 15px 0; }
+        .balance-section .label { font-size: 0.8rem; color: var(--text-secundary); display: block; margin-bottom: 8px; }
+        .balance-section .value { font-size: 2.5rem; font-weight: 700; color: var(--success); letter-spacing: -1px; }
 
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .dash-card {
-            background-color: var(--bg-card);
-            padding: 16px;
-            border-radius: var(--radius-card);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .dash-card .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .dash-card .icon-box {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .dash-card h3 { color: var(--text-secundary); font-size: 0.75rem; margin-bottom: 4px; font-weight: 500;}
-        .dash-card span { color: var(--text-main); font-size: 1.3rem; font-weight: 600; }
+        .dash-card { background-color: var(--bg-card); padding: 18px; border-radius: var(--radius-card); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-subtle); transition: transform 0.2s; }
+        .dash-card:active { transform: scale(0.97); }
+        .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .dash-card .icon-box { width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+        .dash-card h3 { color: var(--text-secundary); font-size: 0.75rem; margin-bottom: 6px; font-weight: 500;}
+        .dash-card span { color: var(--text-main); font-size: 1.4rem; font-weight: 600; }
 
         /* ==========================================
-           5. FORMULÁRIOS
+           5. FORMULÁRIOS & CONTROLES
            ========================================== */
-        .form-group { margin-bottom: 15px; }
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-secundary);
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--text-secundary); margin-bottom: 8px; font-weight: 500; }
         
         input, textarea, select {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-input);
-            color: var(--text-main);
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.2s ease;
-            appearance: none;
+            width: 100%; padding: 14px 16px; background-color: var(--bg-input); border: 1px solid var(--border);
+            border-radius: var(--radius-input); color: var(--text-main); font-size: 1rem; outline: none;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); appearance: none;
         }
-        
-        input:focus, textarea:focus, select:focus {
-            border-color: var(--primary);
-            background-color: #1a1a1c;
-        }
-
-        .input-row { display: flex; gap: 10px; }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); background-color: #202024; box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15); }
+        .input-row { display: flex; gap: 12px; }
 
         .btn-acao {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: var(--radius-input);
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #FFFFFF;
-            background-color: var(--primary);
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
+            width: 100%; padding: 15px; border: none; border-radius: var(--radius-input);
+            font-size: 0.95rem; font-weight: 600; color: #FFFFFF; background-color: var(--primary);
+            cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
         }
-        .btn-acao:active { transform: scale(0.98); background-color: var(--primary-hover); }
-        .btn-secundario { background-color: transparent; border: 1px solid var(--border); color: var(--primary); }
-        .btn-perigo { background-color: transparent; color: var(--danger); border: 1px solid var(--danger); }
+        .btn-acao:active { transform: scale(0.96); background-color: var(--primary-hover); }
+        .btn-secundario { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); box-shadow: none; }
+        .btn-secundario:active { background-color: var(--bg-input); }
+        .btn-perigo { background-color: rgba(255, 69, 58, 0.1); color: var(--danger); border: 1px solid rgba(255, 69, 58, 0.3); box-shadow: none; }
+        .btn-perigo:active { background-color: rgba(255, 69, 58, 0.2); }
+
+        /* CONTROLE DE ABAS (Segmented Control) */
+        .segment-control { display: flex; background: var(--bg-input); border-radius: 14px; padding: 4px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .segment-btn { flex: 1; text-align: center; padding: 12px 0; border-radius: 10px; font-size: 0.85rem; font-weight: 600; color: var(--text-secundary); cursor: pointer; transition: all 0.3s ease; }
+        .segment-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: var(--shadow-subtle); border: 1px solid rgba(255,255,255,0.05); }
+        .aba-view { display: none; animation: fadeIn 0.3s ease; }
+        .aba-view.active { display: block; }
 
         /* ==========================================
-           6. ITENS E LISTAS
+           6. LISTAS E ITENS
            ========================================== */
-        .resultados-container { display: flex; flex-direction: column; gap: 12px; }
-
-        .item-salvo {
-            background-color: var(--bg-card);
-            padding: 16px;
-            border-radius: var(--radius-card);
-            border: 1px solid var(--border);
-        }
-
-        .caminho-categoria {
-            display: inline-flex;
-            align-items: center;
-            color: var(--primary);
-            font-size: 0.75rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            gap: 4px;
-        }
-
-        .item-salvo strong { display: block; font-size: 1.05rem; margin-bottom: 6px; color: var(--text-main); }
-        .item-salvo p { color: var(--text-secundary); font-size: 0.9rem; line-height: 1.4; }
-        .item-salvo img { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid var(--border); }
-        .destaque { font-size: 1.2rem; color: var(--success); font-weight: 600; display: block; margin-top: 8px; }
-
-        .acoes-item {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-        }
+        .resultados-container { display: flex; flex-direction: column; gap: 14px; }
+        .item-salvo { background-color: var(--bg-card); padding: 18px; border-radius: var(--radius-card); border: 1px solid var(--border); transition: transform 0.2s; }
         
-        .btn-pequeno {
-            background: transparent; border: 1px solid var(--border); font-weight: 500;
-            font-size: 0.8rem; cursor: pointer; padding: 6px 12px; border-radius: 6px; color: var(--text-main);
-        }
-        .btn-excluir { color: var(--danger); }
+        .caminho-categoria { display: inline-flex; align-items: center; color: var(--primary); font-size: 0.75rem; font-weight: 500; margin-bottom: 10px; gap: 4px; background: rgba(10,132,255,0.1); padding: 4px 10px; border-radius: 6px;}
+        .item-salvo strong { display: block; font-size: 1.1rem; margin-bottom: 6px; color: var(--text-main); line-height: 1.3;}
+        .item-salvo p { color: var(--text-secundary); font-size: 0.9rem; line-height: 1.5; }
+        .item-salvo img { width: 100%; border-radius: 10px; margin-top: 14px; border: 1px solid var(--border); }
+        .destaque { font-size: 1.25rem; color: var(--success); font-weight: 600; display: block; margin-top: 10px; }
+
+        .acoes-item { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); }
+        .btn-pequeno { background: transparent; border: 1px solid var(--border); font-weight: 500; font-size: 0.8rem; cursor: pointer; padding: 8px 14px; border-radius: 8px; color: var(--text-main); transition: 0.2s; }
+        .btn-pequeno:active { background: var(--bg-input); transform: scale(0.95); }
+        .btn-excluir { color: var(--danger); border-color: rgba(255,69,58,0.3); }
+        .btn-excluir:active { background: rgba(255,69,58,0.1); }
+
+        .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; margin-bottom: 15px; transition: 0.2s; box-shadow: var(--shadow-subtle); }
+        .nav-link-card:active { transform: scale(0.97); background: var(--bg-input); }
+        .nav-link-card h3 { font-size: 1rem; color: var(--text-main); font-weight: 600; margin-bottom: 4px; }
+        .nav-link-card p { font-size: 0.8rem; color: var(--text-secundary); }
+        .nav-link-icon { color: var(--text-secundary); }
 
         /* ==========================================
-           7. GESTÃO DE CATEGORIAS (TELA DEDICADA)
+           7. GESTÃO DE CATEGORIAS
            ========================================== */
-        .cat-manager-card {
-            background: var(--bg-input);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-        }
-        .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .cat-header strong { color: var(--text-main); font-size: 1rem; }
-        
-        .subcat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .subcat-badge {
-            background: var(--bg-card); border: 1px solid var(--border);
-            padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; color: var(--text-secundary);
-            display: flex; align-items: center; gap: 6px;
-        }
-        .remover-btn { color: var(--danger); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; background: none; border: none;}
+        .cat-manager-card { background: var(--bg-app); border-radius: 14px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); }
+        .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .cat-header strong { color: var(--text-main); font-size: 1.05rem; }
+        .subcat-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .remover-btn { color: var(--danger); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; background: none; border: none; padding: 2px; border-radius: 4px;}
+        .remover-btn:active { background: rgba(255,69,58,0.1); }
 
         /* ==========================================
-           8. MENU INFERIOR (5 ABAS COM CATEGORIAS)
+           8. MENU INFERIOR
            ========================================== */
         .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; max-width: 500px;
-            height: 80px; background-color: rgba(10, 10, 12, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around; align-items: center; z-index: 100;
-            padding-bottom: 15px;
+            position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 85px; 
+            background: var(--bg-nav); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border); display: flex; justify-content: space-around; 
+            align-items: center; z-index: 100; padding-bottom: 20px;
         }
-        .nav-item { 
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; width: 20%; cursor: pointer; 
-            color: var(--text-secundary); transition: 0.2s;
-        }
-        .nav-item.ativo { color: var(--primary); }
-        .nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;}
-        .nav-item span.label { font-size: 0.6rem; font-weight: 500; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; cursor: pointer; color: var(--text-secundary); transition: all 0.3s ease; }
+        .nav-item.ativo { color: var(--primary); transform: translateY(-2px); }
+        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; }
+        .nav-item.ativo svg { stroke-width: 2.5; }
+        .nav-item span.label { font-size: 0.65rem; font-weight: 500; }
 
         /* ==========================================
-           9. TELA DE EDIÇÃO
+           9. TELAS SOBREPOSTAS (ANIMAÇÃO SLIDE-UP)
            ========================================== */
-        #tela-edicao-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-app); z-index: 200; display: none; flex-direction: column;
-        }
-        .edicao-header { padding: 30px 20px 20px; display: flex; align-items: center; background: var(--bg-app); border-bottom: 1px solid var(--border); }
-        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 1rem; cursor: pointer; margin-right: 15px; display: flex; align-items: center; gap: 5px;}
-        .edicao-body { padding: 20px; flex: 1; overflow-y: auto; }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        ::-webkit-scrollbar { width: 0px; }
+        .tela-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-app);
+            z-index: 200; display: none; flex-direction: column;
+        }
+        .tela-overlay.ativa {
+            display: flex;
+            animation: slideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .overlay-header { padding: 25px 20px 15px; display: flex; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210;}
+        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 1rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s;}
+        .btn-voltar:active { opacity: 0.7; }
+        .overlay-body { padding: 20px; flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        
+        /* Empty state estético */
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-secundary); }
+        .empty-state svg { width: 48px; height: 48px; stroke-width: 1.5; margin-bottom: 15px; opacity: 0.5; }
+        .empty-state p { font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -347,15 +262,14 @@
             <h1 id="header-title">Omnistore</h1>
         </header>
 
-        <div class="content-area">
+        <div class="content-area" id="main-content">
             
             <div id="tela-inicio" class="tela ativa">
-                
                 <div class="card" style="margin-top: 5px;">
                     <div class="user-panel">
                         <div class="user-info">
                             <div class="user-avatar">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             </div>
                             <div class="user-text">
                                 <span>Visão Geral</span>
@@ -376,8 +290,8 @@
                 <div class="dash-grid">
                     <div class="dash-card">
                         <div class="header">
-                            <div class="icon-box" style="background: rgba(0, 122, 255, 0.1); color: var(--primary);">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            <div class="icon-box" style="background: rgba(10, 132, 255, 0.15); color: var(--primary);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                             </div>
                         </div>
                         <h3>Total de Notas</h3>
@@ -386,46 +300,54 @@
 
                     <div class="dash-card">
                         <div class="header">
-                            <div class="icon-box" style="background: rgba(255, 149, 0, 0.1); color: #FF9500;">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <div class="icon-box" style="background: rgba(255, 149, 0, 0.15); color: #FF9F0A;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                             </div>
                         </div>
                         <h3>Próximo Evento</h3>
-                        <span id="dashProximoEvento" style="font-size: 0.85rem; font-weight: normal; margin-top: 4px;">Nenhum.</span>
+                        <span id="dashProximoEvento" style="font-size: 0.9rem; font-weight: 500; margin-top: 4px; line-height: 1.2;">Nenhum.</span>
                     </div>
                 </div>
             </div>
 
             <div id="tela-conteudo" class="tela">
-                <div class="card">
-                    <h2 class="section-title">Nova Nota</h2>
-                    
-                    <div class="input-row">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Categoria</label>
-                            <select id="categoriaConteudo" onchange="atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo')"></select>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Subcategoria</label>
-                            <select id="subcategoriaConteudo"></select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Título</label>
-                        <input type="text" id="tituloConteudo" placeholder="Assunto principal">
-                    </div>
-                    <div class="form-group">
-                        <label>Descrição</label>
-                        <textarea id="textoConteudo" rows="3" placeholder="Detalhes da nota..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Anexar Imagem (Opcional)</label>
-                        <input type="file" id="imagemConteudo" accept="image/*" style="padding: 10px; font-size: 0.8rem;">
-                    </div>
-                    <button class="btn-acao" onclick="salvarConteudo()">Salvar Nota</button>
+                <div class="segment-control">
+                    <div class="segment-btn active" id="btnAbaNotasAdd" onclick="alternarAbaNotas('add')">Nova Nota</div>
+                    <div class="segment-btn" id="btnAbaNotasList" onclick="alternarAbaNotas('lista')">Histórico</div>
                 </div>
-                <div class="resultados-container" id="listaConteudos"></div>
+
+                <div id="aba-notas-add" class="aba-view active">
+                    <div class="card">
+                        <h2 class="section-title">Escrever Nota</h2>
+                        <div class="input-row">
+                            <div class="form-group" style="flex: 1;">
+                                <label>Categoria</label>
+                                <select id="categoriaConteudo" onchange="atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo')"></select>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Subcategoria</label>
+                                <select id="subcategoriaConteudo"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Título</label>
+                            <input type="text" id="tituloConteudo" placeholder="Assunto principal">
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <textarea id="textoConteudo" rows="4" placeholder="Detalhes da nota..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Anexar Imagem (Opcional)</label>
+                            <input type="file" id="imagemConteudo" accept="image/*" style="padding: 10px; font-size: 0.8rem; background: transparent; border: 1px dashed var(--border);">
+                        </div>
+                        <button class="btn-acao" onclick="salvarConteudo()">Salvar Nota</button>
+                    </div>
+                </div>
+
+                <div id="aba-notas-lista" class="aba-view">
+                    <div class="resultados-container" id="listaConteudos"></div>
+                </div>
             </div>
 
             <div id="tela-agenda" class="tela">
@@ -439,7 +361,7 @@
                         <label>Descrição</label>
                         <input type="text" id="descAgenda" placeholder="Título do evento">
                     </div>
-                    <button class="btn-acao" onclick="salvarAgenda()">Agendar</button>
+                    <button class="btn-acao" onclick="salvarAgenda()">Agendar Evento</button>
                 </div>
                 <div class="resultados-container" id="listaAgenda"></div>
             </div>
@@ -457,33 +379,29 @@
                             <input type="number" id="qtdProduto" placeholder="1">
                         </div>
                         <div style="flex: 2;">
-                            <label>Preço Unitário (R$)</label>
-                            <input type="number" id="precoProduto" placeholder="0,00" step="0.01">
+                            <label>Preço Unid. (R$)</label>
+                            <input type="number" id="precoProduto" placeholder="0.00" step="0.01">
                         </div>
                     </div>
-                    <button class="btn-acao" onclick="salvarVenda()">Confirmar</button>
+                    <button class="btn-acao" onclick="salvarVenda()">Confirmar Venda</button>
                 </div>
                 <div class="resultados-container" id="listaVendas"></div>
             </div>
 
-            <div id="tela-categorias" class="tela">
-                <div class="card">
-                    <h2 class="section-title">Nova Categoria Principal</h2>
-                    <div class="input-row">
-                        <input type="text" id="novaCategoriaNome" placeholder="Ex: Finanças, Pessoal...">
-                        <button class="btn-acao" style="width: auto; padding: 0 20px;" onclick="addCategoria()">Criar</button>
+            <div id="tela-config" class="tela">
+                <div class="nav-link-card" onclick="abrirTelaCategorias()">
+                    <div>
+                        <h3>Categorias e Estrutura</h3>
+                        <p>Gerencie as etiquetas globais</p>
+                    </div>
+                    <div class="nav-link-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h2 class="section-title">Gerenciar Categorias & Subcategorias</h2>
-                    <div id="listaGestaoCategorias"></div>
-                </div>
-            </div>
-
-            <div id="tela-config" class="tela">
-                <div class="card" style="border-color: rgba(255, 69, 58, 0.2);">
+                <div class="card" style="border-color: rgba(255, 69, 58, 0.2); margin-top: 30px;">
                     <h2 class="section-title" style="color: var(--danger);">Zona de Perigo</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-secundary); margin-bottom: 20px; line-height: 1.4;">Ao apagar os dados, todo o histórico será perdido permanentemente.</p>
                     <button class="btn-acao btn-perigo" onclick="limparTodosDados()">Apagar Todos os Dados</button>
                 </div>
             </div>
@@ -506,36 +424,69 @@
                 <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                 <span class="label">Vendas</span>
             </div>
-            <div class="nav-item" onclick="abrirTela('tela-categorias', 'Categorias', this)">
-                <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                <span class="label">Categorias</span>
+            <div class="nav-item" onclick="abrirTela('tela-config', 'Config', this)">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span class="label">Config</span>
             </div>
         </nav>
     </div>
 
-    <div id="tela-edicao-container">
-        <div class="edicao-header">
-            <button class="btn-voltar" onclick="fecharEdicao()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    <div id="tela-gestao-categorias" class="tela-overlay">
+        <div class="overlay-header">
+            <button class="btn-voltar" onclick="fecharTelaCategorias()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 Voltar
             </button>
-            <h2 style="font-size: 1rem; margin-left: auto; margin-right: auto; padding-right: 40px;">Editar</h2>
+            <h2 style="font-size: 1.05rem; margin-left: auto; margin-right: auto; padding-right: 70px;">Categorias</h2>
         </div>
-        <div class="edicao-body">
+        <div class="overlay-body">
+            <div class="card">
+                <h2 class="section-title">Nova Categoria Principal</h2>
+                <div class="input-row">
+                    <input type="text" id="novaCategoriaNome" placeholder="Ex: Finanças, Pessoal...">
+                    <button class="btn-acao" style="width: auto; padding: 0 24px;" onclick="addCategoria()">Criar</button>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="section-title">Estrutura Atual</h2>
+                <div id="listaGestaoCategorias"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-edicao-container" class="tela-overlay">
+        <div class="overlay-header">
+            <button class="btn-voltar" onclick="fecharEdicao()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Voltar
+            </button>
+            <h2 style="font-size: 1.05rem; margin-left: auto; margin-right: auto; padding-right: 70px;">Editar Item</h2>
+        </div>
+        <div class="overlay-body">
             <div class="card" id="formulario-edicao-dinamico"></div>
         </div>
     </div>
 
     <script>
-        function obterDados(chave) { return JSON.parse(localStorage.getItem(chave)) || []; }
-        function salvarDados(chave, dados) { localStorage.setItem(chave, JSON.stringify(dados)); }
-        function gerarId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
+        // ==========================================
+        // DADOS & UTILITÁRIOS
+        // ==========================================
+        const obterDados = (chave) => JSON.parse(localStorage.getItem(chave)) || [];
+        const salvarDados = (chave, dados) => localStorage.setItem(chave, JSON.stringify(dados));
+        const gerarId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-        window.onload = function() {
+        // Header scroll effect
+        document.getElementById('main-content').addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (this.scrollTop > 10) header.classList.add('header-scrolled');
+            else header.classList.remove('header-scrolled');
+        });
+
+        window.onload = () => {
             migrarCategoriasAntigas(); 
             inicializarSistema();
             setarDataBadge();
-        }
+        };
 
         function setarDataBadge() {
             const data = new Date();
@@ -567,20 +518,40 @@
             }
         }
 
+        function alternarAbaNotas(aba) {
+            document.getElementById('btnAbaNotasAdd').classList.remove('active');
+            document.getElementById('btnAbaNotasList').classList.remove('active');
+            document.getElementById('aba-notas-add').classList.remove('active');
+            document.getElementById('aba-notas-lista').classList.remove('active');
+
+            if (aba === 'add') {
+                document.getElementById('btnAbaNotasAdd').classList.add('active');
+                document.getElementById('aba-notas-add').classList.add('active');
+            } else {
+                document.getElementById('btnAbaNotasList').classList.add('active');
+                document.getElementById('aba-notas-lista').classList.add('active');
+            }
+        }
+
         function limparTodosDados() {
-            if(confirm("Confirma a exclusão de TODOS os dados?")) {
+            if(confirm("ATENÇÃO: Confirma a exclusão de TODOS os dados? Esta ação não pode ser desfeita.")) {
                 localStorage.clear();
                 window.location.reload();
             }
         }
 
-        // Categorias
+        // ==========================================
+        // CATEGORIAS (OVERLAY & LÓGICA)
+        // ==========================================
+        function abrirTelaCategorias() { document.getElementById('tela-gestao-categorias').classList.add('ativa'); }
+        function fecharTelaCategorias() { document.getElementById('tela-gestao-categorias').classList.remove('ativa'); }
+
         function migrarCategoriasAntigas() {
             let cat = obterDados('categorias');
             if(cat.length === 0) {
                 salvarDados('categorias', [
                     { id: gerarId(), nome: 'Trabalho', subs: ['Projetos', 'Reuniões'] },
-                    { id: gerarId(), nome: 'Pessoal', subs: ['Ideias'] }
+                    { id: gerarId(), nome: 'Pessoal', subs: ['Ideias', 'Finanças'] }
                 ]);
             }
         }
@@ -588,27 +559,29 @@
         function renderizarGestorCategorias() {
             let categorias = obterDados('categorias');
             let divGestor = document.getElementById('listaGestaoCategorias');
-            divGestor.innerHTML = '';
-
+            
+            // Otimização de Processamento: Constrói a string antes de injetar
+            let htmlBuffer = '';
             categorias.forEach(cat => {
                 let subsHTML = cat.subs.map((sub, index) => 
-                    `<span class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${cat.id}', ${index})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></span>`
+                    `<span class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${cat.id}', ${index})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></span>`
                 ).join('');
 
-                divGestor.innerHTML += `
+                htmlBuffer += `
                     <div class="cat-manager-card">
                         <div class="cat-header">
                             <strong>${cat.nome}</strong>
-                            <button class="remover-btn" onclick="removerCategoria('${cat.id}')">Excluir</button>
+                            <button class="btn-pequeno btn-excluir" style="padding: 6px 10px;" onclick="removerCategoria('${cat.id}')">Excluir</button>
                         </div>
                         <div class="subcat-list">${subsHTML}</div>
                         <div class="input-row">
-                            <input type="text" id="novaSub_${cat.id}" placeholder="Nova Subcategoria..." style="padding: 10px; font-size: 0.8rem;">
-                            <button class="btn-acao btn-secundario" style="width: auto; padding: 0 14px; font-size: 0.8rem;" onclick="addSubcategoria('${cat.id}')">Add</button>
+                            <input type="text" id="novaSub_${cat.id}" placeholder="Adicionar Subcategoria..." style="padding: 10px 12px; font-size: 0.85rem;">
+                            <button class="btn-acao btn-secundario" style="width: auto; padding: 0 16px; font-size: 0.85rem;" onclick="addSubcategoria('${cat.id}')">Add</button>
                         </div>
                     </div>
                 `;
             });
+            divGestor.innerHTML = htmlBuffer;
         }
 
         function addCategoria() {
@@ -624,8 +597,8 @@
 
         function removerCategoria(id) {
             let cat = obterDados('categorias');
-            if(cat.length <= 1) return alert("Mantenha ao menos uma categoria principal.");
-            if(confirm("Excluir categoria?")) {
+            if(cat.length <= 1) return alert("É necessário manter ao menos uma categoria principal.");
+            if(confirm("Excluir esta categoria?")) {
                 salvarDados('categorias', cat.filter(c => c.id !== id));
                 atualizarSistemaDeCategorias();
             }
@@ -661,11 +634,12 @@
             let select = document.getElementById(selectId);
             if(!select) return;
             let categorias = obterDados('categorias');
-            select.innerHTML = '';
+            let htmlBuffer = '';
             categorias.forEach(cat => {
                 let selected = (cat.nome === valorSelecionado) ? 'selected' : '';
-                select.innerHTML += `<option value="${cat.nome}" data-id="${cat.id}" ${selected}>${cat.nome}</option>`;
+                htmlBuffer += `<option value="${cat.nome}" data-id="${cat.id}" ${selected}>${cat.nome}</option>`;
             });
+            select.innerHTML = htmlBuffer;
         }
 
         function atualizarSelectSubcategorias(idSelectCat, idSelectSub, valorSelecionadoSub = '') {
@@ -673,16 +647,19 @@
             let selectSub = document.getElementById(idSelectSub);
             if(!selectCat || !selectSub) return;
             let categoriaObj = obterDados('categorias').find(c => c.nome === selectCat.value);
-            selectSub.innerHTML = '<option value="">Sem subcategoria</option>';
+            let htmlBuffer = '<option value="">Sem subcategoria</option>';
             if(categoriaObj && categoriaObj.subs.length > 0) {
                 categoriaObj.subs.forEach(sub => {
                     let selected = (sub === valorSelecionadoSub) ? 'selected' : '';
-                    selectSub.innerHTML += `<option value="${sub}" ${selected}>${sub}</option>`;
+                    htmlBuffer += `<option value="${sub}" ${selected}>${sub}</option>`;
                 });
             }
+            selectSub.innerHTML = htmlBuffer;
         }
 
-        // Notas
+        // ==========================================
+        // NOTAS E CONTEÚDOS
+        // ==========================================
         async function salvarConteudo() {
             let categoria = document.getElementById('categoriaConteudo').value;
             let subcategoria = document.getElementById('subcategoriaConteudo').value;
@@ -690,7 +667,7 @@
             let texto = document.getElementById('textoConteudo').value;
             let arquivo = document.getElementById('imagemConteudo').files[0];
             
-            if (!titulo || !texto) return;
+            if (!titulo || !texto) return alert("Preencha o título e a descrição.");
 
             let base64Imagem = "";
             if (arquivo) {
@@ -705,24 +682,31 @@
             notas.push({ id: gerarId(), categoria, subcategoria, titulo, texto, imagem: base64Imagem });
             salvarDados('conteudos', notas);
             
-            document.getElementById('tituloConteudo').value = '';
-            document.getElementById('textoConteudo').value = '';
-            document.getElementById('imagemConteudo').value = '';
+            // Limpa formulário
+            ['tituloConteudo', 'textoConteudo', 'imagemConteudo'].forEach(id => document.getElementById(id).value = '');
+            
             renderizarNotas();
             atualizarDashboard();
+            alternarAbaNotas('lista');
         }
 
         function renderizarNotas() {
             let div = document.getElementById('listaConteudos');
             let notas = obterDados('conteudos');
-            div.innerHTML = notas.length === 0 ? '<p style="color:var(--text-secundary);text-align:center; font-size:0.9rem;">Lista vazia.</p>' : '';
             
+            if(notas.length === 0) {
+                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg><p>Nenhuma nota salva ainda.</p></div>`;
+                return;
+            }
+
+            // Otimização de Processamento (DOM Build)
+            let htmlBuffer = '';
             notas.slice().reverse().forEach(nota => {
-                let imgTag = nota.imagem ? `<img src="${nota.imagem}">` : '';
+                let imgTag = nota.imagem ? `<img src="${nota.imagem}" loading="lazy">` : '';
                 let catTexto = nota.categoria || 'Geral';
                 if(nota.subcategoria) catTexto += ` • ${nota.subcategoria}`;
 
-                div.innerHTML += `
+                htmlBuffer += `
                     <div class="item-salvo">
                         <span class="caminho-categoria">${catTexto}</span>
                         <strong>${nota.titulo}</strong>
@@ -734,9 +718,98 @@
                         </div>
                     </div>`;
             });
+            div.innerHTML = htmlBuffer;
         }
 
-        // Edição
+        // ==========================================
+        // AGENDA E VENDAS
+        // ==========================================
+        function salvarAgenda() {
+            let data = document.getElementById('dataAgenda').value;
+            let desc = document.getElementById('descAgenda').value;
+            if (!data || !desc) return;
+            let agenda = obterDados('agenda');
+            agenda.push({ id: gerarId(), data, desc });
+            salvarDados('agenda', agenda);
+            
+            document.getElementById('dataAgenda').value = '';
+            document.getElementById('descAgenda').value = '';
+            
+            renderizarAgenda();
+            atualizarDashboard();
+        }
+
+        function renderizarAgenda() {
+            let div = document.getElementById('listaAgenda');
+            let agenda = obterDados('agenda');
+            
+            if(agenda.length === 0) {
+                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><p>Sua agenda está vazia.</p></div>`;
+                return;
+            }
+
+            let htmlBuffer = '';
+            agenda.slice().reverse().forEach(item => {
+                let dataForm = item.data.split('-').reverse().join('/');
+                htmlBuffer += `
+                    <div class="item-salvo">
+                        <strong style="font-size: 1.05rem;">${item.desc}</strong>
+                        <p style="color: var(--primary); font-weight: 500;">${dataForm}</p>
+                        <div class="acoes-item">
+                            <button class="btn-pequeno" onclick="abrirTelaEdicao('agenda', '${item.id}')">Editar</button>
+                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('agenda', '${item.id}')">Excluir</button>
+                        </div>
+                    </div>`;
+            });
+            div.innerHTML = htmlBuffer;
+        }
+
+        function salvarVenda() {
+            let produto = document.getElementById('nomeProduto').value;
+            let qtd = parseInt(document.getElementById('qtdProduto').value);
+            let preco = parseFloat(document.getElementById('precoProduto').value);
+            if (!produto || isNaN(qtd) || isNaN(preco)) return;
+            
+            let vendas = obterDados('vendas');
+            vendas.push({ id: gerarId(), produto, qtd, preco });
+            salvarDados('vendas', vendas);
+            
+            ['nomeProduto', 'qtdProduto', 'precoProduto'].forEach(id => document.getElementById(id).value = '');
+            
+            renderizarVendas();
+            atualizarDashboard();
+        }
+
+        function renderizarVendas() {
+            let div = document.getElementById('listaVendas');
+            let vendas = obterDados('vendas');
+            
+            if(vendas.length === 0) {
+                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><p>Nenhuma venda registrada.</p></div>`;
+                return;
+            }
+
+            let htmlBuffer = '';
+            vendas.slice().reverse().forEach(venda => {
+                let totalBRL = (venda.qtd * venda.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                let precoBRL = venda.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                htmlBuffer += `
+                    <div class="item-salvo">
+                        <strong>${venda.produto}</strong>
+                        <p>${venda.qtd}x de ${precoBRL}</p>
+                        <span class="destaque">${totalBRL}</span>
+                        <div class="acoes-item">
+                            <button class="btn-pequeno" onclick="abrirTelaEdicao('vendas', '${venda.id}')">Editar</button>
+                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('vendas', '${venda.id}')">Excluir</button>
+                        </div>
+                    </div>`;
+            });
+            div.innerHTML = htmlBuffer;
+        }
+
+        // ==========================================
+        // EDIÇÃO GLOBAL (OVERLAY) E EXCLUSÃO
+        // ==========================================
         let itemEmEdicao = null;
         let tipoEmEdicao = '';
 
@@ -753,7 +826,7 @@
                     </div>
                     <div class="form-group"><label>Título</label><input type="text" id="editTitulo" value="${itemEmEdicao.titulo}"></div>
                     <div class="form-group"><label>Descrição</label><textarea id="editTexto" rows="4">${itemEmEdicao.texto}</textarea></div>
-                    <div class="form-group"><label>Nova Imagem</label><input type="file" id="editImagem" accept="image/*" style="padding: 10px;"></div>
+                    <div class="form-group"><label>Nova Imagem</label><input type="file" id="editImagem" accept="image/*" style="padding: 10px; border: 1px dashed var(--border); background: transparent;"></div>
                 `;
             } else if (tipo === 'agenda') {
                 formHTML = `
@@ -764,17 +837,16 @@
                 formHTML = `
                     <div class="form-group"><label>Produto</label><input type="text" id="editProduto" value="${itemEmEdicao.produto}"></div>
                     <div class="form-group input-row">
-                        <div><label>Qtd</label><input type="number" id="editQtd" value="${itemEmEdicao.qtd}"></div>
-                        <div><label>Preço</label><input type="number" id="editPreco" value="${itemEmEdicao.preco}" step="0.01"></div>
+                        <div style="flex: 1;"><label>Quantidade</label><input type="number" id="editQtd" value="${itemEmEdicao.qtd}"></div>
+                        <div style="flex: 2;"><label>Preço</label><input type="number" id="editPreco" value="${itemEmEdicao.preco}" step="0.01"></div>
                     </div>
                 `;
             }
 
-            formHTML += `<button class="btn-acao" onclick="salvarEdicao()" style="margin-top: 10px;">Salvar Alterações</button>`;
+            formHTML += `<button class="btn-acao" onclick="salvarEdicao()" style="margin-top: 20px;">Salvar Alterações</button>`;
             
             document.getElementById('formulario-edicao-dinamico').innerHTML = formHTML;
-            document.getElementById('app-principal').style.display = 'none';
-            document.getElementById('tela-edicao-container').style.display = 'flex';
+            document.getElementById('tela-edicao-container').classList.add('ativa');
 
             if(tipo === 'conteudos') {
                 preencherSelectCategorias('editCategoria', itemEmEdicao.categoria);
@@ -782,10 +854,7 @@
             }
         }
 
-        function fecharEdicao() {
-            document.getElementById('tela-edicao-container').style.display = 'none';
-            document.getElementById('app-principal').style.display = 'flex';
-        }
+        function fecharEdicao() { document.getElementById('tela-edicao-container').classList.remove('ativa'); }
 
         async function salvarEdicao() {
             let lista = obterDados(tipoEmEdicao);
@@ -821,93 +890,40 @@
         }
 
         function excluirItem(chave, id) {
-            if(confirm("Excluir este item?")) {
+            if(confirm("Deseja realmente excluir este item?")) {
                 salvarDados(chave, obterDados(chave).filter(item => item.id !== id));
                 renderizarListas();
                 atualizarDashboard();
             }
         }
 
-        function renderizarListas() { renderizarNotas(); renderizarAgenda(); renderizarVendas(); }
+        // ==========================================
+        // RENDERIZAÇÃO GERAL E DASHBOARD
+        // ==========================================
+        function renderizarListas() { 
+            renderizarNotas(); 
+            renderizarAgenda(); 
+            renderizarVendas(); 
+        }
 
         function atualizarDashboard() {
+            // Conta notas
             document.getElementById('dashTotalNotas').innerText = obterDados('conteudos').length;
+            
+            // Soma Vendas
             let totalV = obterDados('vendas').reduce((acc, v) => acc + (v.qtd * v.preco), 0);
             document.getElementById('dashTotalVendas').innerText = totalV.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+            // Pega evento mais próximo (simplificado pegando o último salvo)
             let agenda = obterDados('agenda');
             let divAgenda = document.getElementById('dashProximoEvento');
             if (agenda.length > 0) {
-                let ultimo = agenda[agenda.length - 1];
+                let ultimo = agenda[agenda.length - 1]; // Aqui pode evoluir para calcular a data futura mais próxima
                 let dataForm = ultimo.data.split('-').reverse().join('/');
-                divAgenda.innerHTML = `<strong style="display:block; font-size: 0.9rem; margin-bottom: 2px;">${ultimo.desc}</strong>${dataForm}`;
+                divAgenda.innerHTML = `<strong style="display:block; font-size: 0.95rem; margin-bottom: 2px;">${ultimo.desc}</strong>${dataForm}`;
             } else {
                 divAgenda.innerHTML = 'Nenhum.';
             }
-        }
-
-        function salvarAgenda() {
-            let data = document.getElementById('dataAgenda').value;
-            let desc = document.getElementById('descAgenda').value;
-            if (!data || !desc) return;
-            let agenda = obterDados('agenda');
-            agenda.push({ id: gerarId(), data, desc });
-            salvarDados('agenda', agenda);
-            document.getElementById('dataAgenda').value = '';
-            document.getElementById('descAgenda').value = '';
-            renderizarAgenda();
-            atualizarDashboard();
-        }
-
-        function renderizarAgenda() {
-            let div = document.getElementById('listaAgenda');
-            let agenda = obterDados('agenda');
-            div.innerHTML = agenda.length === 0 ? '<p style="color:var(--text-secundary);text-align:center;font-size:0.9rem;">Vazio.</p>' : '';
-            agenda.slice().reverse().forEach(item => {
-                let dataForm = item.data.split('-').reverse().join('/');
-                div.innerHTML += `
-                    <div class="item-salvo">
-                        <strong>${item.desc}</strong><p>${dataForm}</p>
-                        <div class="acoes-item">
-                            <button class="btn-pequeno" onclick="abrirTelaEdicao('agenda', '${item.id}')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('agenda', '${item.id}')">Excluir</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        function salvarVenda() {
-            let produto = document.getElementById('nomeProduto').value;
-            let qtd = parseInt(document.getElementById('qtdProduto').value);
-            let preco = parseFloat(document.getElementById('precoProduto').value);
-            if (!produto || isNaN(qtd) || isNaN(preco)) return;
-            let vendas = obterDados('vendas');
-            vendas.push({ id: gerarId(), produto, qtd, preco });
-            salvarDados('vendas', vendas);
-            document.getElementById('nomeProduto').value = '';
-            document.getElementById('qtdProduto').value = '';
-            document.getElementById('precoProduto').value = '';
-            renderizarVendas();
-            atualizarDashboard();
-        }
-
-        function renderizarVendas() {
-            let div = document.getElementById('listaVendas');
-            let vendas = obterDados('vendas');
-            div.innerHTML = vendas.length === 0 ? '<p style="color:var(--text-secundary);text-align:center;font-size:0.9rem;">Vazio.</p>' : '';
-            vendas.slice().reverse().forEach(venda => {
-                let totalBRL = (venda.qtd * venda.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                let precoBRL = venda.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                div.innerHTML += `
-                    <div class="item-salvo">
-                        <strong>${venda.produto}</strong><p>${venda.qtd}x de ${precoBRL}</p>
-                        <span class="destaque">${totalBRL}</span>
-                        <div class="acoes-item">
-                            <button class="btn-pequeno" onclick="abrir_tela_edicao_vendas" onclick="abrirTelaEdicao('vendas', '${venda.id}')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('vendas', '${venda.id}')">Excluir</button>
-                        </div>
-                    </div>`;
-            });
         }
     </script>
 </body>
