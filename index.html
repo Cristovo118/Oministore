@@ -44,7 +44,7 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            overflow: hidden; /* Controlado pelo app-container */
+            overflow: hidden;
         }
 
         .app-container {
@@ -64,7 +64,7 @@
         }
 
         /* ==========================================
-           2. CABEÇALHO (GLASSMORPHISM)
+           2. CABEÇALHO E SCROLLBAR PREMIUM
            ========================================== */
         header {
             padding: 25px 20px 15px;
@@ -87,6 +87,21 @@
             letter-spacing: 0.3px;
         }
 
+        /* BARRA DE ROLAGEM (SCROLLBAR) ESTILIZADA */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A2A2D;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
         /* ==========================================
            3. ÁREA DE CONTEÚDO E CARTÕES
            ========================================== */
@@ -96,7 +111,6 @@
             padding: 10px 20px 100px 20px;
             scroll-behavior: smooth;
         }
-        ::-webkit-scrollbar { width: 0px; background: transparent; }
 
         .tela { display: none; animation: fadeIn 0.3s ease forwards; opacity: 0; }
         .tela.ativa { display: block; }
@@ -560,7 +574,6 @@
             let categorias = obterDados('categorias');
             let divGestor = document.getElementById('listaGestaoCategorias');
             
-            // Otimização de Processamento: Constrói a string antes de injetar
             let htmlBuffer = '';
             categorias.forEach(cat => {
                 let subsHTML = cat.subs.map((sub, index) => 
@@ -699,7 +712,6 @@
                 return;
             }
 
-            // Otimização de Processamento (DOM Build)
             let htmlBuffer = '';
             notas.slice().reverse().forEach(nota => {
                 let imgTag = nota.imagem ? `<img src="${nota.imagem}" loading="lazy">` : '';
@@ -907,18 +919,15 @@
         }
 
         function atualizarDashboard() {
-            // Conta notas
             document.getElementById('dashTotalNotas').innerText = obterDados('conteudos').length;
             
-            // Soma Vendas
             let totalV = obterDados('vendas').reduce((acc, v) => acc + (v.qtd * v.preco), 0);
             document.getElementById('dashTotalVendas').innerText = totalV.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-            // Pega evento mais próximo (simplificado pegando o último salvo)
             let agenda = obterDados('agenda');
             let divAgenda = document.getElementById('dashProximoEvento');
             if (agenda.length > 0) {
-                let ultimo = agenda[agenda.length - 1]; // Aqui pode evoluir para calcular a data futura mais próxima
+                let ultimo = agenda[agenda.length - 1]; 
                 let dataForm = ultimo.data.split('-').reverse().join('/');
                 divAgenda.innerHTML = `<strong style="display:block; font-size: 0.95rem; margin-bottom: 2px;">${ultimo.desc}</strong>${dataForm}`;
             } else {
