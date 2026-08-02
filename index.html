@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Omnistore Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* ==========================================
            1. VARIÁVEIS E TIPOGRAFIA
@@ -12,260 +13,183 @@
 
         :root {
             --bg-app: #000000;         
-            --bg-card: #0F0F11;        
-            --bg-nav: rgba(10, 10, 12, 0.85);         
+            --bg-card: linear-gradient(145deg, #121215, #0A0A0C);        
+            --bg-nav: rgba(15, 15, 18, 0.8);         
             --bg-input: #1A1A1E;       
             
             --primary: #0A84FF;        
             --primary-hover: #0066CC;
             --success: #30D158;        
-            --danger: #FF453A;         
+            --danger: #FF453A;
+            --warning: #FF9F0A;
+            --purple: #BF5AF2;         
             
             --text-main: #FFFFFF;      
             --text-secundary: #8E8E93; 
-            --border: #232326;         
+            --border: rgba(255, 255, 255, 0.08);         
             
-            --radius-card: 18px;
-            --radius-input: 12px;
-            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --radius-card: 16px;
+            --radius-input: 10px;
+            --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 4px 12px rgba(10, 132, 255, 0.25);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--bg-app);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
+            background-color: var(--bg-app); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow: hidden;
         }
 
         .app-container {
-            width: 100%;
-            max-width: 500px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            background-color: var(--bg-app);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            width: 100%; max-width: 500px; height: 100vh; display: flex; flex-direction: column; position: relative; background-color: var(--bg-app); box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
-        svg {
-            display: inline-block;
-            vertical-align: middle;
-        }
+        svg { display: inline-block; vertical-align: middle; }
 
         /* ==========================================
            2. CABEÇALHO E SCROLLBAR PREMIUM
            ========================================== */
         header {
-            padding: 25px 20px 15px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.3s ease;
+            padding: 15px 16px 10px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid transparent; transition: border-color 0.3s ease;
         }
         .header-scrolled { border-bottom: 1px solid var(--border); }
+        header h1 { font-size: 1rem; font-weight: 600; color: var(--text-main); text-align: center; letter-spacing: 0.3px; }
 
-        header h1 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: var(--text-main);
-            text-align: center;
-            letter-spacing: 0.3px;
-        }
-
-        /* BARRA DE ROLAGEM (SCROLLBAR) ESTILIZADA */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2A2A2D;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333336; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         /* ==========================================
            3. ÁREA DE CONTEÚDO E CARTÕES
            ========================================== */
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px 20px 100px 20px;
-            scroll-behavior: smooth;
-        }
-
-        .tela { display: none; animation: fadeIn 0.3s ease forwards; opacity: 0; }
+        .content-area { flex: 1; overflow-y: auto; padding: 8px 14px 100px 14px; scroll-behavior: smooth; }
+        .tela { display: none; animation: fadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
         .tela.ativa { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card {
-            background-color: var(--bg-card);
-            border-radius: var(--radius-card);
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-subtle);
-        }
-
-        .section-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secundary);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .card { background: var(--bg-card); border-radius: var(--radius-card); padding: 14px 16px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-subtle); position: relative; overflow: hidden; }
+        .section-title { font-size: 0.7rem; font-weight: 700; color: var(--text-secundary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: space-between; }
 
         /* ==========================================
-           4. PAINEL DE INÍCIO
+           4. PAINEL DE INÍCIO & GRÁFICO
            ========================================== */
-        .user-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-avatar { width: 46px; height: 46px; background: linear-gradient(135deg, rgba(10,132,255,0.2), rgba(10,132,255,0.05)); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--primary); border: 1px solid rgba(10,132,255,0.3); }
-        .user-text span { display: block; font-size: 0.7rem; color: var(--text-secundary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .user-text strong { font-size: 1.15rem; color: var(--text-main); font-weight: 600; }
+        .user-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 38px; height: 38px; background: linear-gradient(135deg, rgba(10,132,255,0.2), rgba(10,132,255,0.05)); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--primary); border: 1px solid rgba(10,132,255,0.4); box-shadow: 0 0 10px rgba(10,132,255,0.15); }
+        .user-avatar svg { width: 20px; height: 20px; }
+        .user-text span { display: block; font-size: 0.65rem; color: var(--text-secundary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .user-text strong { font-size: 1rem; color: var(--text-main); font-weight: 600; }
+        .date-badge { background-color: var(--bg-input); color: var(--text-secundary); padding: 4px 10px; border-radius: 16px; font-size: 0.7rem; font-weight: 600; border: 1px solid var(--border); }
         
-        .date-badge { background-color: var(--bg-input); color: var(--text-secundary); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; border: 1px solid var(--border); }
-        
-        .balance-section { text-align: center; padding: 15px 0; }
-        .balance-section .label { font-size: 0.8rem; color: var(--text-secundary); display: block; margin-bottom: 8px; }
-        .balance-section .value { font-size: 2.5rem; font-weight: 700; color: var(--success); letter-spacing: -1px; }
+        .gradient-text-success { background: linear-gradient(90deg, #30D158, #34C759); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-purple { background: linear-gradient(90deg, #BF5AF2, #DA8FFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .dash-card { background-color: var(--bg-card); padding: 18px; border-radius: var(--radius-card); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-subtle); transition: transform 0.2s; }
-        .dash-card:active { transform: scale(0.97); }
-        .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .dash-card .icon-box { width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
-        .dash-card h3 { color: var(--text-secundary); font-size: 0.75rem; margin-bottom: 6px; font-weight: 500;}
-        .dash-card span { color: var(--text-main); font-size: 1.4rem; font-weight: 600; }
+        .balance-box { padding: 8px 0 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+        .balance-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0px; }
+        .balance-box .label { font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 4px; font-weight: 500; }
+        .balance-box .value { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; }
+
+        /* Chart Widget */
+        .chart-container { width: 100%; height: 150px; position: relative; margin-top: 5px; }
+
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .dash-card { background: var(--bg-card); padding: 12px 14px; border-radius: var(--radius-card); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-subtle); transition: 0.2s; }
+        .dash-card:active { transform: scale(0.96); }
+        .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .dash-card .icon-box { width: 30px; height: 30px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+        .dash-card h3 { color: var(--text-secundary); font-size: 0.7rem; margin-bottom: 4px; font-weight: 600;}
+        .dash-card span { color: var(--text-main); font-size: 1.2rem; font-weight: 600; }
 
         /* ==========================================
            5. FORMULÁRIOS & CONTROLES
            ========================================== */
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--text-secundary); margin-bottom: 8px; font-weight: 500; }
-        
-        input, textarea, select {
-            width: 100%; padding: 14px 16px; background-color: var(--bg-input); border: 1px solid var(--border);
-            border-radius: var(--radius-input); color: var(--text-main); font-size: 1rem; outline: none;
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); appearance: none;
-        }
-        input:focus, textarea:focus, select:focus { border-color: var(--primary); background-color: #202024; box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15); }
-        .input-row { display: flex; gap: 12px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-secundary); margin-bottom: 6px; font-weight: 500; }
+        input, textarea, select { width: 100%; padding: 11px 14px; background-color: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-input); color: var(--text-main); font-size: 0.9rem; outline: none; transition: all 0.3s ease; appearance: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); background-color: #202024; box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.2); }
+        .input-row { display: flex; gap: 10px; }
 
-        .btn-acao {
-            width: 100%; padding: 15px; border: none; border-radius: var(--radius-input);
-            font-size: 0.95rem; font-weight: 600; color: #FFFFFF; background-color: var(--primary);
-            cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 8px;
-            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
-        }
+        .btn-acao { width: 100%; padding: 12px; border: none; border-radius: var(--radius-input); font-size: 0.9rem; font-weight: 600; color: #FFFFFF; background-color: var(--primary); cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: var(--shadow-glow); }
         .btn-acao:active { transform: scale(0.96); background-color: var(--primary-hover); }
         .btn-secundario { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); box-shadow: none; }
         .btn-secundario:active { background-color: var(--bg-input); }
         .btn-perigo { background-color: rgba(255, 69, 58, 0.1); color: var(--danger); border: 1px solid rgba(255, 69, 58, 0.3); box-shadow: none; }
-        .btn-perigo:active { background-color: rgba(255, 69, 58, 0.2); }
-
-        /* CONTROLE DE ABAS (Segmented Control) */
-        .segment-control { display: flex; background: var(--bg-input); border-radius: 14px; padding: 4px; margin-bottom: 20px; border: 1px solid var(--border); }
-        .segment-btn { flex: 1; text-align: center; padding: 12px 0; border-radius: 10px; font-size: 0.85rem; font-weight: 600; color: var(--text-secundary); cursor: pointer; transition: all 0.3s ease; }
-        .segment-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: var(--shadow-subtle); border: 1px solid rgba(255,255,255,0.05); }
+        
+        .segment-control { display: flex; background: var(--bg-input); border-radius: 12px; padding: 3px; margin-bottom: 14px; border: 1px solid var(--border); overflow-x: auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        .segment-control::-webkit-scrollbar { display: none; }
+        .segment-btn { flex: 1; text-align: center; padding: 9px 8px; border-radius: 9px; font-size: 0.75rem; font-weight: 600; color: var(--text-secundary); cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .segment-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
         .aba-view { display: none; animation: fadeIn 0.3s ease; }
         .aba-view.active { display: block; }
 
         /* ==========================================
            6. LISTAS E ITENS
            ========================================== */
-        .resultados-container { display: flex; flex-direction: column; gap: 14px; }
-        .item-salvo { background-color: var(--bg-card); padding: 18px; border-radius: var(--radius-card); border: 1px solid var(--border); transition: transform 0.2s; }
+        .resultados-container { display: flex; flex-direction: column; gap: 12px; }
+        .item-salvo { background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-card); border: 1px solid var(--border); transition: transform 0.2s; position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); }
         
-        .caminho-categoria { display: inline-flex; align-items: center; color: var(--primary); font-size: 0.75rem; font-weight: 500; margin-bottom: 10px; gap: 4px; background: rgba(10,132,255,0.1); padding: 4px 10px; border-radius: 6px;}
-        .item-salvo strong { display: block; font-size: 1.1rem; margin-bottom: 6px; color: var(--text-main); line-height: 1.3;}
-        .item-salvo p { color: var(--text-secundary); font-size: 0.9rem; line-height: 1.5; }
-        .item-salvo img { width: 100%; border-radius: 10px; margin-top: 14px; border: 1px solid var(--border); }
-        .destaque { font-size: 1.25rem; color: var(--success); font-weight: 600; display: block; margin-top: 10px; }
+        .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.65rem; font-weight: 600; margin-bottom: 8px; gap: 4px; background: rgba(10,132,255,0.15); color: var(--primary); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(10,132,255,0.2); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .item-salvo strong { display: block; font-size: 1rem; margin-bottom: 4px; color: var(--text-main); line-height: 1.2;}
+        .item-salvo p { color: var(--text-secundary); font-size: 0.85rem; line-height: 1.4; }
+        .item-salvo img.img-nota { width: 100%; max-height: 200px; object-fit: cover; border-radius: 10px; margin-top: 10px; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        
+        .destaque { font-size: 1.1rem; font-weight: 700; display: block; margin-top: 8px; }
+        .text-success { color: var(--success); }
+        .text-purple { color: var(--purple); }
 
-        .acoes-item { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); }
-        .btn-pequeno { background: transparent; border: 1px solid var(--border); font-weight: 500; font-size: 0.8rem; cursor: pointer; padding: 8px 14px; border-radius: 8px; color: var(--text-main); transition: 0.2s; }
+        .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .btn-pequeno { background: rgba(255,255,255,0.03); border: 1px solid var(--border); font-weight: 600; font-size: 0.75rem; cursor: pointer; padding: 6px 12px; border-radius: 6px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
         .btn-pequeno:active { background: var(--bg-input); transform: scale(0.95); }
-        .btn-excluir { color: var(--danger); border-color: rgba(255,69,58,0.3); }
-        .btn-excluir:active { background: rgba(255,69,58,0.1); }
+        .btn-editar { color: var(--primary); border-color: rgba(10,132,255,0.3); background: rgba(10,132,255,0.08); }
+        .btn-excluir { color: var(--danger); border-color: rgba(255,69,58,0.3); background: rgba(255,69,58,0.08); }
 
-        .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; margin-bottom: 15px; transition: 0.2s; box-shadow: var(--shadow-subtle); }
-        .nav-link-card:active { transform: scale(0.97); background: var(--bg-input); }
-        .nav-link-card h3 { font-size: 1rem; color: var(--text-main); font-weight: 600; margin-bottom: 4px; }
-        .nav-link-card p { font-size: 0.8rem; color: var(--text-secundary); }
-        .nav-link-icon { color: var(--text-secundary); }
+        .produto-img-lateral { display: flex; gap: 12px; align-items: center; }
+        .produto-img-lateral img { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+        .produto-info { flex: 1; }
 
         /* ==========================================
            7. GESTÃO DE CATEGORIAS
            ========================================== */
-        .cat-manager-card { background: var(--bg-app); border-radius: 14px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); }
-        .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .cat-header strong { color: var(--text-main); font-size: 1.05rem; }
-        .subcat-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .remover-btn { color: var(--danger); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; background: none; border: none; padding: 2px; border-radius: 4px;}
-        .remover-btn:active { background: rgba(255,69,58,0.1); }
+        .cat-manager-card { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .cat-header strong { color: var(--text-main); font-size: 0.95rem; }
+        .subcat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+        .remover-btn { color: var(--danger); cursor: pointer; display: flex; align-items: center; background: none; border: none; padding: 2px; border-radius: 4px;}
 
+        .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; margin-bottom: 12px; transition: 0.2s; box-shadow: var(--shadow-subtle); }
+        .nav-link-card:active { transform: scale(0.97); background: var(--bg-input); }
+        .nav-link-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 600; margin-bottom: 2px; }
+        .nav-link-card p { font-size: 0.75rem; color: var(--text-secundary); }
+        
         /* ==========================================
            8. MENU INFERIOR
            ========================================== */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 85px; 
-            background: var(--bg-nav); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid var(--border); display: flex; justify-content: space-around; 
-            align-items: center; z-index: 100; padding-bottom: 20px;
-        }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; cursor: pointer; color: var(--text-secundary); transition: all 0.3s ease; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 75px; background: var(--bg-nav); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; cursor: pointer; color: var(--text-secundary); transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .nav-item.ativo { color: var(--primary); transform: translateY(-2px); }
-        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; }
-        .nav-item.ativo svg { stroke-width: 2.5; }
-        .nav-item span.label { font-size: 0.65rem; font-weight: 500; }
+        .nav-item svg { width: 20px; height: 20px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; }
+        .nav-item.ativo svg { stroke-width: 2.5; filter: drop-shadow(0 2px 4px rgba(10,132,255,0.4)); }
+        .nav-item span.label { font-size: 0.6rem; font-weight: 600; }
 
         /* ==========================================
-           9. TELAS SOBREPOSTAS (ANIMAÇÃO SLIDE-UP)
+           9. TELAS SOBREPOSTAS E MODAL DE EDIÇÃO
            ========================================== */
+        .tela-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-app); z-index: 200; display: none; flex-direction: column; }
+        .tela-overlay.ativa { display: flex; animation: slideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .tela-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-app);
-            z-index: 200; display: none; flex-direction: column;
-        }
-        .tela-overlay.ativa {
-            display: flex;
-            animation: slideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        .overlay-header { padding: 25px 20px 15px; display: flex; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210;}
-        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 1rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s;}
-        .btn-voltar:active { opacity: 0.7; }
-        .overlay-body { padding: 20px; flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        .overlay-header { padding: 15px 16px 10px; display: flex; align-items: center; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210;}
+        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 0.9rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .overlay-body { padding: 14px; flex: 1; overflow-y: auto; padding-bottom: 70px; }
         
-        /* Empty state estético */
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-secundary); }
-        .empty-state svg { width: 48px; height: 48px; stroke-width: 1.5; margin-bottom: 15px; opacity: 0.5; }
-        .empty-state p { font-size: 0.9rem; }
+        .empty-state { text-align: center; padding: 30px 16px; color: var(--text-secundary); }
+        .empty-state svg { width: 42px; height: 42px; stroke-width: 1.2; margin-bottom: 10px; opacity: 0.4; color: var(--text-secundary); }
+        .empty-state p { font-size: 0.85rem; }
+
+        .img-preview-edit { width: 100%; max-height: 120px; object-fit: cover; border-radius: 10px; margin-top: 8px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -279,11 +203,11 @@
         <div class="content-area" id="main-content">
             
             <div id="tela-inicio" class="tela ativa">
-                <div class="card" style="margin-top: 5px;">
+                <div class="card" style="margin-top: 2px; padding: 12px 16px;">
                     <div class="user-panel">
                         <div class="user-info">
                             <div class="user-avatar">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             </div>
                             <div class="user-text">
                                 <span>Visão Geral</span>
@@ -295,9 +219,23 @@
                 </div>
 
                 <div class="card">
-                    <div class="balance-section">
-                        <span class="label">Total de Vendas Acumuladas</span>
-                        <div class="value" id="dashTotalVendas">R$ 0,00</div>
+                    <div class="balance-box">
+                        <span class="label">Total de Vendas Realizadas</span>
+                        <div class="value gradient-text-success" id="dashTotalVendas">R$ 0,00</div>
+                    </div>
+                    <div class="balance-box" style="border: none; padding-bottom: 0;">
+                        <span class="label">Total em Estoque (À venda)</span>
+                        <div class="value gradient-text-purple" id="dashTotalEstoque" style="font-size: 1.5rem;">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">
+                        <span>Desempenho Mês a Mês</span>
+                        <span style="font-size: 0.65rem; color: var(--success); font-weight: 600;">Vendas (R$)</span>
+                    </h2>
+                    <div class="chart-container">
+                        <canvas id="graficoVendasMensal"></canvas>
                     </div>
                 </div>
 
@@ -305,7 +243,7 @@
                     <div class="dash-card">
                         <div class="header">
                             <div class="icon-box" style="background: rgba(10, 132, 255, 0.15); color: var(--primary);">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                                <svg width="18" height="18" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
                             </div>
                         </div>
                         <h3>Total de Notas</h3>
@@ -315,11 +253,11 @@
                     <div class="dash-card">
                         <div class="header">
                             <div class="icon-box" style="background: rgba(255, 149, 0, 0.15); color: #FF9F0A;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                             </div>
                         </div>
                         <h3>Próximo Evento</h3>
-                        <span id="dashProximoEvento" style="font-size: 0.9rem; font-weight: 500; margin-top: 4px; line-height: 1.2;">Nenhum.</span>
+                        <span id="dashProximoEvento" style="font-size: 0.85rem; font-weight: 600; margin-top: 2px; line-height: 1.1;">Nenhum.</span>
                     </div>
                 </div>
             </div>
@@ -329,7 +267,7 @@
                     <div class="segment-btn active" id="btnAbaNotasAdd" onclick="alternarAbaNotas('add')">Nova Nota</div>
                     <div class="segment-btn" id="btnAbaNotasList" onclick="alternarAbaNotas('lista')">Histórico</div>
                 </div>
-
+                
                 <div id="aba-notas-add" class="aba-view active">
                     <div class="card">
                         <h2 class="section-title">Escrever Nota</h2>
@@ -343,22 +281,17 @@
                                 <select id="subcategoriaConteudo"></select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Título</label>
-                            <input type="text" id="tituloConteudo" placeholder="Assunto principal">
-                        </div>
-                        <div class="form-group">
-                            <label>Descrição</label>
-                            <textarea id="textoConteudo" rows="4" placeholder="Detalhes da nota..."></textarea>
-                        </div>
+                        <div class="form-group"><label>Título</label><input type="text" id="tituloConteudo" placeholder="Assunto principal"></div>
+                        <div class="form-group"><label>Data da Nota</label><input type="date" id="dataNota" style="color-scheme: dark;"></div>
+                        <div class="form-group"><label>Descrição</label><textarea id="textoConteudo" rows="3" placeholder="Detalhes completos..."></textarea></div>
                         <div class="form-group">
                             <label>Anexar Imagem (Opcional)</label>
-                            <input type="file" id="imagemConteudo" accept="image/*" style="padding: 10px; font-size: 0.8rem; background: transparent; border: 1px dashed var(--border);">
+                            <input type="file" id="imagemConteudo" accept="image/*" style="padding: 10px; background: transparent; border: 1px dashed var(--border); font-size: 0.8rem; color: var(--text-secundary);">
                         </div>
                         <button class="btn-acao" onclick="salvarConteudo()">Salvar Nota</button>
                     </div>
                 </div>
-
+                
                 <div id="aba-notas-lista" class="aba-view">
                     <div class="resultados-container" id="listaConteudos"></div>
                 </div>
@@ -367,55 +300,65 @@
             <div id="tela-agenda" class="tela">
                 <div class="card">
                     <h2 class="section-title">Novo Evento</h2>
-                    <div class="form-group">
-                        <label>Data</label>
-                        <input type="date" id="dataAgenda" style="color-scheme: dark;">
-                    </div>
-                    <div class="form-group">
-                        <label>Descrição</label>
-                        <input type="text" id="descAgenda" placeholder="Título do evento">
-                    </div>
+                    <div class="form-group"><label>Data</label><input type="date" id="dataAgenda" style="color-scheme: dark;"></div>
+                    <div class="form-group"><label>Horário</label><input type="time" id="horarioAgenda" style="color-scheme: dark;"></div>
+                    <div class="form-group"><label>Descrição</label><input type="text" id="descAgenda" placeholder="Título do evento"></div>
                     <button class="btn-acao" onclick="salvarAgenda()">Agendar Evento</button>
                 </div>
                 <div class="resultados-container" id="listaAgenda"></div>
             </div>
 
             <div id="tela-vendas" class="tela">
-                <div class="card">
-                    <h2 class="section-title">Registrar Venda</h2>
-                    <div class="form-group">
-                        <label>Produto / Serviço</label>
-                        <input type="text" id="nomeProduto" placeholder="Nome do item">
-                    </div>
-                    <div class="form-group input-row">
-                        <div style="flex: 1;">
-                            <label>Quantidade</label>
-                            <input type="number" id="qtdProduto" placeholder="1">
-                        </div>
-                        <div style="flex: 2;">
-                            <label>Preço Unid. (R$)</label>
-                            <input type="number" id="precoProduto" placeholder="0.00" step="0.01">
-                        </div>
-                    </div>
-                    <button class="btn-acao" onclick="salvarVenda()">Confirmar Venda</button>
+                <div class="segment-control">
+                    <div class="segment-btn active" id="btnAbaVendasNova" onclick="alternarAbaVendas('nova')">Nova Venda</div>
+                    <div class="segment-btn" id="btnAbaVendasEstoque" onclick="alternarAbaVendas('estoque')">Loja/Estoque</div>
+                    <div class="segment-btn" id="btnAbaVendasLista" onclick="alternarAbaVendas('lista')">Histórico</div>
                 </div>
-                <div class="resultados-container" id="listaVendas"></div>
+
+                <div id="aba-vendas-nova" class="aba-view active">
+                    <div class="card">
+                        <h2 class="section-title">Registrar Saída/Venda</h2>
+                        <div class="form-group"><label>Produto / Serviço</label><input type="text" id="nomeProduto" placeholder="Nome do item vendido"></div>
+                        <div class="form-group input-row">
+                            <div style="flex: 1;"><label>Qtd.</label><input type="number" id="qtdProduto" placeholder="1" value="1"></div>
+                            <div style="flex: 2;"><label>Preço Unid. (R$)</label><input type="number" id="precoProduto" placeholder="0.00" step="0.01"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Data da Venda</label>
+                            <input type="date" id="dataVenda" style="color-scheme: dark;">
+                        </div>
+                        <button class="btn-acao" onclick="salvarVenda()">Confirmar Venda</button>
+                    </div>
+                </div>
+
+                <div id="aba-vendas-estoque" class="aba-view">
+                    <div class="card">
+                        <h2 class="section-title">Adicionar à Loja</h2>
+                        <div class="form-group"><label>Nome do Produto</label><input type="text" id="estNome" placeholder="Ex: Tênis Nike, Camiseta..."></div>
+                        <div class="form-group"><label>Valor de Venda (R$)</label><input type="number" id="estPreco" placeholder="0.00" step="0.01"></div>
+                        <div class="form-group"><label>Foto do Produto</label><input type="file" id="estImagem" accept="image/*" style="padding: 10px; background: transparent; border: 1px dashed var(--border); font-size: 0.8rem; color: var(--text-secundary);"></div>
+                        <button class="btn-acao" style="background: linear-gradient(135deg, var(--purple), #a238ff); box-shadow: 0 4px 12px rgba(191,90,242,0.3);" onclick="salvarEstoque()">Adicionar ao Estoque</button>
+                    </div>
+                    <div class="resultados-container" id="listaEstoque"></div>
+                </div>
+
+                <div id="aba-vendas-lista" class="aba-view">
+                    <div class="resultados-container" id="listaVendas"></div>
+                </div>
             </div>
 
             <div id="tela-config" class="tela">
                 <div class="nav-link-card" onclick="abrirTelaCategorias()">
                     <div>
-                        <h3>Categorias e Estrutura</h3>
-                        <p>Gerencie as etiquetas globais</p>
+                        <h3>Categorias de Notas</h3>
+                        <p>Personalize os assuntos e subcategorias</p>
                     </div>
-                    <div class="nav-link-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
+                    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </div>
 
-                <div class="card" style="border-color: rgba(255, 69, 58, 0.2); margin-top: 30px;">
+                <div class="card" style="border-color: rgba(255, 69, 58, 0.3); margin-top: 20px; background: rgba(255, 69, 58, 0.02);">
                     <h2 class="section-title" style="color: var(--danger);">Zona de Perigo</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-secundary); margin-bottom: 20px; line-height: 1.4;">Ao apagar os dados, todo o histórico será perdido permanentemente.</p>
+                    <p style="font-size: 0.8rem; color: var(--text-secundary); margin-bottom: 14px; line-height: 1.4;">Atenção: Ao apagar os dados, todo o seu histórico, estoque e notas serão perdidos de forma permanente.</p>
                     <button class="btn-acao btn-perigo" onclick="limparTodosDados()">Apagar Todos os Dados</button>
                 </div>
             </div>
@@ -427,18 +370,18 @@
                 <span class="label">Início</span>
             </div>
             <div class="nav-item" onclick="abrirTela('tela-conteudo', 'Notas', this)">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path></svg>
                 <span class="label">Notas</span>
             </div>
             <div class="nav-item" onclick="abrirTela('tela-agenda', 'Agenda', this)">
-                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                 <span class="label">Agenda</span>
             </div>
-            <div class="nav-item" onclick="abrirTela('tela-vendas', 'Vendas', this)">
+            <div class="nav-item" onclick="abrirTela('tela-vendas', 'Vendas e Loja', this)">
                 <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                 <span class="label">Vendas</span>
             </div>
-            <div class="nav-item" onclick="abrirTela('tela-config', 'Config', this)">
+            <div class="nav-item" onclick="abrirTela('tela-config', 'Configurações', this)">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 <span class="label">Config</span>
             </div>
@@ -448,17 +391,17 @@
     <div id="tela-gestao-categorias" class="tela-overlay">
         <div class="overlay-header">
             <button class="btn-voltar" onclick="fecharTelaCategorias()">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 Voltar
             </button>
-            <h2 style="font-size: 1.05rem; margin-left: auto; margin-right: auto; padding-right: 70px;">Categorias</h2>
+            <h2 style="font-size: 0.95rem; margin-left: auto; margin-right: auto; padding-right: 60px;">Categorias</h2>
         </div>
         <div class="overlay-body">
             <div class="card">
                 <h2 class="section-title">Nova Categoria Principal</h2>
                 <div class="input-row">
-                    <input type="text" id="novaCategoriaNome" placeholder="Ex: Finanças, Pessoal...">
-                    <button class="btn-acao" style="width: auto; padding: 0 24px;" onclick="addCategoria()">Criar</button>
+                    <input type="text" id="novaCategoriaNome" placeholder="Ex: Finanças, Projetos...">
+                    <button class="btn-acao" style="width: auto; padding: 0 20px;" onclick="addCategoria()">Criar</button>
                 </div>
             </div>
             <div class="card">
@@ -468,16 +411,21 @@
         </div>
     </div>
 
-    <div id="tela-edicao-container" class="tela-overlay">
+    <div id="modal-edicao" class="tela-overlay">
         <div class="overlay-header">
-            <button class="btn-voltar" onclick="fecharEdicao()">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                Voltar
+            <button class="btn-voltar" onclick="fecharModalEdicao()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Cancelar
             </button>
-            <h2 style="font-size: 1.05rem; margin-left: auto; margin-right: auto; padding-right: 70px;">Editar Item</h2>
+            <h2 id="modalEdicaoTitulo" style="font-size: 0.95rem; margin-left: auto; margin-right: auto; padding-right: 60px;">Editar Item</h2>
         </div>
         <div class="overlay-body">
-            <div class="card" id="formulario-edicao-dinamico"></div>
+            <div class="card">
+                <input type="hidden" id="editItemId">
+                <input type="hidden" id="editItemTipo">
+                <div id="containerCamposEdicao"></div>
+                <button class="btn-acao" style="margin-top: 8px;" onclick="salvarEdicao()">Salvar Alterações</button>
+            </div>
         </div>
     </div>
 
@@ -489,7 +437,8 @@
         const salvarDados = (chave, dados) => localStorage.setItem(chave, JSON.stringify(dados));
         const gerarId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-        // Header scroll effect
+        let meuGraficoVendas = null;
+
         document.getElementById('main-content').addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
             if (this.scrollTop > 10) header.classList.add('header-scrolled');
@@ -497,15 +446,14 @@
         });
 
         window.onload = () => {
-            migrarCategoriasAntigas(); 
+            const dataHoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataAtualBadge').innerText = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+            document.getElementById('dataVenda').value = dataHoje;
+            document.getElementById('dataNota').value = dataHoje;
+            document.getElementById('dataAgenda').value = dataHoje;
+            migrarCategoriasAntigas();
             inicializarSistema();
-            setarDataBadge();
         };
-
-        function setarDataBadge() {
-            const data = new Date();
-            document.getElementById('dataAtualBadge').innerText = data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
-        }
 
         function inicializarSistema() {
             renderizarGestorCategorias();
@@ -518,44 +466,264 @@
         function abrirTela(idTela, titulo, botao) {
             document.querySelectorAll('.app-container .tela').forEach(t => t.classList.remove('ativa'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('ativo'));
-            
             document.getElementById(idTela).classList.add('ativa');
             botao.classList.add('ativo');
             
             const header = document.getElementById('main-header');
             if(idTela === 'tela-inicio') {
-                header.style.display = 'none';
+                header.style.display = 'none'; 
                 atualizarDashboard();
             } else {
-                header.style.display = 'block';
+                header.style.display = 'block'; 
                 document.getElementById('header-title').innerText = titulo;
             }
         }
 
         function alternarAbaNotas(aba) {
-            document.getElementById('btnAbaNotasAdd').classList.remove('active');
-            document.getElementById('btnAbaNotasList').classList.remove('active');
-            document.getElementById('aba-notas-add').classList.remove('active');
-            document.getElementById('aba-notas-lista').classList.remove('active');
+            document.querySelectorAll('#tela-conteudo .segment-btn, #tela-conteudo .aba-view').forEach(e => e.classList.remove('active'));
+            if (aba === 'add') { document.getElementById('btnAbaNotasAdd').classList.add('active'); document.getElementById('aba-notas-add').classList.add('active'); }
+            else { document.getElementById('btnAbaNotasList').classList.add('active'); document.getElementById('aba-notas-lista').classList.add('active'); }
+        }
 
-            if (aba === 'add') {
-                document.getElementById('btnAbaNotasAdd').classList.add('active');
-                document.getElementById('aba-notas-add').classList.add('active');
-            } else {
-                document.getElementById('btnAbaNotasList').classList.add('active');
-                document.getElementById('aba-notas-lista').classList.add('active');
-            }
+        function alternarAbaVendas(aba) {
+            document.querySelectorAll('#tela-vendas .segment-btn, #tela-vendas .aba-view').forEach(e => e.classList.remove('active'));
+            if (aba === 'nova') { document.getElementById('btnAbaVendasNova').classList.add('active'); document.getElementById('aba-vendas-nova').classList.add('active'); }
+            else if (aba === 'estoque') { document.getElementById('btnAbaVendasEstoque').classList.add('active'); document.getElementById('aba-vendas-estoque').classList.add('active'); }
+            else { document.getElementById('btnAbaVendasLista').classList.add('active'); document.getElementById('aba-vendas-lista').classList.add('active'); }
         }
 
         function limparTodosDados() {
             if(confirm("ATENÇÃO: Confirma a exclusão de TODOS os dados? Esta ação não pode ser desfeita.")) {
-                localStorage.clear();
-                window.location.reload();
+                localStorage.clear(); window.location.reload();
             }
         }
 
         // ==========================================
-        // CATEGORIAS (OVERLAY & LÓGICA)
+        // GRÁFICO MÊS A MÊS (CHART.JS)
+        // ==========================================
+        function renderizarGraficoVendas() {
+            const canvas = document.getElementById('graficoVendasMensal');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let vendas = obterDados('vendas');
+            const mesesNomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const anoAtual = new Date().getFullYear();
+            const totaisPorMes = Array(12).fill(0);
+
+            vendas.forEach(v => {
+                let dt = v.data ? new Date(v.data + 'T00:00:00') : new Date();
+                if (dt.getFullYear() === anoAtual) {
+                    let mes = dt.getMonth();
+                    totaisPorMes[mes] += (v.qtd * v.preco);
+                }
+            });
+
+            let gradient = ctx.createLinearGradient(0, 0, 0, 150);
+            gradient.addColorStop(0, 'rgba(48, 209, 88, 0.85)');
+            gradient.addColorStop(1, 'rgba(48, 209, 88, 0.05)');
+
+            if (meuGraficoVendas) {
+                meuGraficoVendas.destroy();
+            }
+
+            meuGraficoVendas = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: mesesNomes,
+                    datasets: [{
+                        label: 'Vendas (R$)',
+                        data: totaisPorMes,
+                        backgroundColor: gradient,
+                        borderColor: '#30D158',
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.parsed.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#8E8E93', font: { size: 9 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#8E8E93',
+                                font: { size: 8 },
+                                callback: function(value) { return 'R$' + value; }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ==========================================
+        // SISTEMA DE EDIÇÃO MÚLTIPLA (MODAL)
+        // ==========================================
+        function abrirModalEdicao(tipo, id) {
+            let dados = obterDados(tipo);
+            let item = dados.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('editItemId').value = id;
+            document.getElementById('editItemTipo').value = tipo;
+            let container = document.getElementById('containerCamposEdicao');
+            let tituloModal = document.getElementById('modalEdicaoTitulo');
+
+            if (tipo === 'conteudos') {
+                tituloModal.innerText = "Editar Nota";
+                container.innerHTML = `
+                    <div class="input-row">
+                        <div class="form-group" style="flex:1;">
+                            <label>Categoria</label>
+                            <select id="editCat" onchange="atualizarSelectSubcategorias('editCat', 'editSubcat')"></select>
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label>Subcategoria</label>
+                            <select id="editSubcat"></select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Título</label><input type="text" id="editTitulo" value="${item.titulo || ''}"></div>
+                    <div class="form-group"><label>Data da Nota</label><input type="date" id="editDataNota" value="${item.data || new Date().toISOString().split('T')[0]}" style="color-scheme:dark;"></div>
+                    <div class="form-group"><label>Descrição</label><textarea id="editTexto" rows="3">${item.texto || ''}</textarea></div>
+                    <div class="form-group">
+                        <label>Foto (Opcional - Selecione para trocar)</label>
+                        <input type="file" id="editImagem" accept="image/*" style="padding:8px; font-size:0.75rem; background:transparent;">
+                        ${item.imagem ? `<img src="${item.imagem}" class="img-preview-edit">` : ''}
+                    </div>
+                `;
+                preencherSelectCategorias('editCat');
+                document.getElementById('editCat').value = item.categoria || '';
+                atualizarSelectSubcategorias('editCat', 'editSubcat');
+                document.getElementById('editSubcat').value = item.subcategoria || '';
+
+            } else if (tipo === 'vendas') {
+                tituloModal.innerText = "Editar Venda";
+                container.innerHTML = `
+                    <div class="form-group"><label>Produto</label><input type="text" id="editProd" value="${item.produto || ''}"></div>
+                    <div class="form-group input-row">
+                        <div style="flex:1;"><label>Quantidade</label><input type="number" id="editQtd" value="${item.qtd || 1}"></div>
+                        <div style="flex:2;"><label>Preço Unid. (R$)</label><input type="number" id="editPreco" step="0.01" value="${item.preco || 0}"></div>
+                    </div>
+                    <div class="form-group"><label>Data da Venda</label><input type="date" id="editDataVenda" value="${item.data || new Date().toISOString().split('T')[0]}" style="color-scheme:dark;"></div>
+                `;
+
+            } else if (tipo === 'estoque') {
+                tituloModal.innerText = "Editar Produto da Loja";
+                container.innerHTML = `
+                    <div class="form-group"><label>Nome do Produto</label><input type="text" id="editEstNome" value="${item.nome || ''}"></div>
+                    <div class="form-group"><label>Valor de Venda (R$)</label><input type="number" id="editEstPreco" step="0.01" value="${item.preco || 0}"></div>
+                    <div class="form-group">
+                        <label>Foto (Selecione para alterar)</label>
+                        <input type="file" id="editEstImagem" accept="image/*" style="padding:8px; font-size:0.75rem; background:transparent;">
+                        ${item.imagem ? `<img src="${item.imagem}" class="img-preview-edit">` : ''}
+                    </div>
+                `;
+
+            } else if (tipo === 'agenda') {
+                tituloModal.innerText = "Editar Evento";
+                container.innerHTML = `
+                    <div class="form-group"><label>Data</label><input type="date" id="editAgendaData" value="${item.data || ''}" style="color-scheme:dark;"></div>
+                    <div class="form-group"><label>Horário</label><input type="time" id="editAgendaHorario" value="${item.horario || ''}" style="color-scheme:dark;"></div>
+                    <div class="form-group"><label>Descrição</label><input type="text" id="editAgendaDesc" value="${item.desc || ''}"></div>
+                `;
+            }
+
+            document.getElementById('modal-edicao').classList.add('ativa');
+        }
+
+        function fecharModalEdicao() {
+            document.getElementById('modal-edicao').classList.remove('ativa');
+        }
+
+        async function salvarEdicao() {
+            let id = document.getElementById('editItemId').value;
+            let tipo = document.getElementById('editItemTipo').value;
+            let lista = obterDados(tipo);
+            let idx = lista.findIndex(i => i.id === id);
+
+            if (idx === -1) return;
+
+            if (tipo === 'conteudos') {
+                let titulo = document.getElementById('editTitulo').value;
+                let texto = document.getElementById('editTexto').value;
+                let data = document.getElementById('editDataNota').value;
+                if (!titulo || !texto) return alert("Preencha título e texto.");
+
+                lista[idx].categoria = document.getElementById('editCat').value;
+                lista[idx].subcategoria = document.getElementById('editSubcat').value;
+                lista[idx].titulo = titulo;
+                lista[idx].texto = texto;
+                lista[idx].data = data;
+
+                let arq = document.getElementById('editImagem').files[0];
+                if (arq) {
+                    lista[idx].imagem = await new Promise(res => {
+                        let r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(arq);
+                    });
+                }
+
+            } else if (tipo === 'vendas') {
+                let prod = document.getElementById('editProd').value;
+                let qtd = parseInt(document.getElementById('editQtd').value);
+                let preco = parseFloat(document.getElementById('editPreco').value);
+                let data = document.getElementById('editDataVenda').value;
+                if (!prod || isNaN(qtd) || isNaN(preco)) return alert("Dados inválidos.");
+
+                lista[idx].produto = prod;
+                lista[idx].qtd = qtd;
+                lista[idx].preco = preco;
+                lista[idx].data = data;
+
+            } else if (tipo === 'estoque') {
+                let nome = document.getElementById('editEstNome').value;
+                let preco = parseFloat(document.getElementById('editEstPreco').value);
+                if (!nome || isNaN(preco)) return alert("Preencha o nome e preço.");
+
+                lista[idx].nome = nome;
+                lista[idx].preco = preco;
+
+                let arq = document.getElementById('editEstImagem').files[0];
+                if (arq) {
+                    lista[idx].imagem = await new Promise(res => {
+                        let r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(arq);
+                    });
+                }
+
+            } else if (tipo === 'agenda') {
+                let data = document.getElementById('editAgendaData').value;
+                let horario = document.getElementById('editAgendaHorario').value;
+                let desc = document.getElementById('editAgendaDesc').value;
+                if (!data || !desc) return alert("Preencha data e descrição.");
+
+                lista[idx].data = data;
+                lista[idx].horario = horario;
+                lista[idx].desc = desc;
+            }
+
+            salvarDados(tipo, lista);
+            fecharModalEdicao();
+            renderizarListas();
+            atualizarDashboard();
+        }
+
+        // ==========================================
+        // GESTÃO DE CATEGORIAS
         // ==========================================
         function abrirTelaCategorias() { document.getElementById('tela-gestao-categorias').classList.add('ativa'); }
         function fecharTelaCategorias() { document.getElementById('tela-gestao-categorias').classList.remove('ativa'); }
@@ -564,8 +732,8 @@
             let cat = obterDados('categorias');
             if(cat.length === 0) {
                 salvarDados('categorias', [
-                    { id: gerarId(), nome: 'Trabalho', subs: ['Projetos', 'Reuniões'] },
-                    { id: gerarId(), nome: 'Pessoal', subs: ['Ideias', 'Finanças'] }
+                    { id: gerarId(), nome: 'Trabalho', subs: ['Projetos', 'Reuniões', 'Ideias'] },
+                    { id: gerarId(), nome: 'Pessoal', subs: ['Finanças', 'Diário', 'Lembretes'] }
                 ]);
             }
         }
@@ -573,26 +741,24 @@
         function renderizarGestorCategorias() {
             let categorias = obterDados('categorias');
             let divGestor = document.getElementById('listaGestaoCategorias');
-            
             let htmlBuffer = '';
             categorias.forEach(cat => {
                 let subsHTML = cat.subs.map((sub, index) => 
-                    `<span class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${cat.id}', ${index})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></span>`
+                    `<span class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${cat.id}', ${index})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></span>`
                 ).join('');
 
                 htmlBuffer += `
                     <div class="cat-manager-card">
                         <div class="cat-header">
                             <strong>${cat.nome}</strong>
-                            <button class="btn-pequeno btn-excluir" style="padding: 6px 10px;" onclick="removerCategoria('${cat.id}')">Excluir</button>
+                            <button class="btn-pequeno btn-excluir" style="padding: 4px 10px; font-size: 0.7rem;" onclick="removerCategoria('${cat.id}')">Excluir</button>
                         </div>
                         <div class="subcat-list">${subsHTML}</div>
                         <div class="input-row">
-                            <input type="text" id="novaSub_${cat.id}" placeholder="Adicionar Subcategoria..." style="padding: 10px 12px; font-size: 0.85rem;">
-                            <button class="btn-acao btn-secundario" style="width: auto; padding: 0 16px; font-size: 0.85rem;" onclick="addSubcategoria('${cat.id}')">Add</button>
+                            <input type="text" id="novaSub_${cat.id}" placeholder="Nova Subcategoria..." style="padding: 8px 10px; font-size: 0.8rem;">
+                            <button class="btn-acao btn-secundario" style="width: auto; padding: 0 14px; font-size: 0.8rem;" onclick="addSubcategoria('${cat.id}')">Add</button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
             divGestor.innerHTML = htmlBuffer;
         }
@@ -610,7 +776,7 @@
 
         function removerCategoria(id) {
             let cat = obterDados('categorias');
-            if(cat.length <= 1) return alert("É necessário manter ao menos uma categoria principal.");
+            if(cat.length <= 1) return alert("Mantenha ao menos uma categoria.");
             if(confirm("Excluir esta categoria?")) {
                 salvarDados('categorias', cat.filter(c => c.id !== id));
                 atualizarSistemaDeCategorias();
@@ -643,41 +809,36 @@
             atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo');
         }
 
-        function preencherSelectCategorias(selectId, valorSelecionado = '') {
+        function preencherSelectCategorias(selectId) {
             let select = document.getElementById(selectId);
             if(!select) return;
             let categorias = obterDados('categorias');
             let htmlBuffer = '';
-            categorias.forEach(cat => {
-                let selected = (cat.nome === valorSelecionado) ? 'selected' : '';
-                htmlBuffer += `<option value="${cat.nome}" data-id="${cat.id}" ${selected}>${cat.nome}</option>`;
-            });
+            categorias.forEach(cat => { htmlBuffer += `<option value="${cat.nome}">${cat.nome}</option>`; });
             select.innerHTML = htmlBuffer;
         }
 
-        function atualizarSelectSubcategorias(idSelectCat, idSelectSub, valorSelecionadoSub = '') {
+        function atualizarSelectSubcategorias(idSelectCat, idSelectSub) {
             let selectCat = document.getElementById(idSelectCat);
             let selectSub = document.getElementById(idSelectSub);
             if(!selectCat || !selectSub) return;
             let categoriaObj = obterDados('categorias').find(c => c.nome === selectCat.value);
             let htmlBuffer = '<option value="">Sem subcategoria</option>';
             if(categoriaObj && categoriaObj.subs.length > 0) {
-                categoriaObj.subs.forEach(sub => {
-                    let selected = (sub === valorSelecionadoSub) ? 'selected' : '';
-                    htmlBuffer += `<option value="${sub}" ${selected}>${sub}</option>`;
-                });
+                categoriaObj.subs.forEach(sub => { htmlBuffer += `<option value="${sub}">${sub}</option>`; });
             }
             selectSub.innerHTML = htmlBuffer;
         }
 
         // ==========================================
-        // NOTAS E CONTEÚDOS
+        // NOTAS (NOVA NOTA)
         // ==========================================
         async function salvarConteudo() {
             let categoria = document.getElementById('categoriaConteudo').value;
             let subcategoria = document.getElementById('subcategoriaConteudo').value;
             let titulo = document.getElementById('tituloConteudo').value;
             let texto = document.getElementById('textoConteudo').value;
+            let data = document.getElementById('dataNota').value || new Date().toISOString().split('T')[0];
             let arquivo = document.getElementById('imagemConteudo').files[0];
             
             if (!titulo || !texto) return alert("Preencha o título e a descrição.");
@@ -692,41 +853,98 @@
             }
 
             let notas = obterDados('conteudos');
-            notas.push({ id: gerarId(), categoria, subcategoria, titulo, texto, imagem: base64Imagem });
+            notas.push({ id: gerarId(), categoria, subcategoria, titulo, texto, data, imagem: base64Imagem });
             salvarDados('conteudos', notas);
             
-            // Limpa formulário
             ['tituloConteudo', 'textoConteudo', 'imagemConteudo'].forEach(id => document.getElementById(id).value = '');
-            
-            renderizarNotas();
-            atualizarDashboard();
-            alternarAbaNotas('lista');
+            document.getElementById('dataNota').value = new Date().toISOString().split('T')[0];
+            renderizarListas(); atualizarDashboard(); alternarAbaNotas('lista');
         }
 
         function renderizarNotas() {
             let div = document.getElementById('listaConteudos');
             let notas = obterDados('conteudos');
-            
-            if(notas.length === 0) {
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg><p>Nenhuma nota salva ainda.</p></div>`;
-                return;
+            if(notas.length === 0) { 
+                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path></svg><p>Nenhuma nota salva.</p></div>`; 
+                return; 
             }
-
             let htmlBuffer = '';
             notas.slice().reverse().forEach(nota => {
-                let imgTag = nota.imagem ? `<img src="${nota.imagem}" loading="lazy">` : '';
                 let catTexto = nota.categoria || 'Geral';
                 if(nota.subcategoria) catTexto += ` • ${nota.subcategoria}`;
+                let dataForm = nota.data ? nota.data.split('-').reverse().join('/') : '';
+                let imgTag = nota.imagem ? `<img src="${nota.imagem}" class="img-nota" loading="lazy">` : '';
 
                 htmlBuffer += `
                     <div class="item-salvo">
-                        <span class="caminho-categoria">${catTexto}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span class="caminho-categoria" style="margin-bottom:0;">${catTexto}</span>
+                            ${dataForm ? `<span style="font-size:0.7rem; color:var(--text-secundary);">${dataForm}</span>` : ''}
+                        </div>
                         <strong>${nota.titulo}</strong>
                         <p>${nota.texto.replace(/\n/g, '<br>')}</p>
                         ${imgTag}
                         <div class="acoes-item">
-                            <button class="btn-pequeno" onclick="abrirTelaEdicao('conteudos', '${nota.id}')">Editar</button>
+                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('conteudos', '${nota.id}')">Editar</button>
                             <button class="btn-pequeno btn-excluir" onclick="excluirItem('conteudos', '${nota.id}')">Excluir</button>
+                        </div>
+                    </div>`;
+            });
+            div.innerHTML = htmlBuffer;
+        }
+
+        // ==========================================
+        // ESTOQUE (PRODUTOS)
+        // ==========================================
+        async function salvarEstoque() {
+            let nome = document.getElementById('estNome').value;
+            let preco = parseFloat(document.getElementById('estPreco').value);
+            let arquivo = document.getElementById('estImagem').files[0];
+            
+            if (!nome || isNaN(preco)) return alert("Preencha o nome e o valor do produto.");
+
+            let base64Imagem = "";
+            if (arquivo) {
+                base64Imagem = await new Promise(resolve => {
+                    let reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.readAsDataURL(arquivo);
+                });
+            }
+
+            let estoque = obterDados('estoque');
+            estoque.push({ id: gerarId(), nome, preco, imagem: base64Imagem });
+            salvarDados('estoque', estoque);
+            
+            ['estNome', 'estPreco', 'estImagem'].forEach(id => document.getElementById(id).value = '');
+            renderizarListas(); atualizarDashboard(); alternarAbaVendas('estoque');
+        }
+
+        function renderizarEstoque() {
+            let div = document.getElementById('listaEstoque');
+            let estoque = obterDados('estoque');
+            if(estoque.length === 0) {
+                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg><p>Nenhum produto na loja.</p></div>`;
+                return;
+            }
+
+            let htmlBuffer = '';
+            estoque.slice().reverse().forEach(prod => {
+                let imgTag = prod.imagem ? `<img src="${prod.imagem}" loading="lazy">` : `<div style="width:70px; height:70px; background:var(--bg-input); border-radius:10px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-secundary); font-size:0.65rem;">Sem foto</div>`;
+                let precoBRL = prod.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                
+                htmlBuffer += `
+                    <div class="item-salvo">
+                        <div class="produto-img-lateral">
+                            ${imgTag}
+                            <div class="produto-info">
+                                <strong style="margin-bottom:2px;">${prod.nome}</strong>
+                                <span class="destaque text-purple" style="margin-top:0; font-size: 1rem;">${precoBRL}</span>
+                            </div>
+                        </div>
+                        <div class="acoes-item" style="margin-top:10px; padding-top:10px;">
+                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('estoque', '${prod.id}')">Editar</button>
+                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('estoque', '${prod.id}')">Excluir</button>
                         </div>
                     </div>`;
             });
@@ -738,37 +956,32 @@
         // ==========================================
         function salvarAgenda() {
             let data = document.getElementById('dataAgenda').value;
+            let horario = document.getElementById('horarioAgenda').value;
             let desc = document.getElementById('descAgenda').value;
             if (!data || !desc) return;
             let agenda = obterDados('agenda');
-            agenda.push({ id: gerarId(), data, desc });
+            agenda.push({ id: gerarId(), data, horario, desc });
             salvarDados('agenda', agenda);
-            
-            document.getElementById('dataAgenda').value = '';
+            document.getElementById('dataAgenda').value = new Date().toISOString().split('T')[0];
+            document.getElementById('horarioAgenda').value = '';
             document.getElementById('descAgenda').value = '';
-            
-            renderizarAgenda();
-            atualizarDashboard();
+            renderizarListas(); atualizarDashboard();
         }
 
         function renderizarAgenda() {
             let div = document.getElementById('listaAgenda');
             let agenda = obterDados('agenda');
-            
-            if(agenda.length === 0) {
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><p>Sua agenda está vazia.</p></div>`;
-                return;
-            }
-
+            if(agenda.length === 0) { div.innerHTML = `<div class="empty-state"><p>Agenda vazia.</p></div>`; return; }
             let htmlBuffer = '';
             agenda.slice().reverse().forEach(item => {
                 let dataForm = item.data.split('-').reverse().join('/');
+                let horarioTexto = item.horario ? ` • ${item.horario}` : '';
                 htmlBuffer += `
                     <div class="item-salvo">
-                        <strong style="font-size: 1.05rem;">${item.desc}</strong>
-                        <p style="color: var(--primary); font-weight: 500;">${dataForm}</p>
+                        <strong>${item.desc}</strong>
+                        <p class="text-success">${dataForm}${horarioTexto}</p>
                         <div class="acoes-item">
-                            <button class="btn-pequeno" onclick="abrirTelaEdicao('agenda', '${item.id}')">Editar</button>
+                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('agenda', '${item.id}')">Editar</button>
                             <button class="btn-pequeno btn-excluir" onclick="excluirItem('agenda', '${item.id}')">Excluir</button>
                         </div>
                     </div>`;
@@ -780,38 +993,38 @@
             let produto = document.getElementById('nomeProduto').value;
             let qtd = parseInt(document.getElementById('qtdProduto').value);
             let preco = parseFloat(document.getElementById('precoProduto').value);
-            if (!produto || isNaN(qtd) || isNaN(preco)) return;
-            
+            let data = document.getElementById('dataVenda').value || new Date().toISOString().split('T')[0];
+
+            if (!produto || isNaN(qtd) || isNaN(preco)) return alert("Preencha nome, quantidade e preço.");
             let vendas = obterDados('vendas');
-            vendas.push({ id: gerarId(), produto, qtd, preco });
+            vendas.push({ id: gerarId(), produto, qtd, preco, data });
             salvarDados('vendas', vendas);
             
-            ['nomeProduto', 'qtdProduto', 'precoProduto'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('nomeProduto').value = '';
+            document.getElementById('qtdProduto').value = '1';
+            document.getElementById('precoProduto').value = '';
+            document.getElementById('dataVenda').value = new Date().toISOString().split('T')[0];
             
-            renderizarVendas();
-            atualizarDashboard();
+            renderizarListas(); atualizarDashboard(); alternarAbaVendas('lista');
         }
 
         function renderizarVendas() {
             let div = document.getElementById('listaVendas');
             let vendas = obterDados('vendas');
-            
-            if(vendas.length === 0) {
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><p>Nenhuma venda registrada.</p></div>`;
-                return;
-            }
-
+            if(vendas.length === 0) { div.innerHTML = `<div class="empty-state"><p>Nenhuma venda registrada.</p></div>`; return; }
             let htmlBuffer = '';
             vendas.slice().reverse().forEach(venda => {
                 let totalBRL = (venda.qtd * venda.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                 let precoBRL = venda.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                let dataForm = venda.data ? venda.data.split('-').reverse().join('/') : '';
+
                 htmlBuffer += `
                     <div class="item-salvo">
                         <strong>${venda.produto}</strong>
-                        <p>${venda.qtd}x de ${precoBRL}</p>
-                        <span class="destaque">${totalBRL}</span>
+                        <p>${venda.qtd}x de ${precoBRL} ${dataForm ? `• <span style="color:var(--text-secundary); font-size:0.75rem;">${dataForm}</span>` : ''}</p>
+                        <span class="destaque text-success">${totalBRL}</span>
                         <div class="acoes-item">
-                            <button class="btn-pequeno" onclick="abrirTelaEdicao('vendas', '${venda.id}')">Editar</button>
+                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('vendas', '${venda.id}')">Editar</button>
                             <button class="btn-pequeno btn-excluir" onclick="excluirItem('vendas', '${venda.id}')">Excluir</button>
                         </div>
                     </div>`;
@@ -819,103 +1032,15 @@
             div.innerHTML = htmlBuffer;
         }
 
-        // ==========================================
-        // EDIÇÃO GLOBAL (OVERLAY) E EXCLUSÃO
-        // ==========================================
-        let itemEmEdicao = null;
-        let tipoEmEdicao = '';
-
-        function abrirTelaEdicao(tipo, id) {
-            tipoEmEdicao = tipo;
-            itemEmEdicao = obterDados(tipo).find(item => item.id === id);
-            let formHTML = '';
-            
-            if (tipo === 'conteudos') {
-                formHTML = `
-                    <div class="input-row">
-                        <div class="form-group" style="flex: 1;"><label>Categoria</label><select id="editCategoria" onchange="atualizarSelectSubcategorias('editCategoria', 'editSubcategoria')"></select></div>
-                        <div class="form-group" style="flex: 1;"><label>Subcategoria</label><select id="editSubcategoria"></select></div>
-                    </div>
-                    <div class="form-group"><label>Título</label><input type="text" id="editTitulo" value="${itemEmEdicao.titulo}"></div>
-                    <div class="form-group"><label>Descrição</label><textarea id="editTexto" rows="4">${itemEmEdicao.texto}</textarea></div>
-                    <div class="form-group"><label>Nova Imagem</label><input type="file" id="editImagem" accept="image/*" style="padding: 10px; border: 1px dashed var(--border); background: transparent;"></div>
-                `;
-            } else if (tipo === 'agenda') {
-                formHTML = `
-                    <div class="form-group"><label>Data</label><input type="date" id="editData" value="${itemEmEdicao.data}" style="color-scheme: dark;"></div>
-                    <div class="form-group"><label>Descrição</label><input type="text" id="editDesc" value="${itemEmEdicao.desc}"></div>
-                `;
-            } else if (tipo === 'vendas') {
-                formHTML = `
-                    <div class="form-group"><label>Produto</label><input type="text" id="editProduto" value="${itemEmEdicao.produto}"></div>
-                    <div class="form-group input-row">
-                        <div style="flex: 1;"><label>Quantidade</label><input type="number" id="editQtd" value="${itemEmEdicao.qtd}"></div>
-                        <div style="flex: 2;"><label>Preço</label><input type="number" id="editPreco" value="${itemEmEdicao.preco}" step="0.01"></div>
-                    </div>
-                `;
-            }
-
-            formHTML += `<button class="btn-acao" onclick="salvarEdicao()" style="margin-top: 20px;">Salvar Alterações</button>`;
-            
-            document.getElementById('formulario-edicao-dinamico').innerHTML = formHTML;
-            document.getElementById('tela-edicao-container').classList.add('ativa');
-
-            if(tipo === 'conteudos') {
-                preencherSelectCategorias('editCategoria', itemEmEdicao.categoria);
-                atualizarSelectSubcategorias('editCategoria', 'editSubcategoria', itemEmEdicao.subcategoria);
-            }
-        }
-
-        function fecharEdicao() { document.getElementById('tela-edicao-container').classList.remove('ativa'); }
-
-        async function salvarEdicao() {
-            let lista = obterDados(tipoEmEdicao);
-            let index = lista.findIndex(i => i.id === itemEmEdicao.id);
-
-            if (tipoEmEdicao === 'conteudos') {
-                lista[index].categoria = document.getElementById('editCategoria').value;
-                lista[index].subcategoria = document.getElementById('editSubcategoria').value;
-                lista[index].titulo = document.getElementById('editTitulo').value;
-                lista[index].texto = document.getElementById('editTexto').value;
-                
-                let arquivo = document.getElementById('editImagem').files[0];
-                if(arquivo) {
-                    lista[index].imagem = await new Promise(resolve => {
-                        let reader = new FileReader();
-                        reader.onload = e => resolve(e.target.result);
-                        reader.readAsDataURL(arquivo);
-                    });
-                }
-            } else if (tipoEmEdicao === 'agenda') {
-                lista[index].data = document.getElementById('editData').value;
-                lista[index].desc = document.getElementById('editDesc').value;
-            } else if (tipoEmEdicao === 'vendas') {
-                lista[index].produto = document.getElementById('editProduto').value;
-                lista[index].qtd = parseInt(document.getElementById('editQtd').value);
-                lista[index].preco = parseFloat(document.getElementById('editPreco').value);
-            }
-
-            salvarDados(tipoEmEdicao, lista);
-            renderizarListas();
-            atualizarDashboard();
-            fecharEdicao();
-        }
-
         function excluirItem(chave, id) {
             if(confirm("Deseja realmente excluir este item?")) {
                 salvarDados(chave, obterDados(chave).filter(item => item.id !== id));
-                renderizarListas();
-                atualizarDashboard();
+                renderizarListas(); atualizarDashboard();
             }
         }
 
-        // ==========================================
-        // RENDERIZAÇÃO GERAL E DASHBOARD
-        // ==========================================
         function renderizarListas() { 
-            renderizarNotas(); 
-            renderizarAgenda(); 
-            renderizarVendas(); 
+            renderizarNotas(); renderizarAgenda(); renderizarVendas(); renderizarEstoque();
         }
 
         function atualizarDashboard() {
@@ -924,15 +1049,21 @@
             let totalV = obterDados('vendas').reduce((acc, v) => acc + (v.qtd * v.preco), 0);
             document.getElementById('dashTotalVendas').innerText = totalV.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+            let totalE = obterDados('estoque').reduce((acc, p) => acc + p.preco, 0);
+            document.getElementById('dashTotalEstoque').innerText = totalE.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
             let agenda = obterDados('agenda');
             let divAgenda = document.getElementById('dashProximoEvento');
             if (agenda.length > 0) {
                 let ultimo = agenda[agenda.length - 1]; 
                 let dataForm = ultimo.data.split('-').reverse().join('/');
-                divAgenda.innerHTML = `<strong style="display:block; font-size: 0.95rem; margin-bottom: 2px;">${ultimo.desc}</strong>${dataForm}`;
+                let horarioTexto = ultimo.horario ? ` às ${ultimo.horario}` : '';
+                divAgenda.innerHTML = `<strong style="display:block; font-size: 0.9rem; margin-bottom: 2px;">${ultimo.desc}</strong>${dataForm}${horarioTexto}`;
             } else {
                 divAgenda.innerHTML = 'Nenhum.';
             }
+
+            renderizarGraficoVendas();
         }
     </script>
 </body>
