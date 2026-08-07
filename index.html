@@ -2,46 +2,72 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Omnistore Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* ==========================================
            1. VARIÁVEIS E TIPOGRAFIA
            ========================================== */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --bg-app: #000000;         
-            --bg-card: linear-gradient(145deg, #121215, #0A0A0C);        
-            --bg-nav: rgba(15, 15, 18, 0.8);         
-            --bg-input: #1A1A1E;       
+            --bg-app: #090A0F;         
+            --bg-card: rgba(22, 24, 34, 0.75);        
+            --bg-nav: rgba(13, 15, 23, 0.85);         
+            --bg-input: #13151F;       
+            --bg-input-focus: #1C1F2E;
             
             --primary: #0A84FF;        
+            --primary-glow: rgba(10, 132, 255, 0.35);
             --primary-hover: #0066CC;
             --success: #30D158;        
+            --success-glow: rgba(48, 209, 88, 0.25);
             --danger: #FF453A;
             --warning: #FF9F0A;
             --purple: #BF5AF2;         
             
             --text-main: #FFFFFF;      
-            --text-secundary: #8E8E93; 
+            --text-secundary: #98A1B3; 
             --border: rgba(255, 255, 255, 0.08);         
+            --border-highlight: rgba(255, 255, 255, 0.15);
             
-            --radius-card: 16px;
-            --radius-input: 10px;
-            --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.5);
-            --shadow-glow: 0 4px 12px rgba(10, 132, 255, 0.25);
+            --radius-card: 20px;
+            --radius-input: 12px;
+            --shadow-subtle: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 4px 20px rgba(10, 132, 255, 0.3);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            background-color: var(--bg-app); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow: hidden;
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
         }
 
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            background-color: var(--bg-app); 
+            color: var(--text-main); 
+            display: flex; 
+            justify-content: center; 
+            overflow: hidden;
+        }
+
+        /* Otimização de scroll global e touch */
         .app-container {
-            width: 100%; max-width: 500px; height: 100vh; display: flex; flex-direction: column; position: relative; background-color: var(--bg-app); box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            width: 100%; 
+            max-width: 500px; 
+            height: 100%;
+            height: 100dvh;
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            background-color: var(--bg-app); 
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            overflow: hidden;
         }
 
         svg { display: inline-block; vertical-align: middle; }
@@ -50,76 +76,247 @@
            2. CABEÇALHO E SCROLLBAR PREMIUM
            ========================================== */
         header {
-            padding: 15px 16px 10px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid transparent; transition: border-color 0.3s ease;
+            padding: calc(env(safe-area-inset-top) + 14px) 16px 12px; 
+            background: rgba(9, 10, 15, 0.8); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px); 
+            position: sticky; 
+            top: 0; 
+            z-index: 10; 
+            border-bottom: 1px solid transparent; 
+            transition: all 0.3s ease;
         }
-        .header-scrolled { border-bottom: 1px solid var(--border); }
-        header h1 { font-size: 1rem; font-weight: 600; color: var(--text-main); text-align: center; letter-spacing: 0.3px; }
+        .header-scrolled { 
+            border-bottom: 1px solid var(--border); 
+            background: rgba(9, 10, 15, 0.95);
+        }
+        header h1 { font-size: 1.05rem; font-weight: 700; color: var(--text-main); text-align: center; letter-spacing: 0.2px; }
 
-        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #333336; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         /* ==========================================
-           3. ÁREA DE CONTEÚDO E CARTÕES
+           3. ÁREA DE CONTEÚDO E SCROLL CORRIGIDO
            ========================================== */
-        .content-area { flex: 1; overflow-y: auto; padding: 8px 14px 100px 14px; scroll-behavior: smooth; }
-        .tela { display: none; animation: fadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+        .content-area { 
+            flex: 1; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+            overscroll-behavior-y: contain;
+            padding: 12px 16px calc(env(safe-area-inset-bottom) + 95px) 16px; 
+            scroll-behavior: smooth; 
+        }
+        
+        .tela { display: none; animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
         .tela.ativa { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: var(--bg-card); border-radius: var(--radius-card); padding: 14px 16px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-subtle); position: relative; overflow: hidden; }
-        .section-title { font-size: 0.7rem; font-weight: 700; color: var(--text-secundary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: space-between; }
+        .card { 
+            background: var(--bg-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius-card); 
+            padding: 16px 18px; 
+            margin-bottom: 14px; 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow-subtle); 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .section-title { 
+            font-size: 0.72rem; 
+            font-weight: 800; 
+            color: var(--text-secundary); 
+            margin-bottom: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.2px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
 
         /* ==========================================
            4. PAINEL DE INÍCIO & GRÁFICO
            ========================================== */
         .user-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px; }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 38px; height: 38px; background: linear-gradient(135deg, rgba(10,132,255,0.2), rgba(10,132,255,0.05)); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--primary); border: 1px solid rgba(10,132,255,0.4); box-shadow: 0 0 10px rgba(10,132,255,0.15); }
-        .user-avatar svg { width: 20px; height: 20px; }
-        .user-text span { display: block; font-size: 0.65rem; color: var(--text-secundary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .user-text strong { font-size: 1rem; color: var(--text-main); font-weight: 600; }
-        .date-badge { background-color: var(--bg-input); color: var(--text-secundary); padding: 4px 10px; border-radius: 16px; font-size: 0.7rem; font-weight: 600; border: 1px solid var(--border); }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-avatar { 
+            width: 42px; 
+            height: 42px; 
+            background: linear-gradient(135deg, rgba(10,132,255,0.25), rgba(191,90,242,0.15)); 
+            border-radius: 14px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: var(--primary); 
+            border: 1px solid rgba(10,132,255,0.4); 
+            box-shadow: 0 4px 12px rgba(10,132,255,0.2); 
+        }
+        .user-avatar svg { width: 22px; height: 22px; }
+        .user-text span { display: block; font-size: 0.68rem; color: var(--text-secundary); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; }
+        .user-text strong { font-size: 1.05rem; color: var(--text-main); font-weight: 700; }
+        .date-badge { 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-secundary); 
+            padding: 5px 12px; 
+            border-radius: 20px; 
+            font-size: 0.72rem; 
+            font-weight: 700; 
+            border: 1px solid var(--border); 
+        }
         
-        .gradient-text-success { background: linear-gradient(90deg, #30D158, #34C759); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .gradient-text-purple { background: linear-gradient(90deg, #BF5AF2, #DA8FFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-success { background: linear-gradient(135deg, #30D158, #61FF88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-purple { background: linear-gradient(135deg, #BF5AF2, #E29BFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .balance-box { padding: 8px 0 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+        .balance-box { padding: 10px 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
         .balance-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0px; }
-        .balance-box .label { font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 4px; font-weight: 500; }
-        .balance-box .value { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; }
+        .balance-box .label { font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 4px; font-weight: 600; }
+        .balance-box .value { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; }
 
         /* Chart Widget */
-        .chart-container { width: 100%; height: 150px; position: relative; margin-top: 5px; }
+        .chart-container { width: 100%; height: 160px; position: relative; margin-top: 5px; }
 
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-        .dash-card { background: var(--bg-card); padding: 12px 14px; border-radius: var(--radius-card); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-subtle); transition: 0.2s; }
-        .dash-card:active { transform: scale(0.96); }
-        .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .dash-card .icon-box { width: 30px; height: 30px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
-        .dash-card h3 { color: var(--text-secundary); font-size: 0.7rem; margin-bottom: 4px; font-weight: 600;}
-        .dash-card span { color: var(--text-main); font-size: 1.2rem; font-weight: 600; }
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+        .dash-card { 
+            background: var(--bg-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 14px 16px; 
+            border-radius: var(--radius-card); 
+            border: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            box-shadow: var(--shadow-subtle); 
+            transition: all 0.2s ease; 
+        }
+        .dash-card:active { transform: scale(0.97); }
+        .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .dash-card .icon-box { width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+        .dash-card h3 { color: var(--text-secundary); font-size: 0.72rem; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
+        .dash-card span { color: var(--text-main); font-size: 1.25rem; font-weight: 700; }
 
         /* ==========================================
            5. FORMULÁRIOS & CONTROLES
            ========================================== */
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.75rem; color: var(--text-secundary); margin-bottom: 6px; font-weight: 500; }
-        input, textarea, select { width: 100%; padding: 11px 14px; background-color: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-input); color: var(--text-main); font-size: 0.9rem; outline: none; transition: all 0.3s ease; appearance: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
-        input:focus, textarea:focus, select:focus { border-color: var(--primary); background-color: #202024; box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.2); }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-secundary); margin-bottom: 6px; font-weight: 600; }
+        
+        input, textarea, select { 
+            width: 100%; 
+            padding: 12px 14px; 
+            background-color: var(--bg-input); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-input); 
+            color: var(--text-main); 
+            font-size: 0.92rem; 
+            outline: none; 
+            transition: all 0.25s ease; 
+            appearance: none; 
+        }
+        
+        input:focus, textarea:focus, select:focus { 
+            border-color: var(--primary); 
+            background-color: var(--bg-input-focus); 
+            box-shadow: 0 0 0 3px var(--primary-glow); 
+        }
+
         .input-row { display: flex; gap: 10px; }
 
-        .btn-acao { width: 100%; padding: 12px; border: none; border-radius: var(--radius-input); font-size: 0.9rem; font-weight: 600; color: #FFFFFF; background-color: var(--primary); cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: var(--shadow-glow); }
-        .btn-acao:active { transform: scale(0.96); background-color: var(--primary-hover); }
-        .btn-secundario { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); box-shadow: none; }
-        .btn-secundario:active { background-color: var(--bg-input); }
-        .btn-perigo { background-color: rgba(255, 69, 58, 0.1); color: var(--danger); border: 1px solid rgba(255, 69, 58, 0.3); box-shadow: none; }
+        /* Custom File Upload Styling */
+        .file-upload-box {
+            border: 1.5px dashed var(--border-highlight);
+            border-radius: var(--radius-input);
+            padding: 12px;
+            text-align: center;
+            background: rgba(255,255,255,0.02);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .file-upload-box:hover, .file-upload-box:active {
+            border-color: var(--primary);
+            background: rgba(10,132,255,0.05);
+        }
+        .file-upload-box input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-upload-label {
+            font-size: 0.8rem;
+            color: var(--text-secundary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .preview-img-container {
+            display: none;
+            margin-top: 10px;
+            position: relative;
+        }
+        .preview-img-container img {
+            width: 100%;
+            max-height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-acao { 
+            width: 100%; 
+            padding: 13px; 
+            border: none; 
+            border-radius: var(--radius-input); 
+            font-size: 0.92rem; 
+            font-weight: 700; 
+            color: #FFFFFF; 
+            background: linear-gradient(135deg, var(--primary), #0066FF); 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            box-shadow: var(--shadow-glow); 
+        }
+        .btn-acao:active { transform: scale(0.97); }
+        .btn-secundario { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); color: var(--text-main); box-shadow: none; }
+        .btn-secundario:active { background: rgba(255, 255, 255, 0.12); }
+        .btn-perigo { background: rgba(255, 69, 58, 0.12); color: var(--danger); border: 1px solid rgba(255, 69, 58, 0.3); box-shadow: none; }
         
-        .segment-control { display: flex; background: var(--bg-input); border-radius: 12px; padding: 3px; margin-bottom: 14px; border: 1px solid var(--border); overflow-x: auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        .segment-control { 
+            display: flex; 
+            background: var(--bg-input); 
+            border-radius: 14px; 
+            padding: 4px; 
+            margin-bottom: 16px; 
+            border: 1px solid var(--border); 
+            overflow-x: auto; 
+        }
         .segment-control::-webkit-scrollbar { display: none; }
-        .segment-btn { flex: 1; text-align: center; padding: 9px 8px; border-radius: 9px; font-size: 0.75rem; font-weight: 600; color: var(--text-secundary); cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
-        .segment-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+        .segment-btn { 
+            flex: 1; 
+            text-align: center; 
+            padding: 10px 8px; 
+            border-radius: 10px; 
+            font-size: 0.78rem; 
+            font-weight: 700; 
+            color: var(--text-secundary); 
+            cursor: pointer; 
+            transition: all 0.25s ease; 
+            white-space: nowrap; 
+        }
+        .segment-btn.active { 
+            background: linear-gradient(145deg, #252838, #181A26); 
+            color: var(--text-main); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+            border: 1px solid rgba(255,255,255,0.08); 
+        }
         .aba-view { display: none; animation: fadeIn 0.3s ease; }
         .aba-view.active { display: block; }
 
@@ -127,69 +324,151 @@
            6. LISTAS E ITENS
            ========================================== */
         .resultados-container { display: flex; flex-direction: column; gap: 12px; }
-        .item-salvo { background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-card); border: 1px solid var(--border); transition: transform 0.2s; position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); }
+        .item-salvo { 
+            background: var(--bg-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px; 
+            border-radius: var(--radius-card); 
+            border: 1px solid var(--border); 
+            transition: transform 0.2s; 
+            position: relative; 
+            overflow: hidden; 
+            box-shadow: var(--shadow-subtle); 
+        }
         
-        .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.65rem; font-weight: 600; margin-bottom: 8px; gap: 4px; background: rgba(10,132,255,0.15); color: var(--primary); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(10,132,255,0.2); text-transform: uppercase; letter-spacing: 0.5px; }
+        .caminho-categoria { 
+            display: inline-flex; 
+            align-items: center; 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            gap: 4px; 
+            background: rgba(10,132,255,0.12); 
+            color: #5AC8FA; 
+            padding: 4px 10px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(10,132,255,0.25); 
+            text-transform: uppercase; 
+            letter-spacing: 0.6px; 
+        }
         
-        .item-salvo strong { display: block; font-size: 1rem; margin-bottom: 4px; color: var(--text-main); line-height: 1.2;}
-        .item-salvo p { color: var(--text-secundary); font-size: 0.85rem; line-height: 1.4; }
-        .item-salvo img.img-nota { width: 100%; max-height: 200px; object-fit: cover; border-radius: 10px; margin-top: 10px; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .item-salvo strong { display: block; font-size: 1.02rem; margin-bottom: 4px; color: var(--text-main); line-height: 1.3;}
+        .item-salvo p { color: var(--text-secundary); font-size: 0.88rem; line-height: 1.45; }
+        .item-salvo img.img-nota { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-top: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         
-        .destaque { font-size: 1.1rem; font-weight: 700; display: block; margin-top: 8px; }
+        .destaque { font-size: 1.15rem; font-weight: 800; display: block; margin-top: 8px; }
         .text-success { color: var(--success); }
         .text-purple { color: var(--purple); }
 
-        .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .btn-pequeno { background: rgba(255,255,255,0.03); border: 1px solid var(--border); font-weight: 600; font-size: 0.75rem; cursor: pointer; padding: 6px 12px; border-radius: 6px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .btn-pequeno { background: rgba(255,255,255,0.05); border: 1px solid var(--border); font-weight: 700; font-size: 0.75rem; cursor: pointer; padding: 7px 12px; border-radius: 8px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
         .btn-pequeno:active { background: var(--bg-input); transform: scale(0.95); }
-        .btn-editar { color: var(--primary); border-color: rgba(10,132,255,0.3); background: rgba(10,132,255,0.08); }
-        .btn-excluir { color: var(--danger); border-color: rgba(255,69,58,0.3); background: rgba(255,69,58,0.08); }
+        .btn-editar { color: var(--primary); border-color: rgba(10,132,255,0.3); background: rgba(10,132,255,0.1); }
+        .btn-vender-rapido { color: var(--success); border-color: rgba(48,209,88,0.3); background: rgba(48,209,88,0.1); }
+        .btn-excluir { color: var(--danger); border-color: rgba(255,69,58,0.3); background: rgba(255,69,58,0.1); }
 
-        .produto-img-lateral { display: flex; gap: 12px; align-items: center; }
-        .produto-img-lateral img { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+        .produto-img-lateral { display: flex; gap: 14px; align-items: center; }
+        .produto-img-lateral img { width: 75px; height: 75px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); }
         .produto-info { flex: 1; }
 
         /* ==========================================
            7. GESTÃO DE CATEGORIAS
            ========================================== */
-        .cat-manager-card { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .cat-manager-card { background: rgba(0,0,0,0.3); border-radius: 14px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
         .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .cat-header strong { color: var(--text-main); font-size: 0.95rem; }
         .subcat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
         .remover-btn { color: var(--danger); cursor: pointer; display: flex; align-items: center; background: none; border: none; padding: 2px; border-radius: 4px;}
 
-        .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; margin-bottom: 12px; transition: 0.2s; box-shadow: var(--shadow-subtle); }
+        .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; margin-bottom: 12px; transition: 0.2s; box-shadow: var(--shadow-subtle); }
         .nav-link-card:active { transform: scale(0.97); background: var(--bg-input); }
-        .nav-link-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 600; margin-bottom: 2px; }
-        .nav-link-card p { font-size: 0.75rem; color: var(--text-secundary); }
+        .nav-link-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 700; margin-bottom: 2px; }
+        .nav-link-card p { font-size: 0.78rem; color: var(--text-secundary); }
         
         /* ==========================================
-           8. MENU INFERIOR
+           8. MENU INFERIOR (NAVIGATION BAR)
            ========================================== */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 75px; background: var(--bg-nav); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 15px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; cursor: pointer; color: var(--text-secundary); transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+            max-width: 500px; 
+            height: calc(env(safe-area-inset-bottom) + 70px); 
+            background: var(--bg-nav); 
+            backdrop-filter: blur(30px); 
+            -webkit-backdrop-filter: blur(30px); 
+            border-top: 1px solid var(--border); 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: flex-start; 
+            z-index: 100; 
+            padding-top: 10px; 
+        }
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            width: 20%; 
+            cursor: pointer; 
+            color: var(--text-secundary); 
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
         .nav-item.ativo { color: var(--primary); transform: translateY(-2px); }
-        .nav-item svg { width: 20px; height: 20px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; }
-        .nav-item.ativo svg { stroke-width: 2.5; filter: drop-shadow(0 2px 4px rgba(10,132,255,0.4)); }
-        .nav-item span.label { font-size: 0.6rem; font-weight: 600; }
+        .nav-item svg { 
+            width: 22px; 
+            height: 22px; 
+            margin-bottom: 4px; 
+            stroke: currentColor; 
+            fill: none; 
+            stroke-width: 2; 
+            stroke-linecap: round; 
+            stroke-linejoin: round; 
+            transition: 0.25s; 
+        }
+        .nav-item.ativo svg { 
+            stroke-width: 2.4; 
+            filter: drop-shadow(0 2px 8px rgba(10,132,255,0.6)); 
+        }
+        .nav-item span.label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2px; }
 
         /* ==========================================
            9. TELAS SOBREPOSTAS E MODAL DE EDIÇÃO
            ========================================== */
-        .tela-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-app); z-index: 200; display: none; flex-direction: column; }
-        .tela-overlay.ativa { display: flex; animation: slideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .tela-overlay { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; height: 100dvh; 
+            background-color: var(--bg-app); 
+            z-index: 200; 
+            display: none; 
+            flex-direction: column; 
+        }
+        .tela-overlay.ativa { display: flex; animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .overlay-header { padding: 15px 16px 10px; display: flex; align-items: center; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210;}
-        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 0.9rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        .overlay-body { padding: 14px; flex: 1; overflow-y: auto; padding-bottom: 70px; }
+        .overlay-header { 
+            padding: calc(env(safe-area-inset-top) + 14px) 16px 12px; 
+            display: flex; 
+            align-items: center; 
+            background: rgba(9, 10, 15, 0.85); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px); 
+            border-bottom: 1px solid var(--border); 
+            position: sticky; 
+            top: 0; 
+            z-index: 210;
+        }
+        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 0.92rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .overlay-body { padding: 16px; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 80px; }
         
-        .empty-state { text-align: center; padding: 30px 16px; color: var(--text-secundary); }
-        .empty-state svg { width: 42px; height: 42px; stroke-width: 1.2; margin-bottom: 10px; opacity: 0.4; color: var(--text-secundary); }
-        .empty-state p { font-size: 0.85rem; }
+        .empty-state { text-align: center; padding: 36px 16px; color: var(--text-secundary); }
+        .empty-state svg { width: 46px; height: 46px; stroke-width: 1.2; margin-bottom: 12px; opacity: 0.4; color: var(--text-secundary); }
+        .empty-state p { font-size: 0.88rem; font-weight: 500; }
 
-        .img-preview-edit { width: 100%; max-height: 120px; object-fit: cover; border-radius: 10px; margin-top: 8px; border: 1px solid var(--border); }
+        .img-preview-edit { width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; margin-top: 10px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -202,8 +481,9 @@
 
         <div class="content-area" id="main-content">
             
+            <!-- TELA INÍCIO -->
             <div id="tela-inicio" class="tela ativa">
-                <div class="card" style="margin-top: 2px; padding: 12px 16px;">
+                <div class="card" style="margin-top: 2px; padding: 14px 16px;">
                     <div class="user-panel">
                         <div class="user-info">
                             <div class="user-avatar">
@@ -225,14 +505,14 @@
                     </div>
                     <div class="balance-box" style="border: none; padding-bottom: 0;">
                         <span class="label">Total em Estoque (À venda)</span>
-                        <div class="value gradient-text-purple" id="dashTotalEstoque" style="font-size: 1.5rem;">R$ 0,00</div>
+                        <div class="value gradient-text-purple" id="dashTotalEstoque" style="font-size: 1.55rem;">R$ 0,00</div>
                     </div>
                 </div>
 
                 <div class="card">
                     <h2 class="section-title">
                         <span>Desempenho Mês a Mês</span>
-                        <span style="font-size: 0.65rem; color: var(--success); font-weight: 600;">Vendas (R$)</span>
+                        <span style="font-size: 0.65rem; color: var(--success); font-weight: 700;">Vendas (R$)</span>
                     </h2>
                     <div class="chart-container">
                         <canvas id="graficoVendasMensal"></canvas>
@@ -243,7 +523,7 @@
                     <div class="dash-card">
                         <div class="header">
                             <div class="icon-box" style="background: rgba(10, 132, 255, 0.15); color: var(--primary);">
-                                <svg width="18" height="18" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
                             </div>
                         </div>
                         <h3>Total de Notas</h3>
@@ -252,16 +532,17 @@
 
                     <div class="dash-card">
                         <div class="header">
-                            <div class="icon-box" style="background: rgba(255, 149, 0, 0.15); color: #FF9F0A;">
-                                <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+                            <div class="icon-box" style="background: rgba(255, 159, 10, 0.15); color: var(--warning);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                             </div>
                         </div>
                         <h3>Próximo Evento</h3>
-                        <span id="dashProximoEvento" style="font-size: 0.85rem; font-weight: 600; margin-top: 2px; line-height: 1.1;">Nenhum.</span>
+                        <span id="dashProximoEvento" style="font-size: 0.88rem; font-weight: 600; margin-top: 2px; line-height: 1.2;">Nenhum.</span>
                     </div>
                 </div>
             </div>
 
+            <!-- TELA NOTAS -->
             <div id="tela-conteudo" class="tela">
                 <div class="segment-control">
                     <div class="segment-btn active" id="btnAbaNotasAdd" onclick="alternarAbaNotas('add')">Nova Nota</div>
@@ -286,7 +567,16 @@
                         <div class="form-group"><label>Descrição</label><textarea id="textoConteudo" rows="3" placeholder="Detalhes completos..."></textarea></div>
                         <div class="form-group">
                             <label>Anexar Imagem (Opcional)</label>
-                            <input type="file" id="imagemConteudo" accept="image/*" style="padding: 10px; background: transparent; border: 1px dashed var(--border); font-size: 0.8rem; color: var(--text-secundary);">
+                            <div class="file-upload-box">
+                                <input type="file" id="imagemConteudo" accept="image/*" onchange="previewUploadImage(this, 'previewNotaBox', 'previewNotaImg')">
+                                <div class="file-upload-label">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                    <span>Escolher Imagem</span>
+                                </div>
+                            </div>
+                            <div class="preview-img-container" id="previewNotaBox">
+                                <img id="previewNotaImg" src="" alt="Preview">
+                            </div>
                         </div>
                         <button class="btn-acao" onclick="salvarConteudo()">Salvar Nota</button>
                     </div>
@@ -297,6 +587,7 @@
                 </div>
             </div>
 
+            <!-- TELA AGENDA -->
             <div id="tela-agenda" class="tela">
                 <div class="card">
                     <h2 class="section-title">Novo Evento</h2>
@@ -308,10 +599,11 @@
                 <div class="resultados-container" id="listaAgenda"></div>
             </div>
 
+            <!-- TELA VENDAS & LOJA -->
             <div id="tela-vendas" class="tela">
                 <div class="segment-control">
                     <div class="segment-btn active" id="btnAbaVendasNova" onclick="alternarAbaVendas('nova')">Nova Venda</div>
-                    <div class="segment-btn" id="btnAbaVendasEstoque" onclick="alternarAbaVendas('estoque')">Loja/Estoque</div>
+                    <div class="segment-btn" id="btnAbaVendasEstoque" onclick="alternarAbaVendas('estoque')">Loja / Estoque</div>
                     <div class="segment-btn" id="btnAbaVendasLista" onclick="alternarAbaVendas('lista')">Histórico</div>
                 </div>
 
@@ -336,8 +628,20 @@
                         <h2 class="section-title">Adicionar à Loja</h2>
                         <div class="form-group"><label>Nome do Produto</label><input type="text" id="estNome" placeholder="Ex: Tênis Nike, Camiseta..."></div>
                         <div class="form-group"><label>Valor de Venda (R$)</label><input type="number" id="estPreco" placeholder="0.00" step="0.01"></div>
-                        <div class="form-group"><label>Foto do Produto</label><input type="file" id="estImagem" accept="image/*" style="padding: 10px; background: transparent; border: 1px dashed var(--border); font-size: 0.8rem; color: var(--text-secundary);"></div>
-                        <button class="btn-acao" style="background: linear-gradient(135deg, var(--purple), #a238ff); box-shadow: 0 4px 12px rgba(191,90,242,0.3);" onclick="salvarEstoque()">Adicionar ao Estoque</button>
+                        <div class="form-group">
+                            <label>Foto do Produto (Opcional)</label>
+                            <div class="file-upload-box">
+                                <input type="file" id="estImagem" accept="image/*" onchange="previewUploadImage(this, 'previewEstoqueBox', 'previewEstoqueImg')">
+                                <div class="file-upload-label">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                    <span>Carregar Imagem do Produto</span>
+                                </div>
+                            </div>
+                            <div class="preview-img-container" id="previewEstoqueBox">
+                                <img id="previewEstoqueImg" src="" alt="Preview Produto">
+                            </div>
+                        </div>
+                        <button class="btn-acao" style="background: linear-gradient(135deg, var(--purple), #A238FF); box-shadow: 0 4px 15px rgba(191,90,242,0.35);" onclick="salvarEstoque()">Adicionar ao Estoque</button>
                     </div>
                     <div class="resultados-container" id="listaEstoque"></div>
                 </div>
@@ -347,23 +651,25 @@
                 </div>
             </div>
 
+            <!-- TELA CONFIGURAÇÕES -->
             <div id="tela-config" class="tela">
                 <div class="nav-link-card" onclick="abrirTelaCategorias()">
                     <div>
                         <h3>Categorias de Notas</h3>
                         <p>Personalize os assuntos e subcategorias</p>
                     </div>
-                    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </div>
 
-                <div class="card" style="border-color: rgba(255, 69, 58, 0.3); margin-top: 20px; background: rgba(255, 69, 58, 0.02);">
+                <div class="card" style="border-color: rgba(255, 69, 58, 0.3); margin-top: 20px; background: rgba(255, 69, 58, 0.03);">
                     <h2 class="section-title" style="color: var(--danger);">Zona de Perigo</h2>
-                    <p style="font-size: 0.8rem; color: var(--text-secundary); margin-bottom: 14px; line-height: 1.4;">Atenção: Ao apagar os dados, todo o seu histórico, estoque e notas serão perdidos de forma permanente.</p>
+                    <p style="font-size: 0.82rem; color: var(--text-secundary); margin-bottom: 16px; line-height: 1.45;">Atenção: Ao apagar os dados, todo o seu histórico, estoque e notas serão perdidos de forma permanente.</p>
                     <button class="btn-acao btn-perigo" onclick="limparTodosDados()">Apagar Todos os Dados</button>
                 </div>
             </div>
         </div>
 
+        <!-- MENU INFERIOR FIXO -->
         <nav class="bottom-nav">
             <div class="nav-item ativo" onclick="abrirTela('tela-inicio', 'Início', this)">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -388,13 +694,14 @@
         </nav>
     </div>
 
+    <!-- OVERLAY GESTÃO DE CATEGORIAS -->
     <div id="tela-gestao-categorias" class="tela-overlay">
         <div class="overlay-header">
             <button class="btn-voltar" onclick="fecharTelaCategorias()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 Voltar
             </button>
-            <h2 style="font-size: 0.95rem; margin-left: auto; margin-right: auto; padding-right: 60px;">Categorias</h2>
+            <h2 style="font-size: 1rem; font-weight: 700; margin-left: auto; margin-right: auto; padding-right: 60px;">Categorias</h2>
         </div>
         <div class="overlay-body">
             <div class="card">
@@ -411,20 +718,21 @@
         </div>
     </div>
 
+    <!-- OVERLAY MODAL DE EDIÇÃO -->
     <div id="modal-edicao" class="tela-overlay">
         <div class="overlay-header">
             <button class="btn-voltar" onclick="fecharModalEdicao()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 Cancelar
             </button>
-            <h2 id="modalEdicaoTitulo" style="font-size: 0.95rem; margin-left: auto; margin-right: auto; padding-right: 60px;">Editar Item</h2>
+            <h2 id="modalEdicaoTitulo" style="font-size: 1rem; font-weight: 700; margin-left: auto; margin-right: auto; padding-right: 60px;">Editar Item</h2>
         </div>
         <div class="overlay-body">
             <div class="card">
                 <input type="hidden" id="editItemId">
                 <input type="hidden" id="editItemTipo">
                 <div id="containerCamposEdicao"></div>
-                <button class="btn-acao" style="margin-top: 8px;" onclick="salvarEdicao()">Salvar Alterações</button>
+                <button class="btn-acao" style="margin-top: 12px;" onclick="salvarEdicao()">Salvar Alterações</button>
             </div>
         </div>
     </div>
@@ -439,6 +747,7 @@
 
         let meuGraficoVendas = null;
 
+        // Efeito de cabeçalho com scroll suave
         document.getElementById('main-content').addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
             if (this.scrollTop > 10) header.classList.add('header-scrolled');
@@ -467,7 +776,7 @@
             document.querySelectorAll('.app-container .tela').forEach(t => t.classList.remove('ativa'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('ativo'));
             document.getElementById(idTela).classList.add('ativa');
-            botao.classList.add('ativo');
+            if (botao) botao.classList.add('ativo');
             
             const header = document.getElementById('main-header');
             if(idTela === 'tela-inicio') {
@@ -477,6 +786,8 @@
                 header.style.display = 'block'; 
                 document.getElementById('header-title').innerText = titulo;
             }
+            // Retorna ao topo no switch de telas
+            document.getElementById('main-content').scrollTop = 0;
         }
 
         function alternarAbaNotas(aba) {
@@ -490,6 +801,21 @@
             if (aba === 'nova') { document.getElementById('btnAbaVendasNova').classList.add('active'); document.getElementById('aba-vendas-nova').classList.add('active'); }
             else if (aba === 'estoque') { document.getElementById('btnAbaVendasEstoque').classList.add('active'); document.getElementById('aba-vendas-estoque').classList.add('active'); }
             else { document.getElementById('btnAbaVendasLista').classList.add('active'); document.getElementById('aba-vendas-lista').classList.add('active'); }
+        }
+
+        function previewUploadImage(inputEl, containerId, imgId) {
+            const container = document.getElementById(containerId);
+            const img = document.getElementById(imgId);
+            if (inputEl.files && inputEl.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    container.style.display = 'block';
+                };
+                reader.readAsDataURL(inputEl.files[0]);
+            } else {
+                container.style.display = 'none';
+            }
         }
 
         function limparTodosDados() {
@@ -519,7 +845,7 @@
                 }
             });
 
-            let gradient = ctx.createLinearGradient(0, 0, 0, 150);
+            let gradient = ctx.createLinearGradient(0, 0, 0, 160);
             gradient.addColorStop(0, 'rgba(48, 209, 88, 0.85)');
             gradient.addColorStop(1, 'rgba(48, 209, 88, 0.05)');
 
@@ -557,13 +883,13 @@
                     scales: {
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#8E8E93', font: { size: 9 } }
+                            ticks: { color: '#8E8E93', font: { size: 9, family: 'Plus Jakarta Sans' } }
                         },
                         y: {
                             grid: { color: 'rgba(255, 255, 255, 0.05)' },
                             ticks: {
                                 color: '#8E8E93',
-                                font: { size: 8 },
+                                font: { size: 8, family: 'Plus Jakarta Sans' },
                                 callback: function(value) { return 'R$' + value; }
                             }
                         }
@@ -602,8 +928,8 @@
                     <div class="form-group"><label>Data da Nota</label><input type="date" id="editDataNota" value="${item.data || new Date().toISOString().split('T')[0]}" style="color-scheme:dark;"></div>
                     <div class="form-group"><label>Descrição</label><textarea id="editTexto" rows="3">${item.texto || ''}</textarea></div>
                     <div class="form-group">
-                        <label>Foto (Opcional - Selecione para trocar)</label>
-                        <input type="file" id="editImagem" accept="image/*" style="padding:8px; font-size:0.75rem; background:transparent;">
+                        <label>Trocar Imagem (Opcional)</label>
+                        <input type="file" id="editImagem" accept="image/*" style="padding:8px; font-size:0.8rem; background:transparent;">
                         ${item.imagem ? `<img src="${item.imagem}" class="img-preview-edit">` : ''}
                     </div>
                 `;
@@ -629,8 +955,8 @@
                     <div class="form-group"><label>Nome do Produto</label><input type="text" id="editEstNome" value="${item.nome || ''}"></div>
                     <div class="form-group"><label>Valor de Venda (R$)</label><input type="number" id="editEstPreco" step="0.01" value="${item.preco || 0}"></div>
                     <div class="form-group">
-                        <label>Foto (Selecione para alterar)</label>
-                        <input type="file" id="editEstImagem" accept="image/*" style="padding:8px; font-size:0.75rem; background:transparent;">
+                        <label>Trocar Foto (Opcional)</label>
+                        <input type="file" id="editEstImagem" accept="image/*" style="padding:8px; font-size:0.8rem; background:transparent;">
                         ${item.imagem ? `<img src="${item.imagem}" class="img-preview-edit">` : ''}
                     </div>
                 `;
@@ -845,19 +1171,29 @@
 
             let base64Imagem = "";
             if (arquivo) {
-                base64Imagem = await new Promise(resolve => {
-                    let reader = new FileReader();
-                    reader.onload = e => resolve(e.target.result);
-                    reader.readAsDataURL(arquivo);
-                });
+                try {
+                    base64Imagem = await new Promise((resolve, reject) => {
+                        let reader = new FileReader();
+                        reader.onload = e => resolve(e.target.result);
+                        reader.onerror = e => reject(e);
+                        reader.readAsDataURL(arquivo);
+                    });
+                } catch(e) {
+                    console.error("Erro na leitura do arquivo", e);
+                }
             }
 
             let notas = obterDados('conteudos');
             notas.push({ id: gerarId(), categoria, subcategoria, titulo, texto, data, imagem: base64Imagem });
             salvarDados('conteudos', notas);
             
-            ['tituloConteudo', 'textoConteudo', 'imagemConteudo'].forEach(id => document.getElementById(id).value = '');
+            ['tituloConteudo', 'textoConteudo', 'imagemConteudo'].forEach(id => {
+                let el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.getElementById('previewNotaBox').style.display = 'none';
             document.getElementById('dataNota').value = new Date().toISOString().split('T')[0];
+            
             renderizarListas(); atualizarDashboard(); alternarAbaNotas('lista');
         }
 
@@ -877,9 +1213,9 @@
 
                 htmlBuffer += `
                     <div class="item-salvo">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                             <span class="caminho-categoria" style="margin-bottom:0;">${catTexto}</span>
-                            ${dataForm ? `<span style="font-size:0.7rem; color:var(--text-secundary);">${dataForm}</span>` : ''}
+                            ${dataForm ? `<span style="font-size:0.72rem; color:var(--text-secundary); font-weight:600;">${dataForm}</span>` : ''}
                         </div>
                         <strong>${nota.titulo}</strong>
                         <p>${nota.texto.replace(/\n/g, '<br>')}</p>
@@ -894,43 +1230,70 @@
         }
 
         // ==========================================
-        // ESTOQUE (PRODUTOS)
+        // ESTOQUE (CORRIGIDO E OTIMIZADO)
         // ==========================================
         async function salvarEstoque() {
-            let nome = document.getElementById('estNome').value;
-            let preco = parseFloat(document.getElementById('estPreco').value);
-            let arquivo = document.getElementById('estImagem').files[0];
+            let nomeEl = document.getElementById('estNome');
+            let precoEl = document.getElementById('estPreco');
+            let arquivoEl = document.getElementById('estImagem');
             
-            if (!nome || isNaN(preco)) return alert("Preencha o nome e o valor do produto.");
+            let nome = nomeEl.value.trim();
+            let preco = parseFloat(precoEl.value);
+            let arquivo = arquivoEl.files[0];
+            
+            if (!nome || isNaN(preco) || preco <= 0) {
+                return alert("Preencha o nome e um valor válido para o produto.");
+            }
 
             let base64Imagem = "";
             if (arquivo) {
-                base64Imagem = await new Promise(resolve => {
-                    let reader = new FileReader();
-                    reader.onload = e => resolve(e.target.result);
-                    reader.readAsDataURL(arquivo);
-                });
+                try {
+                    base64Imagem = await new Promise((resolve, reject) => {
+                        let reader = new FileReader();
+                        reader.onload = e => resolve(e.target.result);
+                        reader.onerror = e => reject(e);
+                        reader.readAsDataURL(arquivo);
+                    });
+                } catch(e) {
+                    console.error("Erro no processamento da imagem", e);
+                }
             }
 
             let estoque = obterDados('estoque');
             estoque.push({ id: gerarId(), nome, preco, imagem: base64Imagem });
             salvarDados('estoque', estoque);
             
-            ['estNome', 'estPreco', 'estImagem'].forEach(id => document.getElementById(id).value = '');
-            renderizarListas(); atualizarDashboard(); alternarAbaVendas('estoque');
+            nomeEl.value = '';
+            precoEl.value = '';
+            arquivoEl.value = '';
+            document.getElementById('previewEstoqueBox').style.display = 'none';
+
+            renderizarListas(); 
+            atualizarDashboard(); 
+            alternarAbaVendas('estoque');
+        }
+
+        function venderItemDoEstoque(nome, preco) {
+            document.getElementById('nomeProduto').value = nome;
+            document.getElementById('precoProduto').value = preco;
+            document.getElementById('qtdProduto').value = 1;
+            alternarAbaVendas('nova');
         }
 
         function renderizarEstoque() {
             let div = document.getElementById('listaEstoque');
             let estoque = obterDados('estoque');
             if(estoque.length === 0) {
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg><p>Nenhum produto na loja.</p></div>`;
+                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg><p>Nenhum produto cadastrado na loja.</p></div>`;
                 return;
             }
 
             let htmlBuffer = '';
             estoque.slice().reverse().forEach(prod => {
-                let imgTag = prod.imagem ? `<img src="${prod.imagem}" loading="lazy">` : `<div style="width:70px; height:70px; background:var(--bg-input); border-radius:10px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-secundary); font-size:0.65rem;">Sem foto</div>`;
+                let imgTag = prod.imagem 
+                    ? `<img src="${prod.imagem}" loading="lazy">` 
+                    : `<div style="width:75px; height:75px; background:var(--bg-input); border-radius:12px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-secundary); font-size:0.68rem; font-weight:600;">Sem foto</div>`;
+                
                 let precoBRL = prod.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                 
                 htmlBuffer += `
@@ -939,10 +1302,14 @@
                             ${imgTag}
                             <div class="produto-info">
                                 <strong style="margin-bottom:2px;">${prod.nome}</strong>
-                                <span class="destaque text-purple" style="margin-top:0; font-size: 1rem;">${precoBRL}</span>
+                                <span class="destaque text-purple" style="margin-top:0; font-size: 1.05rem;">${precoBRL}</span>
                             </div>
                         </div>
-                        <div class="acoes-item" style="margin-top:10px; padding-top:10px;">
+                        <div class="acoes-item" style="margin-top:12px; padding-top:12px;">
+                            <button class="btn-pequeno btn-vender-rapido" onclick="venderItemDoEstoque('${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                Vender
+                            </button>
                             <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('estoque', '${prod.id}')">Editar</button>
                             <button class="btn-pequeno btn-excluir" onclick="excluirItem('estoque', '${prod.id}')">Excluir</button>
                         </div>
@@ -958,7 +1325,7 @@
             let data = document.getElementById('dataAgenda').value;
             let horario = document.getElementById('horarioAgenda').value;
             let desc = document.getElementById('descAgenda').value;
-            if (!data || !desc) return;
+            if (!data || !desc) return alert("Preencha a data e descrição do evento.");
             let agenda = obterDados('agenda');
             agenda.push({ id: gerarId(), data, horario, desc });
             salvarDados('agenda', agenda);
@@ -979,7 +1346,7 @@
                 htmlBuffer += `
                     <div class="item-salvo">
                         <strong>${item.desc}</strong>
-                        <p class="text-success">${dataForm}${horarioTexto}</p>
+                        <p class="text-success" style="font-weight:600;">${dataForm}${horarioTexto}</p>
                         <div class="acoes-item">
                             <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('agenda', '${item.id}')">Editar</button>
                             <button class="btn-pequeno btn-excluir" onclick="excluirItem('agenda', '${item.id}')">Excluir</button>
