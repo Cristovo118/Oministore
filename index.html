@@ -388,23 +388,25 @@
         .nav-link-card p { font-size: 0.78rem; color: var(--text-secundary); }
         
         /* ==========================================
-           8. MENU INFERIOR (NAVIGATION BAR)
+           8. MENU INFERIOR (CORRIGIDO TAMANHO E FIXAÇÃO)
            ========================================== */
         .bottom-nav { 
-            position: fixed; 
+            position: absolute; 
             bottom: 0; 
+            left: 0;
             width: 100%; 
             max-width: 500px; 
-            height: calc(env(safe-area-inset-bottom) + 70px); 
+            height: 75px; /* Altura fixa garantida */
+            min-height: 75px; /* Impede que o menu esmague com o teclado */
+            padding-bottom: env(safe-area-inset-bottom); /* Respeita a borda do iPhone */
             background: var(--bg-nav); 
             backdrop-filter: blur(30px); 
             -webkit-backdrop-filter: blur(30px); 
             border-top: 1px solid var(--border); 
             display: flex; 
             justify-content: space-around; 
-            align-items: flex-start; 
+            align-items: center; /* Centraliza melhor os ícones verticalmente */
             z-index: 100; 
-            padding-top: 10px; 
         }
         .nav-item { 
             display: flex; 
@@ -415,6 +417,7 @@
             cursor: pointer; 
             color: var(--text-secundary); 
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+            flex-shrink: 0; /* Impede que os ícones fiquem deformados ao redimensionar */
         }
         .nav-item.ativo { color: var(--primary); transform: translateY(-2px); }
         .nav-item svg { 
@@ -469,6 +472,8 @@
         .empty-state p { font-size: 0.88rem; font-weight: 500; }
 
         .img-preview-edit { width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; margin-top: 10px; border: 1px solid var(--border); }
+        
+        /* Obs: Removido o bloqueio @media max-height que bugava a barra com o teclado */
     </style>
 </head>
 <body>
@@ -613,7 +618,7 @@
                         <div class="form-group"><label>Produto / Serviço</label><input type="text" id="nomeProduto" placeholder="Nome do item vendido"></div>
                         <div class="form-group input-row">
                             <div style="flex: 1;"><label>Qtd.</label><input type="number" id="qtdProduto" placeholder="1" value="1"></div>
-                            <div style="flex: 2;"><label>Preço Unid. (R$)</label><input type="number" id="precoProduto" placeholder="0.00" step="0.01"></div>
+                            <div style="flex: 2;"><label>Preço Unid. (R$)</label><input type="text" inputmode="decimal" id="precoProduto" placeholder="0.00"></div>
                         </div>
                         <div class="form-group">
                             <label>Data da Venda</label>
@@ -627,7 +632,7 @@
                     <div class="card">
                         <h2 class="section-title">Adicionar à Loja</h2>
                         <div class="form-group"><label>Nome do Produto</label><input type="text" id="estNome" placeholder="Ex: Tênis Nike, Camiseta..."></div>
-                        <div class="form-group"><label>Valor de Venda (R$)</label><input type="number" id="estPreco" placeholder="0.00" step="0.01"></div>
+                        <div class="form-group"><label>Valor de Venda (R$)</label><input type="text" inputmode="decimal" id="estPreco" placeholder="0.00"></div>
                         <div class="form-group">
                             <label>Foto do Produto (Opcional)</label>
                             <div class="file-upload-box">
@@ -747,6 +752,38 @@
 
         let meuGraficoVendas = null;
 
+        // Função extra para garantir que fotos não estourem a memória ao cadastrar estoque/notas
+        function processarImagemBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        const MAX_HEIGHT = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) { height = Math.round((height *= MAX_WIDTH / width)); width = MAX_WIDTH; }
+                        } else {
+                            if (height > MAX_HEIGHT) { width = Math.round((width *= MAX_HEIGHT / height)); height = MAX_HEIGHT; }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
         // Efeito de cabeçalho com scroll suave
         document.getElementById('main-content').addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
@@ -786,7 +823,6 @@
                 header.style.display = 'block'; 
                 document.getElementById('header-title').innerText = titulo;
             }
-            // Retorna ao topo no switch de telas
             document.getElementById('main-content').scrollTop = 0;
         }
 
@@ -944,7 +980,7 @@
                     <div class="form-group"><label>Produto</label><input type="text" id="editProd" value="${item.produto || ''}"></div>
                     <div class="form-group input-row">
                         <div style="flex:1;"><label>Quantidade</label><input type="number" id="editQtd" value="${item.qtd || 1}"></div>
-                        <div style="flex:2;"><label>Preço Unid. (R$)</label><input type="number" id="editPreco" step="0.01" value="${item.preco || 0}"></div>
+                        <div style="flex:2;"><label>Preço Unid. (R$)</label><input type="text" inputmode="decimal" id="editPreco" value="${item.preco || 0}"></div>
                     </div>
                     <div class="form-group"><label>Data da Venda</label><input type="date" id="editDataVenda" value="${item.data || new Date().toISOString().split('T')[0]}" style="color-scheme:dark;"></div>
                 `;
@@ -953,7 +989,7 @@
                 tituloModal.innerText = "Editar Produto da Loja";
                 container.innerHTML = `
                     <div class="form-group"><label>Nome do Produto</label><input type="text" id="editEstNome" value="${item.nome || ''}"></div>
-                    <div class="form-group"><label>Valor de Venda (R$)</label><input type="number" id="editEstPreco" step="0.01" value="${item.preco || 0}"></div>
+                    <div class="form-group"><label>Valor de Venda (R$)</label><input type="text" inputmode="decimal" id="editEstPreco" value="${item.preco || 0}"></div>
                     <div class="form-group">
                         <label>Trocar Foto (Opcional)</label>
                         <input type="file" id="editEstImagem" accept="image/*" style="padding:8px; font-size:0.8rem; background:transparent;">
@@ -999,15 +1035,14 @@
 
                 let arq = document.getElementById('editImagem').files[0];
                 if (arq) {
-                    lista[idx].imagem = await new Promise(res => {
-                        let r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(arq);
-                    });
+                    lista[idx].imagem = await processarImagemBase64(arq);
                 }
 
             } else if (tipo === 'vendas') {
                 let prod = document.getElementById('editProd').value;
                 let qtd = parseInt(document.getElementById('editQtd').value);
-                let preco = parseFloat(document.getElementById('editPreco').value);
+                let precoStr = document.getElementById('editPreco').value.replace(',', '.');
+                let preco = parseFloat(precoStr);
                 let data = document.getElementById('editDataVenda').value;
                 if (!prod || isNaN(qtd) || isNaN(preco)) return alert("Dados inválidos.");
 
@@ -1018,7 +1053,8 @@
 
             } else if (tipo === 'estoque') {
                 let nome = document.getElementById('editEstNome').value;
-                let preco = parseFloat(document.getElementById('editEstPreco').value);
+                let precoStr = document.getElementById('editEstPreco').value.replace(',', '.');
+                let preco = parseFloat(precoStr);
                 if (!nome || isNaN(preco)) return alert("Preencha o nome e preço.");
 
                 lista[idx].nome = nome;
@@ -1026,9 +1062,7 @@
 
                 let arq = document.getElementById('editEstImagem').files[0];
                 if (arq) {
-                    lista[idx].imagem = await new Promise(res => {
-                        let r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(arq);
-                    });
+                    lista[idx].imagem = await processarImagemBase64(arq);
                 }
 
             } else if (tipo === 'agenda') {
@@ -1042,7 +1076,11 @@
                 lista[idx].desc = desc;
             }
 
-            salvarDados(tipo, lista);
+            try {
+                salvarDados(tipo, lista);
+            } catch (error) {
+                alert("Erro! Pode ser falta de espaço no armazenamento do celular.");
+            }
             fecharModalEdicao();
             renderizarListas();
             atualizarDashboard();
@@ -1172,12 +1210,7 @@
             let base64Imagem = "";
             if (arquivo) {
                 try {
-                    base64Imagem = await new Promise((resolve, reject) => {
-                        let reader = new FileReader();
-                        reader.onload = e => resolve(e.target.result);
-                        reader.onerror = e => reject(e);
-                        reader.readAsDataURL(arquivo);
-                    });
+                    base64Imagem = await processarImagemBase64(arquivo);
                 } catch(e) {
                     console.error("Erro na leitura do arquivo", e);
                 }
@@ -1185,7 +1218,12 @@
 
             let notas = obterDados('conteudos');
             notas.push({ id: gerarId(), categoria, subcategoria, titulo, texto, data, imagem: base64Imagem });
-            salvarDados('conteudos', notas);
+            
+            try {
+                salvarDados('conteudos', notas);
+            } catch (err) {
+                return alert("Erro ao salvar! Memória cheia.");
+            }
             
             ['tituloConteudo', 'textoConteudo', 'imagemConteudo'].forEach(id => {
                 let el = document.getElementById(id);
@@ -1230,7 +1268,7 @@
         }
 
         // ==========================================
-        // ESTOQUE (CORRIGIDO E OTIMIZADO)
+        // ESTOQUE (CORRIGIDO PARA ACEITAR VÍRGULA)
         // ==========================================
         async function salvarEstoque() {
             let nomeEl = document.getElementById('estNome');
@@ -1238,7 +1276,9 @@
             let arquivoEl = document.getElementById('estImagem');
             
             let nome = nomeEl.value.trim();
-            let preco = parseFloat(precoEl.value);
+            // Troca vírgula por ponto para não quebrar a soma matemática
+            let precoStr = precoEl.value.replace(',', '.');
+            let preco = parseFloat(precoStr);
             let arquivo = arquivoEl.files[0];
             
             if (!nome || isNaN(preco) || preco <= 0) {
@@ -1248,12 +1288,7 @@
             let base64Imagem = "";
             if (arquivo) {
                 try {
-                    base64Imagem = await new Promise((resolve, reject) => {
-                        let reader = new FileReader();
-                        reader.onload = e => resolve(e.target.result);
-                        reader.onerror = e => reject(e);
-                        reader.readAsDataURL(arquivo);
-                    });
+                    base64Imagem = await processarImagemBase64(arquivo);
                 } catch(e) {
                     console.error("Erro no processamento da imagem", e);
                 }
@@ -1261,7 +1296,12 @@
 
             let estoque = obterDados('estoque');
             estoque.push({ id: gerarId(), nome, preco, imagem: base64Imagem });
-            salvarDados('estoque', estoque);
+            
+            try {
+                salvarDados('estoque', estoque);
+            } catch (err) {
+                return alert("Não foi possível adicionar. O armazenamento local do dispositivo pode estar cheio.");
+            }
             
             nomeEl.value = '';
             precoEl.value = '';
@@ -1359,10 +1399,13 @@
         function salvarVenda() {
             let produto = document.getElementById('nomeProduto').value;
             let qtd = parseInt(document.getElementById('qtdProduto').value);
-            let preco = parseFloat(document.getElementById('precoProduto').value);
+            
+            // Suporte para preços digitados com vírgula (R$)
+            let precoStr = document.getElementById('precoProduto').value.replace(',', '.');
+            let preco = parseFloat(precoStr);
             let data = document.getElementById('dataVenda').value || new Date().toISOString().split('T')[0];
 
-            if (!produto || isNaN(qtd) || isNaN(preco)) return alert("Preencha nome, quantidade e preço.");
+            if (!produto || isNaN(qtd) || isNaN(preco)) return alert("Preencha nome, quantidade e preço validos.");
             let vendas = obterDados('vendas');
             vendas.push({ id: gerarId(), produto, qtd, preco, data });
             salvarDados('vendas', vendas);
