@@ -56,7 +56,6 @@
             overflow: hidden;
         }
 
-        /* Otimização de scroll global e touch */
         .app-container {
             width: 100%; 
             max-width: 500px; 
@@ -102,7 +101,8 @@
            ========================================== */
         .content-area { 
             flex: 1; 
-            overflow-y: auto; 
+            /* Modificado de auto para scroll para evitar pulos horizontais */
+            overflow-y: scroll; 
             -webkit-overflow-scrolling: touch; 
             overscroll-behavior-y: contain;
             padding: 12px 16px calc(env(safe-area-inset-bottom) + 95px) 16px; 
@@ -175,7 +175,6 @@
         .balance-box .label { font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 4px; font-weight: 600; }
         .balance-box .value { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* Chart Widget */
         .chart-container { width: 100%; height: 160px; position: relative; margin-top: 5px; }
 
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
@@ -225,7 +224,6 @@
 
         .input-row { display: flex; gap: 10px; }
 
-        /* Custom File Upload Styling */
         .file-upload-box {
             border: 1.5px dashed var(--border-highlight);
             border-radius: var(--radius-input);
@@ -246,77 +244,23 @@
             opacity: 0;
             cursor: pointer;
         }
-        .file-upload-label {
-            font-size: 0.8rem;
-            color: var(--text-secundary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .preview-img-container {
-            display: none;
-            margin-top: 10px;
-            position: relative;
-        }
-        .preview-img-container img {
-            width: 100%;
-            max-height: 140px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
+        .file-upload-label { font-size: 0.8rem; color: var(--text-secundary); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .preview-img-container { display: none; margin-top: 10px; position: relative; }
+        .preview-img-container img { width: 100%; max-height: 140px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
 
         .btn-acao { 
-            width: 100%; 
-            padding: 13px; 
-            border: none; 
-            border-radius: var(--radius-input); 
-            font-size: 0.92rem; 
-            font-weight: 700; 
-            color: #FFFFFF; 
-            background: linear-gradient(135deg, var(--primary), #0066FF); 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            box-shadow: var(--shadow-glow); 
+            width: 100%; padding: 13px; border: none; border-radius: var(--radius-input); font-size: 0.92rem; font-weight: 700; color: #FFFFFF; 
+            background: linear-gradient(135deg, var(--primary), #0066FF); cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: var(--shadow-glow); 
         }
         .btn-acao:active { transform: scale(0.97); }
         .btn-secundario { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); color: var(--text-main); box-shadow: none; }
         .btn-secundario:active { background: rgba(255, 255, 255, 0.12); }
         .btn-perigo { background: rgba(255, 69, 58, 0.12); color: var(--danger); border: 1px solid rgba(255, 69, 58, 0.3); box-shadow: none; }
         
-        .segment-control { 
-            display: flex; 
-            background: var(--bg-input); 
-            border-radius: 14px; 
-            padding: 4px; 
-            margin-bottom: 16px; 
-            border: 1px solid var(--border); 
-            overflow-x: auto; 
-        }
+        .segment-control { display: flex; background: var(--bg-input); border-radius: 14px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--border); overflow-x: auto; }
         .segment-control::-webkit-scrollbar { display: none; }
-        .segment-btn { 
-            flex: 1; 
-            text-align: center; 
-            padding: 10px 8px; 
-            border-radius: 10px; 
-            font-size: 0.78rem; 
-            font-weight: 700; 
-            color: var(--text-secundary); 
-            cursor: pointer; 
-            transition: all 0.25s ease; 
-            white-space: nowrap; 
-        }
-        .segment-btn.active { 
-            background: linear-gradient(145deg, #252838, #181A26); 
-            color: var(--text-main); 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
-            border: 1px solid rgba(255,255,255,0.08); 
-        }
+        .segment-btn { flex: 1; text-align: center; padding: 10px 8px; border-radius: 10px; font-size: 0.78rem; font-weight: 700; color: var(--text-secundary); cursor: pointer; transition: all 0.25s ease; white-space: nowrap; }
+        .segment-btn.active { background: linear-gradient(145deg, #252838, #181A26); color: var(--text-main); box-shadow: 0 4px 12px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); }
         .aba-view { display: none; animation: fadeIn 0.3s ease; }
         .aba-view.active { display: block; }
 
@@ -324,34 +268,9 @@
            6. LISTAS E ITENS
            ========================================== */
         .resultados-container { display: flex; flex-direction: column; gap: 12px; }
-        .item-salvo { 
-            background: var(--bg-card); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 16px; 
-            border-radius: var(--radius-card); 
-            border: 1px solid var(--border); 
-            transition: transform 0.2s; 
-            position: relative; 
-            overflow: hidden; 
-            box-shadow: var(--shadow-subtle); 
-        }
+        .item-salvo { background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 16px; border-radius: var(--radius-card); border: 1px solid var(--border); transition: transform 0.2s; position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); }
         
-        .caminho-categoria { 
-            display: inline-flex; 
-            align-items: center; 
-            font-size: 0.65rem; 
-            font-weight: 700; 
-            margin-bottom: 8px; 
-            gap: 4px; 
-            background: rgba(10,132,255,0.12); 
-            color: #5AC8FA; 
-            padding: 4px 10px; 
-            border-radius: 8px; 
-            border: 1px solid rgba(10,132,255,0.25); 
-            text-transform: uppercase; 
-            letter-spacing: 0.6px; 
-        }
+        .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.65rem; font-weight: 700; margin-bottom: 8px; gap: 4px; background: rgba(10,132,255,0.12); color: #5AC8FA; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(10,132,255,0.25); text-transform: uppercase; letter-spacing: 0.6px; }
         
         .item-salvo strong { display: block; font-size: 1.02rem; margin-bottom: 4px; color: var(--text-main); line-height: 1.3;}
         .item-salvo p { color: var(--text-secundary); font-size: 0.88rem; line-height: 1.45; }
@@ -360,6 +279,7 @@
         .destaque { font-size: 1.15rem; font-weight: 800; display: block; margin-top: 8px; }
         .text-success { color: var(--success); }
         .text-purple { color: var(--purple); }
+        .badge-desconto { background: rgba(255,159,10,0.2); color: var(--warning); padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; border: 1px solid rgba(255,159,10,0.4); margin-left: 6px;}
 
         .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
         .btn-pequeno { background: rgba(255,255,255,0.05); border: 1px solid var(--border); font-weight: 700; font-size: 0.75rem; cursor: pointer; padding: 7px 12px; border-radius: 8px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
@@ -388,99 +308,48 @@
         .nav-link-card p { font-size: 0.78rem; color: var(--text-secundary); }
         
         /* ==========================================
-           8. MENU INFERIOR (CORRIGIDO TAMANHO E FIXAÇÃO)
+           8. MENU INFERIOR
            ========================================== */
         .bottom-nav { 
-            position: absolute; 
-            bottom: 0; 
-            left: 0;
-            width: 100%; 
-            max-width: 500px; 
-            height: 75px; /* Altura fixa garantida */
-            min-height: 75px; /* Impede que o menu esmague com o teclado */
-            padding-bottom: env(safe-area-inset-bottom); /* Respeita a borda do iPhone */
-            background: var(--bg-nav); 
-            backdrop-filter: blur(30px); 
-            -webkit-backdrop-filter: blur(30px); 
-            border-top: 1px solid var(--border); 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; /* Centraliza melhor os ícones verticalmente */
-            z-index: 100; 
+            position: absolute; bottom: 0; left: 0; width: 100%; max-width: 500px; height: 75px; min-height: 75px; 
+            padding-bottom: env(safe-area-inset-bottom); background: var(--bg-nav); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
+            border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; 
         }
-        .nav-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            width: 20%; 
-            cursor: pointer; 
-            color: var(--text-secundary); 
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
-            flex-shrink: 0; /* Impede que os ícones fiquem deformados ao redimensionar */
-        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; cursor: pointer; color: var(--text-secundary); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); flex-shrink: 0; }
         .nav-item.ativo { color: var(--primary); transform: translateY(-2px); }
-        .nav-item svg { 
-            width: 22px; 
-            height: 22px; 
-            margin-bottom: 4px; 
-            stroke: currentColor; 
-            fill: none; 
-            stroke-width: 2; 
-            stroke-linecap: round; 
-            stroke-linejoin: round; 
-            transition: 0.25s; 
-        }
-        .nav-item.ativo svg { 
-            stroke-width: 2.4; 
-            filter: drop-shadow(0 2px 8px rgba(10,132,255,0.6)); 
-        }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.25s; }
+        .nav-item.ativo svg { stroke-width: 2.4; filter: drop-shadow(0 2px 8px rgba(10,132,255,0.6)); }
         .nav-item span.label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2px; }
 
         /* ==========================================
-           9. TELAS SOBREPOSTAS E MODAL DE EDIÇÃO
+           9. TELAS SOBREPOSTAS E MODAL
            ========================================== */
-        .tela-overlay { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; height: 100dvh; 
-            background-color: var(--bg-app); 
-            z-index: 200; 
-            display: none; 
-            flex-direction: column; 
-        }
+        .tela-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; height: 100dvh; background-color: var(--bg-app); z-index: 200; display: none; flex-direction: column; }
         .tela-overlay.ativa { display: flex; animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .overlay-header { 
-            padding: calc(env(safe-area-inset-top) + 14px) 16px 12px; 
-            display: flex; 
-            align-items: center; 
-            background: rgba(9, 10, 15, 0.85); 
-            backdrop-filter: blur(25px); 
-            -webkit-backdrop-filter: blur(25px); 
-            border-bottom: 1px solid var(--border); 
-            position: sticky; 
-            top: 0; 
-            z-index: 210;
-        }
+        .overlay-header { padding: calc(env(safe-area-inset-top) + 14px) 16px 12px; display: flex; align-items: center; background: rgba(9, 10, 15, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210;}
         .btn-voltar { background: none; border: none; color: var(--primary); font-size: 0.92rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
         .overlay-body { padding: 16px; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 80px; }
         
         .empty-state { text-align: center; padding: 36px 16px; color: var(--text-secundary); }
         .empty-state svg { width: 46px; height: 46px; stroke-width: 1.2; margin-bottom: 12px; opacity: 0.4; color: var(--text-secundary); }
         .empty-state p { font-size: 0.88rem; font-weight: 500; }
-
         .img-preview-edit { width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; margin-top: 10px; border: 1px solid var(--border); }
         
-        /* Obs: Removido o bloqueio @media max-height que bugava a barra com o teclado */
+        /* Painel Resumo Venda */
+        .preview-venda-card {
+            background: rgba(10, 132, 255, 0.1); padding: 14px; border-radius: 12px; 
+            border: 1px solid rgba(10, 132, 255, 0.3); text-align: center; margin-bottom: 14px;
+        }
     </style>
 </head>
 <body>
 
     <div class="app-container" id="app-principal">
         
-        <header id="main-header" style="display: none;">
+        <!-- CABEÇALHO AGORA FICA SEMPRE VISÍVEL -->
+        <header id="main-header">
             <h1 id="header-title">Omnistore</h1>
         </header>
 
@@ -488,7 +357,8 @@
             
             <!-- TELA INÍCIO -->
             <div id="tela-inicio" class="tela ativa">
-                <div class="card" style="margin-top: 2px; padding: 14px 16px;">
+                <!-- Margin-top removido para padronizar as alturas de todas as telas -->
+                <div class="card" style="padding: 14px 16px;">
                     <div class="user-panel">
                         <div class="user-info">
                             <div class="user-avatar">
@@ -558,14 +428,8 @@
                     <div class="card">
                         <h2 class="section-title">Escrever Nota</h2>
                         <div class="input-row">
-                            <div class="form-group" style="flex: 1;">
-                                <label>Categoria</label>
-                                <select id="categoriaConteudo" onchange="atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo')"></select>
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label>Subcategoria</label>
-                                <select id="subcategoriaConteudo"></select>
-                            </div>
+                            <div class="form-group" style="flex: 1;"><label>Categoria</label><select id="categoriaConteudo" onchange="atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo')"></select></div>
+                            <div class="form-group" style="flex: 1;"><label>Subcategoria</label><select id="subcategoriaConteudo"></select></div>
                         </div>
                         <div class="form-group"><label>Título</label><input type="text" id="tituloConteudo" placeholder="Assunto principal"></div>
                         <div class="form-group"><label>Data da Nota</label><input type="date" id="dataNota" style="color-scheme: dark;"></div>
@@ -574,22 +438,14 @@
                             <label>Anexar Imagem (Opcional)</label>
                             <div class="file-upload-box">
                                 <input type="file" id="imagemConteudo" accept="image/*" onchange="previewUploadImage(this, 'previewNotaBox', 'previewNotaImg')">
-                                <div class="file-upload-label">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                    <span>Escolher Imagem</span>
-                                </div>
+                                <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Escolher Imagem</span></div>
                             </div>
-                            <div class="preview-img-container" id="previewNotaBox">
-                                <img id="previewNotaImg" src="" alt="Preview">
-                            </div>
+                            <div class="preview-img-container" id="previewNotaBox"><img id="previewNotaImg" src="" alt="Preview"></div>
                         </div>
                         <button class="btn-acao" onclick="salvarConteudo()">Salvar Nota</button>
                     </div>
                 </div>
-                
-                <div id="aba-notas-lista" class="aba-view">
-                    <div class="resultados-container" id="listaConteudos"></div>
-                </div>
+                <div id="aba-notas-lista" class="aba-view"><div class="resultados-container" id="listaConteudos"></div></div>
             </div>
 
             <!-- TELA AGENDA -->
@@ -615,15 +471,24 @@
                 <div id="aba-vendas-nova" class="aba-view active">
                     <div class="card">
                         <h2 class="section-title">Registrar Saída/Venda</h2>
+                        
                         <div class="form-group"><label>Produto / Serviço</label><input type="text" id="nomeProduto" placeholder="Nome do item vendido"></div>
+                        
+                        <!-- Alterado: Inclusão do campo desconto e inputs alinhados -->
                         <div class="form-group input-row">
-                            <div style="flex: 1;"><label>Qtd.</label><input type="number" id="qtdProduto" placeholder="1" value="1"></div>
-                            <div style="flex: 2;"><label>Preço Unid. (R$)</label><input type="text" inputmode="decimal" id="precoProduto" placeholder="0.00"></div>
+                            <div style="flex: 1;"><label>Qtd.</label><input type="number" id="qtdProduto" placeholder="1" value="1" oninput="calcularTotalTempoReal()"></div>
+                            <div style="flex: 1.5;"><label>Preço Unid. (R$)</label><input type="text" inputmode="decimal" id="precoProduto" placeholder="0.00" oninput="calcularTotalTempoReal()"></div>
+                            <div style="flex: 1;"><label>Desc. (%)</label><input type="number" id="descProduto" placeholder="0" value="0" oninput="calcularTotalTempoReal()"></div>
                         </div>
-                        <div class="form-group">
-                            <label>Data da Venda</label>
-                            <input type="date" id="dataVenda" style="color-scheme: dark;">
+
+                        <!-- Novo: Painel de preview do cálculo -->
+                        <div class="preview-venda-card">
+                            <span style="font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 4px; text-transform: uppercase; font-weight: 700;">Total a Receber</span>
+                            <strong id="previewTotalVenda" style="font-size: 1.4rem; color: var(--primary);">R$ 0,00</strong>
                         </div>
+
+                        <div class="form-group"><label>Data da Venda</label><input type="date" id="dataVenda" style="color-scheme: dark;"></div>
+                        
                         <button class="btn-acao" onclick="salvarVenda()">Confirmar Venda</button>
                     </div>
                 </div>
@@ -637,14 +502,9 @@
                             <label>Foto do Produto (Opcional)</label>
                             <div class="file-upload-box">
                                 <input type="file" id="estImagem" accept="image/*" onchange="previewUploadImage(this, 'previewEstoqueBox', 'previewEstoqueImg')">
-                                <div class="file-upload-label">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                    <span>Carregar Imagem do Produto</span>
-                                </div>
+                                <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Carregar Imagem</span></div>
                             </div>
-                            <div class="preview-img-container" id="previewEstoqueBox">
-                                <img id="previewEstoqueImg" src="" alt="Preview Produto">
-                            </div>
+                            <div class="preview-img-container" id="previewEstoqueBox"><img id="previewEstoqueImg" src="" alt="Preview Produto"></div>
                         </div>
                         <button class="btn-acao" style="background: linear-gradient(135deg, var(--purple), #A238FF); box-shadow: 0 4px 15px rgba(191,90,242,0.35);" onclick="salvarEstoque()">Adicionar ao Estoque</button>
                     </div>
@@ -659,13 +519,9 @@
             <!-- TELA CONFIGURAÇÕES -->
             <div id="tela-config" class="tela">
                 <div class="nav-link-card" onclick="abrirTelaCategorias()">
-                    <div>
-                        <h3>Categorias de Notas</h3>
-                        <p>Personalize os assuntos e subcategorias</p>
-                    </div>
+                    <div><h3>Categorias de Notas</h3><p>Personalize os assuntos e subcategorias</p></div>
                     <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                 </div>
-
                 <div class="card" style="border-color: rgba(255, 69, 58, 0.3); margin-top: 20px; background: rgba(255, 69, 58, 0.03);">
                     <h2 class="section-title" style="color: var(--danger);">Zona de Perigo</h2>
                     <p style="font-size: 0.82rem; color: var(--text-secundary); margin-bottom: 16px; line-height: 1.45;">Atenção: Ao apagar os dados, todo o seu histórico, estoque e notas serão perdidos de forma permanente.</p>
@@ -676,66 +532,37 @@
 
         <!-- MENU INFERIOR FIXO -->
         <nav class="bottom-nav">
-            <div class="nav-item ativo" onclick="abrirTela('tela-inicio', 'Início', this)">
-                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                <span class="label">Início</span>
-            </div>
-            <div class="nav-item" onclick="abrirTela('tela-conteudo', 'Notas', this)">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path></svg>
-                <span class="label">Notas</span>
-            </div>
-            <div class="nav-item" onclick="abrirTela('tela-agenda', 'Agenda', this)">
-                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
-                <span class="label">Agenda</span>
-            </div>
-            <div class="nav-item" onclick="abrirTela('tela-vendas', 'Vendas e Loja', this)">
-                <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                <span class="label">Vendas</span>
-            </div>
-            <div class="nav-item" onclick="abrirTela('tela-config', 'Configurações', this)">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                <span class="label">Config</span>
-            </div>
+            <div class="nav-item ativo" onclick="abrirTela('tela-inicio', 'Início', this)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="label">Início</span></div>
+            <div class="nav-item" onclick="abrirTela('tela-conteudo', 'Notas', this)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path></svg><span class="label">Notas</span></div>
+            <div class="nav-item" onclick="abrirTela('tela-agenda', 'Agenda', this)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg><span class="label">Agenda</span></div>
+            <div class="nav-item" onclick="abrirTela('tela-vendas', 'Vendas e Loja', this)"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span class="label">Vendas</span></div>
+            <div class="nav-item" onclick="abrirTela('tela-config', 'Configurações', this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span class="label">Config</span></div>
         </nav>
     </div>
 
-    <!-- OVERLAY GESTÃO DE CATEGORIAS -->
+    <!-- OVERLAYS E MODAIS -->
     <div id="tela-gestao-categorias" class="tela-overlay">
         <div class="overlay-header">
-            <button class="btn-voltar" onclick="fecharTelaCategorias()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                Voltar
-            </button>
+            <button class="btn-voltar" onclick="fecharTelaCategorias()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>Voltar</button>
             <h2 style="font-size: 1rem; font-weight: 700; margin-left: auto; margin-right: auto; padding-right: 60px;">Categorias</h2>
         </div>
         <div class="overlay-body">
             <div class="card">
                 <h2 class="section-title">Nova Categoria Principal</h2>
-                <div class="input-row">
-                    <input type="text" id="novaCategoriaNome" placeholder="Ex: Finanças, Projetos...">
-                    <button class="btn-acao" style="width: auto; padding: 0 20px;" onclick="addCategoria()">Criar</button>
-                </div>
+                <div class="input-row"><input type="text" id="novaCategoriaNome" placeholder="Ex: Finanças, Projetos..."><button class="btn-acao" style="width: auto; padding: 0 20px;" onclick="addCategoria()">Criar</button></div>
             </div>
-            <div class="card">
-                <h2 class="section-title">Estrutura Atual</h2>
-                <div id="listaGestaoCategorias"></div>
-            </div>
+            <div class="card"><h2 class="section-title">Estrutura Atual</h2><div id="listaGestaoCategorias"></div></div>
         </div>
     </div>
 
-    <!-- OVERLAY MODAL DE EDIÇÃO -->
     <div id="modal-edicao" class="tela-overlay">
         <div class="overlay-header">
-            <button class="btn-voltar" onclick="fecharModalEdicao()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                Cancelar
-            </button>
+            <button class="btn-voltar" onclick="fecharModalEdicao()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>Cancelar</button>
             <h2 id="modalEdicaoTitulo" style="font-size: 1rem; font-weight: 700; margin-left: auto; margin-right: auto; padding-right: 60px;">Editar Item</h2>
         </div>
         <div class="overlay-body">
             <div class="card">
-                <input type="hidden" id="editItemId">
-                <input type="hidden" id="editItemTipo">
+                <input type="hidden" id="editItemId"><input type="hidden" id="editItemTipo">
                 <div id="containerCamposEdicao"></div>
                 <button class="btn-acao" style="margin-top: 12px;" onclick="salvarEdicao()">Salvar Alterações</button>
             </div>
@@ -749,10 +576,8 @@
         const obterDados = (chave) => JSON.parse(localStorage.getItem(chave)) || [];
         const salvarDados = (chave, dados) => localStorage.setItem(chave, JSON.stringify(dados));
         const gerarId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
-
         let meuGraficoVendas = null;
 
-        // Função extra para garantir que fotos não estourem a memória ao cadastrar estoque/notas
         function processarImagemBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -760,76 +585,60 @@
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800;
-                        const MAX_HEIGHT = 800;
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > MAX_WIDTH) { height = Math.round((height *= MAX_WIDTH / width)); width = MAX_WIDTH; }
-                        } else {
-                            if (height > MAX_HEIGHT) { width = Math.round((width *= MAX_HEIGHT / height)); height = MAX_HEIGHT; }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
+                        let width = img.width, height = img.height;
+                        if (width > height) { if (width > 800) { height = Math.round(height *= 800 / width); width = 800; } } 
+                        else { if (height > 800) { width = Math.round(width *= 800 / height); height = 800; } }
+                        canvas.width = width; canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
                         resolve(canvas.toDataURL('image/jpeg', 0.8));
                     };
-                    img.onerror = reject;
-                    img.src = e.target.result;
+                    img.onerror = reject; img.src = e.target.result;
                 };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
+                reader.onerror = reject; reader.readAsDataURL(file);
             });
         }
 
-        // Efeito de cabeçalho com scroll suave
         document.getElementById('main-content').addEventListener('scroll', function() {
-            const header = document.getElementById('main-header');
-            if (this.scrollTop > 10) header.classList.add('header-scrolled');
-            else header.classList.remove('header-scrolled');
+            if (this.scrollTop > 10) document.getElementById('main-header').classList.add('header-scrolled');
+            else document.getElementById('main-header').classList.remove('header-scrolled');
         });
 
         window.onload = () => {
             const dataHoje = new Date().toISOString().split('T')[0];
             document.getElementById('dataAtualBadge').innerText = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
-            document.getElementById('dataVenda').value = dataHoje;
-            document.getElementById('dataNota').value = dataHoje;
-            document.getElementById('dataAgenda').value = dataHoje;
+            ['dataVenda', 'dataNota', 'dataAgenda'].forEach(id => document.getElementById(id).value = dataHoje);
             migrarCategoriasAntigas();
             inicializarSistema();
         };
 
         function inicializarSistema() {
-            renderizarGestorCategorias();
-            preencherSelectCategorias('categoriaConteudo');
-            atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo');
-            renderizarListas();
-            atualizarDashboard();
+            renderizarGestorCategorias(); preencherSelectCategorias('categoriaConteudo'); atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo');
+            renderizarListas(); atualizarDashboard(); calcularTotalTempoReal();
         }
 
+        // ==========================================
+        // TROCA DE TELAS (CORRIGIDO)
+        // ==========================================
         function abrirTela(idTela, titulo, botao) {
             document.querySelectorAll('.app-container .tela').forEach(t => t.classList.remove('ativa'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('ativo'));
             document.getElementById(idTela).classList.add('ativa');
             if (botao) botao.classList.add('ativo');
             
+            // Agora o header nunca some. Apenas mudamos o título nele.
             const header = document.getElementById('main-header');
-            if(idTela === 'tela-inicio') {
-                header.style.display = 'none'; 
-                atualizarDashboard();
-            } else {
-                header.style.display = 'block'; 
-                document.getElementById('header-title').innerText = titulo;
-            }
+            header.style.display = 'block'; 
+            document.getElementById('header-title').innerText = titulo === 'Início' ? 'Omnistore' : titulo;
+            
+            if(idTela === 'tela-inicio') { atualizarDashboard(); } 
+            
             document.getElementById('main-content').scrollTop = 0;
         }
 
         function alternarAbaNotas(aba) {
             document.querySelectorAll('#tela-conteudo .segment-btn, #tela-conteudo .aba-view').forEach(e => e.classList.remove('active'));
-            if (aba === 'add') { document.getElementById('btnAbaNotasAdd').classList.add('active'); document.getElementById('aba-notas-add').classList.add('active'); }
-            else { document.getElementById('btnAbaNotasList').classList.add('active'); document.getElementById('aba-notas-lista').classList.add('active'); }
+            document.getElementById(aba === 'add' ? 'btnAbaNotasAdd' : 'btnAbaNotasList').classList.add('active');
+            document.getElementById(aba === 'add' ? 'aba-notas-add' : 'aba-notas-lista').classList.add('active');
         }
 
         function alternarAbaVendas(aba) {
@@ -840,28 +649,19 @@
         }
 
         function previewUploadImage(inputEl, containerId, imgId) {
-            const container = document.getElementById(containerId);
-            const img = document.getElementById(imgId);
             if (inputEl.files && inputEl.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    img.src = e.target.result;
-                    container.style.display = 'block';
-                };
+                reader.onload = function(e) { document.getElementById(imgId).src = e.target.result; document.getElementById(containerId).style.display = 'block'; };
                 reader.readAsDataURL(inputEl.files[0]);
-            } else {
-                container.style.display = 'none';
-            }
+            } else { document.getElementById(containerId).style.display = 'none'; }
         }
 
         function limparTodosDados() {
-            if(confirm("ATENÇÃO: Confirma a exclusão de TODOS os dados? Esta ação não pode ser desfeita.")) {
-                localStorage.clear(); window.location.reload();
-            }
+            if(confirm("ATENÇÃO: Confirma a exclusão de TODOS os dados? Esta ação não pode ser desfeita.")) { localStorage.clear(); window.location.reload(); }
         }
 
         // ==========================================
-        // GRÁFICO MÊS A MÊS (CHART.JS)
+        // GRÁFICO (CHART.JS) ATUALIZADO COM DESCONTO
         // ==========================================
         function renderizarGraficoVendas() {
             const canvas = document.getElementById('graficoVendasMensal');
@@ -876,60 +676,22 @@
             vendas.forEach(v => {
                 let dt = v.data ? new Date(v.data + 'T00:00:00') : new Date();
                 if (dt.getFullYear() === anoAtual) {
-                    let mes = dt.getMonth();
-                    totaisPorMes[mes] += (v.qtd * v.preco);
+                    let descCalculado = v.desconto ? (v.desconto / 100) : 0;
+                    totaisPorMes[dt.getMonth()] += (v.qtd * v.preco) * (1 - descCalculado);
                 }
             });
 
             let gradient = ctx.createLinearGradient(0, 0, 0, 160);
-            gradient.addColorStop(0, 'rgba(48, 209, 88, 0.85)');
-            gradient.addColorStop(1, 'rgba(48, 209, 88, 0.05)');
-
-            if (meuGraficoVendas) {
-                meuGraficoVendas.destroy();
-            }
+            gradient.addColorStop(0, 'rgba(48, 209, 88, 0.85)'); gradient.addColorStop(1, 'rgba(48, 209, 88, 0.05)');
+            if (meuGraficoVendas) meuGraficoVendas.destroy();
 
             meuGraficoVendas = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: mesesNomes,
-                    datasets: [{
-                        label: 'Vendas (R$)',
-                        data: totaisPorMes,
-                        backgroundColor: gradient,
-                        borderColor: '#30D158',
-                        borderWidth: 1.5,
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }]
-                },
+                data: { labels: mesesNomes, datasets: [{ label: 'Vendas (R$)', data: totaisPorMes, backgroundColor: gradient, borderColor: '#30D158', borderWidth: 1.5, borderRadius: 6 }] },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return ' ' + context.parsed.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#8E8E93', font: { size: 9, family: 'Plus Jakarta Sans' } }
-                        },
-                        y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: {
-                                color: '#8E8E93',
-                                font: { size: 8, family: 'Plus Jakarta Sans' },
-                                callback: function(value) { return 'R$' + value; }
-                            }
-                        }
-                    }
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ' ' + c.parsed.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) } } },
+                    scales: { x: { grid: { display: false }, ticks: { color: '#8E8E93', font: { size: 9 } } }, y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#8E8E93', font: { size: 8 }, callback: (v) => 'R$' + v } } }
                 }
             });
         }
@@ -938,8 +700,7 @@
         // SISTEMA DE EDIÇÃO MÚLTIPLA (MODAL)
         // ==========================================
         function abrirModalEdicao(tipo, id) {
-            let dados = obterDados(tipo);
-            let item = dados.find(i => i.id === id);
+            let item = obterDados(tipo).find(i => i.id === id);
             if (!item) return;
 
             document.getElementById('editItemId').value = id;
@@ -951,52 +712,32 @@
                 tituloModal.innerText = "Editar Nota";
                 container.innerHTML = `
                     <div class="input-row">
-                        <div class="form-group" style="flex:1;">
-                            <label>Categoria</label>
-                            <select id="editCat" onchange="atualizarSelectSubcategorias('editCat', 'editSubcat')"></select>
-                        </div>
-                        <div class="form-group" style="flex:1;">
-                            <label>Subcategoria</label>
-                            <select id="editSubcat"></select>
-                        </div>
+                        <div class="form-group" style="flex:1;"><label>Categoria</label><select id="editCat" onchange="atualizarSelectSubcategorias('editCat', 'editSubcat')"></select></div>
+                        <div class="form-group" style="flex:1;"><label>Subcategoria</label><select id="editSubcat"></select></div>
                     </div>
                     <div class="form-group"><label>Título</label><input type="text" id="editTitulo" value="${item.titulo || ''}"></div>
                     <div class="form-group"><label>Data da Nota</label><input type="date" id="editDataNota" value="${item.data || new Date().toISOString().split('T')[0]}" style="color-scheme:dark;"></div>
                     <div class="form-group"><label>Descrição</label><textarea id="editTexto" rows="3">${item.texto || ''}</textarea></div>
-                    <div class="form-group">
-                        <label>Trocar Imagem (Opcional)</label>
-                        <input type="file" id="editImagem" accept="image/*" style="padding:8px; font-size:0.8rem; background:transparent;">
-                        ${item.imagem ? `<img src="${item.imagem}" class="img-preview-edit">` : ''}
-                    </div>
                 `;
-                preencherSelectCategorias('editCat');
-                document.getElementById('editCat').value = item.categoria || '';
-                atualizarSelectSubcategorias('editCat', 'editSubcat');
-                document.getElementById('editSubcat').value = item.subcategoria || '';
-
+                preencherSelectCategorias('editCat'); document.getElementById('editCat').value = item.categoria || '';
+                atualizarSelectSubcategorias('editCat', 'editSubcat'); document.getElementById('editSubcat').value = item.subcategoria || '';
             } else if (tipo === 'vendas') {
                 tituloModal.innerText = "Editar Venda";
                 container.innerHTML = `
                     <div class="form-group"><label>Produto</label><input type="text" id="editProd" value="${item.produto || ''}"></div>
                     <div class="form-group input-row">
-                        <div style="flex:1;"><label>Quantidade</label><input type="number" id="editQtd" value="${item.qtd || 1}"></div>
-                        <div style="flex:2;"><label>Preço Unid. (R$)</label><input type="text" inputmode="decimal" id="editPreco" value="${item.preco || 0}"></div>
+                        <div style="flex:1;"><label>Qtd.</label><input type="number" id="editQtd" value="${item.qtd || 1}"></div>
+                        <div style="flex:1.5;"><label>Preço Unid. (R$)</label><input type="text" inputmode="decimal" id="editPreco" value="${item.preco || 0}"></div>
+                        <div style="flex:1;"><label>Desc. (%)</label><input type="number" id="editDesc" value="${item.desconto || 0}"></div>
                     </div>
                     <div class="form-group"><label>Data da Venda</label><input type="date" id="editDataVenda" value="${item.data || new Date().toISOString().split('T')[0]}" style="color-scheme:dark;"></div>
                 `;
-
             } else if (tipo === 'estoque') {
                 tituloModal.innerText = "Editar Produto da Loja";
                 container.innerHTML = `
-                    <div class="form-group"><label>Nome do Produto</label><input type="text" id="editEstNome" value="${item.nome || ''}"></div>
-                    <div class="form-group"><label>Valor de Venda (R$)</label><input type="text" inputmode="decimal" id="editEstPreco" value="${item.preco || 0}"></div>
-                    <div class="form-group">
-                        <label>Trocar Foto (Opcional)</label>
-                        <input type="file" id="editEstImagem" accept="image/*" style="padding:8px; font-size:0.8rem; background:transparent;">
-                        ${item.imagem ? `<img src="${item.imagem}" class="img-preview-edit">` : ''}
-                    </div>
+                    <div class="form-group"><label>Nome</label><input type="text" id="editEstNome" value="${item.nome || ''}"></div>
+                    <div class="form-group"><label>Valor (R$)</label><input type="text" inputmode="decimal" id="editEstPreco" value="${item.preco || 0}"></div>
                 `;
-
             } else if (tipo === 'agenda') {
                 tituloModal.innerText = "Editar Evento";
                 container.innerHTML = `
@@ -1005,85 +746,41 @@
                     <div class="form-group"><label>Descrição</label><input type="text" id="editAgendaDesc" value="${item.desc || ''}"></div>
                 `;
             }
-
             document.getElementById('modal-edicao').classList.add('ativa');
         }
 
-        function fecharModalEdicao() {
-            document.getElementById('modal-edicao').classList.remove('ativa');
-        }
+        function fecharModalEdicao() { document.getElementById('modal-edicao').classList.remove('ativa'); }
 
         async function salvarEdicao() {
             let id = document.getElementById('editItemId').value;
             let tipo = document.getElementById('editItemTipo').value;
             let lista = obterDados(tipo);
             let idx = lista.findIndex(i => i.id === id);
-
             if (idx === -1) return;
 
             if (tipo === 'conteudos') {
-                let titulo = document.getElementById('editTitulo').value;
-                let texto = document.getElementById('editTexto').value;
-                let data = document.getElementById('editDataNota').value;
-                if (!titulo || !texto) return alert("Preencha título e texto.");
-
+                lista[idx].titulo = document.getElementById('editTitulo').value;
+                lista[idx].texto = document.getElementById('editTexto').value;
+                lista[idx].data = document.getElementById('editDataNota').value;
                 lista[idx].categoria = document.getElementById('editCat').value;
                 lista[idx].subcategoria = document.getElementById('editSubcat').value;
-                lista[idx].titulo = titulo;
-                lista[idx].texto = texto;
-                lista[idx].data = data;
-
-                let arq = document.getElementById('editImagem').files[0];
-                if (arq) {
-                    lista[idx].imagem = await processarImagemBase64(arq);
-                }
-
             } else if (tipo === 'vendas') {
-                let prod = document.getElementById('editProd').value;
-                let qtd = parseInt(document.getElementById('editQtd').value);
-                let precoStr = document.getElementById('editPreco').value.replace(',', '.');
-                let preco = parseFloat(precoStr);
-                let data = document.getElementById('editDataVenda').value;
-                if (!prod || isNaN(qtd) || isNaN(preco)) return alert("Dados inválidos.");
-
-                lista[idx].produto = prod;
-                lista[idx].qtd = qtd;
-                lista[idx].preco = preco;
-                lista[idx].data = data;
-
+                lista[idx].produto = document.getElementById('editProd').value;
+                lista[idx].qtd = parseInt(document.getElementById('editQtd').value) || 1;
+                lista[idx].preco = parseFloat(document.getElementById('editPreco').value.replace(',', '.')) || 0;
+                lista[idx].desconto = parseFloat(document.getElementById('editDesc').value) || 0;
+                lista[idx].data = document.getElementById('editDataVenda').value;
             } else if (tipo === 'estoque') {
-                let nome = document.getElementById('editEstNome').value;
-                let precoStr = document.getElementById('editEstPreco').value.replace(',', '.');
-                let preco = parseFloat(precoStr);
-                if (!nome || isNaN(preco)) return alert("Preencha o nome e preço.");
-
-                lista[idx].nome = nome;
-                lista[idx].preco = preco;
-
-                let arq = document.getElementById('editEstImagem').files[0];
-                if (arq) {
-                    lista[idx].imagem = await processarImagemBase64(arq);
-                }
-
+                lista[idx].nome = document.getElementById('editEstNome').value;
+                lista[idx].preco = parseFloat(document.getElementById('editEstPreco').value.replace(',', '.')) || 0;
             } else if (tipo === 'agenda') {
-                let data = document.getElementById('editAgendaData').value;
-                let horario = document.getElementById('editAgendaHorario').value;
-                let desc = document.getElementById('editAgendaDesc').value;
-                if (!data || !desc) return alert("Preencha data e descrição.");
-
-                lista[idx].data = data;
-                lista[idx].horario = horario;
-                lista[idx].desc = desc;
+                lista[idx].data = document.getElementById('editAgendaData').value;
+                lista[idx].horario = document.getElementById('editAgendaHorario').value;
+                lista[idx].desc = document.getElementById('editAgendaDesc').value;
             }
 
-            try {
-                salvarDados(tipo, lista);
-            } catch (error) {
-                alert("Erro! Pode ser falta de espaço no armazenamento do celular.");
-            }
-            fecharModalEdicao();
-            renderizarListas();
-            atualizarDashboard();
+            salvarDados(tipo, lista);
+            fecharModalEdicao(); renderizarListas(); atualizarDashboard();
         }
 
         // ==========================================
@@ -1091,329 +788,111 @@
         // ==========================================
         function abrirTelaCategorias() { document.getElementById('tela-gestao-categorias').classList.add('ativa'); }
         function fecharTelaCategorias() { document.getElementById('tela-gestao-categorias').classList.remove('ativa'); }
-
         function migrarCategoriasAntigas() {
-            let cat = obterDados('categorias');
-            if(cat.length === 0) {
-                salvarDados('categorias', [
-                    { id: gerarId(), nome: 'Trabalho', subs: ['Projetos', 'Reuniões', 'Ideias'] },
-                    { id: gerarId(), nome: 'Pessoal', subs: ['Finanças', 'Diário', 'Lembretes'] }
-                ]);
-            }
+            if(obterDados('categorias').length === 0) salvarDados('categorias', [{ id: gerarId(), nome: 'Trabalho', subs: ['Projetos'] }, { id: gerarId(), nome: 'Pessoal', subs: ['Finanças'] }]);
         }
-
         function renderizarGestorCategorias() {
-            let categorias = obterDados('categorias');
-            let divGestor = document.getElementById('listaGestaoCategorias');
-            let htmlBuffer = '';
-            categorias.forEach(cat => {
-                let subsHTML = cat.subs.map((sub, index) => 
-                    `<span class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${cat.id}', ${index})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></span>`
-                ).join('');
-
-                htmlBuffer += `
-                    <div class="cat-manager-card">
-                        <div class="cat-header">
-                            <strong>${cat.nome}</strong>
-                            <button class="btn-pequeno btn-excluir" style="padding: 4px 10px; font-size: 0.7rem;" onclick="removerCategoria('${cat.id}')">Excluir</button>
-                        </div>
-                        <div class="subcat-list">${subsHTML}</div>
-                        <div class="input-row">
-                            <input type="text" id="novaSub_${cat.id}" placeholder="Nova Subcategoria..." style="padding: 8px 10px; font-size: 0.8rem;">
-                            <button class="btn-acao btn-secundario" style="width: auto; padding: 0 14px; font-size: 0.8rem;" onclick="addSubcategoria('${cat.id}')">Add</button>
-                        </div>
-                    </div>`;
+            let html = '';
+            obterDados('categorias').forEach(cat => {
+                let subsHTML = cat.subs.map((s, i) => `<span class="subcat-badge">${s} <button class="remover-btn" onclick="removerSubcategoria('${cat.id}', ${i})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></span>`).join('');
+                html += `<div class="cat-manager-card"><div class="cat-header"><strong>${cat.nome}</strong><button class="btn-pequeno btn-excluir" onclick="removerCategoria('${cat.id}')">Excluir</button></div><div class="subcat-list">${subsHTML}</div><div class="input-row"><input type="text" id="novaSub_${cat.id}" placeholder="Nova Sub..." style="padding: 8px 10px; font-size: 0.8rem;"><button class="btn-acao btn-secundario" style="width: auto; padding: 0 14px;" onclick="addSubcategoria('${cat.id}')">Add</button></div></div>`;
             });
-            divGestor.innerHTML = htmlBuffer;
+            document.getElementById('listaGestaoCategorias').innerHTML = html;
         }
-
-        function addCategoria() {
-            let input = document.getElementById('novaCategoriaNome');
-            let nome = input.value.trim();
-            if(!nome) return;
-            let cat = obterDados('categorias');
-            cat.push({ id: gerarId(), nome: nome, subs: [] });
-            salvarDados('categorias', cat);
-            input.value = '';
-            atualizarSistemaDeCategorias();
-        }
-
-        function removerCategoria(id) {
-            let cat = obterDados('categorias');
-            if(cat.length <= 1) return alert("Mantenha ao menos uma categoria.");
-            if(confirm("Excluir esta categoria?")) {
-                salvarDados('categorias', cat.filter(c => c.id !== id));
-                atualizarSistemaDeCategorias();
-            }
-        }
-
-        function addSubcategoria(catId) {
-            let input = document.getElementById(`novaSub_${catId}`);
-            let subNome = input.value.trim();
-            if(!subNome) return;
-            let cat = obterDados('categorias');
-            let categoria = cat.find(c => c.id === catId);
-            if(!categoria.subs.includes(subNome)) {
-                categoria.subs.push(subNome);
-                salvarDados('categorias', cat);
-                atualizarSistemaDeCategorias();
-            }
-        }
-
-        function removerSubcategoria(catId, subIndex) {
-            let cat = obterDados('categorias');
-            cat.find(c => c.id === catId).subs.splice(subIndex, 1);
-            salvarDados('categorias', cat);
-            atualizarSistemaDeCategorias();
-        }
-
-        function atualizarSistemaDeCategorias() {
-            renderizarGestorCategorias();
-            preencherSelectCategorias('categoriaConteudo');
-            atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo');
-        }
-
-        function preencherSelectCategorias(selectId) {
-            let select = document.getElementById(selectId);
-            if(!select) return;
-            let categorias = obterDados('categorias');
-            let htmlBuffer = '';
-            categorias.forEach(cat => { htmlBuffer += `<option value="${cat.nome}">${cat.nome}</option>`; });
-            select.innerHTML = htmlBuffer;
-        }
-
-        function atualizarSelectSubcategorias(idSelectCat, idSelectSub) {
-            let selectCat = document.getElementById(idSelectCat);
-            let selectSub = document.getElementById(idSelectSub);
-            if(!selectCat || !selectSub) return;
-            let categoriaObj = obterDados('categorias').find(c => c.nome === selectCat.value);
-            let htmlBuffer = '<option value="">Sem subcategoria</option>';
-            if(categoriaObj && categoriaObj.subs.length > 0) {
-                categoriaObj.subs.forEach(sub => { htmlBuffer += `<option value="${sub}">${sub}</option>`; });
-            }
-            selectSub.innerHTML = htmlBuffer;
-        }
+        function addCategoria() { let nome = document.getElementById('novaCategoriaNome').value.trim(); if(!nome) return; let cat = obterDados('categorias'); cat.push({ id: gerarId(), nome, subs: [] }); salvarDados('categorias', cat); document.getElementById('novaCategoriaNome').value = ''; atualizarSistemaDeCategorias(); }
+        function removerCategoria(id) { let cat = obterDados('categorias'); if(cat.length <= 1 || !confirm("Excluir?")) return; salvarDados('categorias', cat.filter(c => c.id !== id)); atualizarSistemaDeCategorias(); }
+        function addSubcategoria(id) { let n = document.getElementById(`novaSub_${id}`).value.trim(); if(!n) return; let cat = obterDados('categorias'); let c = cat.find(x => x.id === id); if(!c.subs.includes(n)) c.subs.push(n); salvarDados('categorias', cat); atualizarSistemaDeCategorias(); }
+        function removerSubcategoria(id, idx) { let cat = obterDados('categorias'); cat.find(c => c.id === id).subs.splice(idx, 1); salvarDados('categorias', cat); atualizarSistemaDeCategorias(); }
+        function atualizarSistemaDeCategorias() { renderizarGestorCategorias(); preencherSelectCategorias('categoriaConteudo'); atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo'); }
+        function preencherSelectCategorias(id) { document.getElementById(id).innerHTML = obterDados('categorias').map(c => `<option value="${c.nome}">${c.nome}</option>`).join(''); }
+        function atualizarSelectSubcategorias(idCat, idSub) { let c = obterDados('categorias').find(x => x.nome === document.getElementById(idCat).value); document.getElementById(idSub).innerHTML = '<option value="">Sem subcategoria</option>' + (c ? c.subs.map(s => `<option value="${s}">${s}</option>`).join('') : ''); }
 
         // ==========================================
-        // NOTAS (NOVA NOTA)
+        // NOTAS E AGENDA
         // ==========================================
         async function salvarConteudo() {
-            let categoria = document.getElementById('categoriaConteudo').value;
-            let subcategoria = document.getElementById('subcategoriaConteudo').value;
-            let titulo = document.getElementById('tituloConteudo').value;
-            let texto = document.getElementById('textoConteudo').value;
-            let data = document.getElementById('dataNota').value || new Date().toISOString().split('T')[0];
-            let arquivo = document.getElementById('imagemConteudo').files[0];
-            
-            if (!titulo || !texto) return alert("Preencha o título e a descrição.");
-
-            let base64Imagem = "";
-            if (arquivo) {
-                try {
-                    base64Imagem = await processarImagemBase64(arquivo);
-                } catch(e) {
-                    console.error("Erro na leitura do arquivo", e);
-                }
-            }
-
+            let t = document.getElementById('tituloConteudo').value; let tx = document.getElementById('textoConteudo').value;
+            if (!t || !tx) return alert("Preencha o título e a descrição.");
+            let img = document.getElementById('imagemConteudo').files[0]; let b64 = img ? await processarImagemBase64(img).catch(()=>"") : "";
             let notas = obterDados('conteudos');
-            notas.push({ id: gerarId(), categoria, subcategoria, titulo, texto, data, imagem: base64Imagem });
-            
-            try {
-                salvarDados('conteudos', notas);
-            } catch (err) {
-                return alert("Erro ao salvar! Memória cheia.");
-            }
-            
-            ['tituloConteudo', 'textoConteudo', 'imagemConteudo'].forEach(id => {
-                let el = document.getElementById(id);
-                if (el) el.value = '';
-            });
-            document.getElementById('previewNotaBox').style.display = 'none';
-            document.getElementById('dataNota').value = new Date().toISOString().split('T')[0];
-            
+            notas.push({ id: gerarId(), categoria: document.getElementById('categoriaConteudo').value, subcategoria: document.getElementById('subcategoriaConteudo').value, titulo: t, texto: tx, data: document.getElementById('dataNota').value, imagem: b64 });
+            try { salvarDados('conteudos', notas); } catch (e) { return alert("Memória cheia."); }
+            ['tituloConteudo', 'textoConteudo', 'imagemConteudo'].forEach(id => document.getElementById(id).value = ''); document.getElementById('previewNotaBox').style.display = 'none';
             renderizarListas(); atualizarDashboard(); alternarAbaNotas('lista');
         }
-
         function renderizarNotas() {
-            let div = document.getElementById('listaConteudos');
-            let notas = obterDados('conteudos');
-            if(notas.length === 0) { 
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path></svg><p>Nenhuma nota salva.</p></div>`; 
-                return; 
-            }
-            let htmlBuffer = '';
-            notas.slice().reverse().forEach(nota => {
-                let catTexto = nota.categoria || 'Geral';
-                if(nota.subcategoria) catTexto += ` • ${nota.subcategoria}`;
-                let dataForm = nota.data ? nota.data.split('-').reverse().join('/') : '';
-                let imgTag = nota.imagem ? `<img src="${nota.imagem}" class="img-nota" loading="lazy">` : '';
-
-                htmlBuffer += `
-                    <div class="item-salvo">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <span class="caminho-categoria" style="margin-bottom:0;">${catTexto}</span>
-                            ${dataForm ? `<span style="font-size:0.72rem; color:var(--text-secundary); font-weight:600;">${dataForm}</span>` : ''}
-                        </div>
-                        <strong>${nota.titulo}</strong>
-                        <p>${nota.texto.replace(/\n/g, '<br>')}</p>
-                        ${imgTag}
-                        <div class="acoes-item">
-                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('conteudos', '${nota.id}')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('conteudos', '${nota.id}')">Excluir</button>
-                        </div>
-                    </div>`;
-            });
-            div.innerHTML = htmlBuffer;
+            let div = document.getElementById('listaConteudos'); let notas = obterDados('conteudos');
+            if(notas.length === 0) return div.innerHTML = `<div class="empty-state"><p>Nenhuma nota salva.</p></div>`;
+            div.innerHTML = notas.slice().reverse().map(n => `<div class="item-salvo"><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span class="caminho-categoria" style="margin-bottom:0;">${n.categoria||'Geral'} ${n.subcategoria?`• ${n.subcategoria}`:''}</span><span style="font-size:0.72rem;color:var(--text-secundary);font-weight:600;">${n.data?n.data.split('-').reverse().join('/'):''}</span></div><strong>${n.titulo}</strong><p>${n.texto.replace(/\n/g, '<br>')}</p>${n.imagem?`<img src="${n.imagem}" class="img-nota">`:''}<div class="acoes-item"><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('conteudos','${n.id}')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('conteudos','${n.id}')">Excluir</button></div></div>`).join('');
+        }
+        
+        function salvarAgenda() {
+            let d = document.getElementById('dataAgenda').value, h = document.getElementById('horarioAgenda').value, desc = document.getElementById('descAgenda').value;
+            if (!d || !desc) return alert("Preencha data e descrição.");
+            let ag = obterDados('agenda'); ag.push({ id: gerarId(), data: d, horario: h, desc: desc }); salvarDados('agenda', ag);
+            document.getElementById('horarioAgenda').value = ''; document.getElementById('descAgenda').value = ''; renderizarListas(); atualizarDashboard();
+        }
+        function renderizarAgenda() {
+            let div = document.getElementById('listaAgenda'); let ag = obterDados('agenda');
+            if(ag.length === 0) return div.innerHTML = `<div class="empty-state"><p>Agenda vazia.</p></div>`;
+            div.innerHTML = ag.slice().reverse().map(i => `<div class="item-salvo"><strong>${i.desc}</strong><p class="text-success" style="font-weight:600;">${i.data.split('-').reverse().join('/')}${i.horario?` • ${i.horario}`:''}</p><div class="acoes-item"><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('agenda','${i.id}')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('agenda','${i.id}')">Excluir</button></div></div>`).join('');
         }
 
         // ==========================================
-        // ESTOQUE (CORRIGIDO PARA ACEITAR VÍRGULA)
+        // ESTOQUE & VENDAS (COM DESCONTO)
         // ==========================================
         async function salvarEstoque() {
-            let nomeEl = document.getElementById('estNome');
-            let precoEl = document.getElementById('estPreco');
-            let arquivoEl = document.getElementById('estImagem');
-            
-            let nome = nomeEl.value.trim();
-            // Troca vírgula por ponto para não quebrar a soma matemática
-            let precoStr = precoEl.value.replace(',', '.');
-            let preco = parseFloat(precoStr);
-            let arquivo = arquivoEl.files[0];
-            
-            if (!nome || isNaN(preco) || preco <= 0) {
-                return alert("Preencha o nome e um valor válido para o produto.");
-            }
-
-            let base64Imagem = "";
-            if (arquivo) {
-                try {
-                    base64Imagem = await processarImagemBase64(arquivo);
-                } catch(e) {
-                    console.error("Erro no processamento da imagem", e);
-                }
-            }
-
-            let estoque = obterDados('estoque');
-            estoque.push({ id: gerarId(), nome, preco, imagem: base64Imagem });
-            
-            try {
-                salvarDados('estoque', estoque);
-            } catch (err) {
-                return alert("Não foi possível adicionar. O armazenamento local do dispositivo pode estar cheio.");
-            }
-            
-            nomeEl.value = '';
-            precoEl.value = '';
-            arquivoEl.value = '';
-            document.getElementById('previewEstoqueBox').style.display = 'none';
-
-            renderizarListas(); 
-            atualizarDashboard(); 
-            alternarAbaVendas('estoque');
+            let n = document.getElementById('estNome').value.trim(); let p = parseFloat(document.getElementById('estPreco').value.replace(',', '.'));
+            if (!n || isNaN(p) || p <= 0) return alert("Preencha nome e preço.");
+            let img = document.getElementById('estImagem').files[0]; let b64 = img ? await processarImagemBase64(img).catch(()=>"") : "";
+            let est = obterDados('estoque'); est.push({ id: gerarId(), nome: n, preco: p, imagem: b64 });
+            try { salvarDados('estoque', est); } catch (e) { return alert("Memória cheia."); }
+            ['estNome', 'estPreco', 'estImagem'].forEach(id => document.getElementById(id).value = ''); document.getElementById('previewEstoqueBox').style.display = 'none';
+            renderizarListas(); atualizarDashboard(); alternarAbaVendas('estoque');
         }
 
         function venderItemDoEstoque(nome, preco) {
             document.getElementById('nomeProduto').value = nome;
             document.getElementById('precoProduto').value = preco;
             document.getElementById('qtdProduto').value = 1;
+            document.getElementById('descProduto').value = 0; 
+            calcularTotalTempoReal(); 
             alternarAbaVendas('nova');
         }
 
         function renderizarEstoque() {
-            let div = document.getElementById('listaEstoque');
-            let estoque = obterDados('estoque');
-            if(estoque.length === 0) {
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg><p>Nenhum produto cadastrado na loja.</p></div>`;
-                return;
-            }
-
-            let htmlBuffer = '';
-            estoque.slice().reverse().forEach(prod => {
-                let imgTag = prod.imagem 
-                    ? `<img src="${prod.imagem}" loading="lazy">` 
-                    : `<div style="width:75px; height:75px; background:var(--bg-input); border-radius:12px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-secundary); font-size:0.68rem; font-weight:600;">Sem foto</div>`;
-                
-                let precoBRL = prod.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                
-                htmlBuffer += `
-                    <div class="item-salvo">
-                        <div class="produto-img-lateral">
-                            ${imgTag}
-                            <div class="produto-info">
-                                <strong style="margin-bottom:2px;">${prod.nome}</strong>
-                                <span class="destaque text-purple" style="margin-top:0; font-size: 1.05rem;">${precoBRL}</span>
-                            </div>
-                        </div>
-                        <div class="acoes-item" style="margin-top:12px; padding-top:12px;">
-                            <button class="btn-pequeno btn-vender-rapido" onclick="venderItemDoEstoque('${prod.nome.replace(/'/g, "\\'")}', ${prod.preco})">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                                Vender
-                            </button>
-                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('estoque', '${prod.id}')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('estoque', '${prod.id}')">Excluir</button>
-                        </div>
-                    </div>`;
-            });
-            div.innerHTML = htmlBuffer;
+            let div = document.getElementById('listaEstoque'); let est = obterDados('estoque');
+            if(est.length === 0) return div.innerHTML = `<div class="empty-state"><p>Nenhum produto na loja.</p></div>`;
+            div.innerHTML = est.slice().reverse().map(p => `<div class="item-salvo"><div class="produto-img-lateral">${p.imagem?`<img src="${p.imagem}">`:`<div style="width:75px;height:75px;background:var(--bg-input);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-secundary);font-size:0.68rem;font-weight:600;">Sem foto</div>`}<div class="produto-info"><strong style="margin-bottom:2px;">${p.nome}</strong><span class="destaque text-purple" style="margin-top:0;font-size:1.05rem;">${p.preco.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></div></div><div class="acoes-item" style="margin-top:12px;padding-top:12px;"><button class="btn-pequeno btn-vender-rapido" onclick="venderItemDoEstoque('${p.nome.replace(/'/g, "\\'")}', ${p.preco})">Vender</button><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('estoque','${p.id}')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('estoque','${p.id}')">Excluir</button></div></div>`).join('');
         }
 
-        // ==========================================
-        // AGENDA E VENDAS
-        // ==========================================
-        function salvarAgenda() {
-            let data = document.getElementById('dataAgenda').value;
-            let horario = document.getElementById('horarioAgenda').value;
-            let desc = document.getElementById('descAgenda').value;
-            if (!data || !desc) return alert("Preencha a data e descrição do evento.");
-            let agenda = obterDados('agenda');
-            agenda.push({ id: gerarId(), data, horario, desc });
-            salvarDados('agenda', agenda);
-            document.getElementById('dataAgenda').value = new Date().toISOString().split('T')[0];
-            document.getElementById('horarioAgenda').value = '';
-            document.getElementById('descAgenda').value = '';
-            renderizarListas(); atualizarDashboard();
-        }
-
-        function renderizarAgenda() {
-            let div = document.getElementById('listaAgenda');
-            let agenda = obterDados('agenda');
-            if(agenda.length === 0) { div.innerHTML = `<div class="empty-state"><p>Agenda vazia.</p></div>`; return; }
-            let htmlBuffer = '';
-            agenda.slice().reverse().forEach(item => {
-                let dataForm = item.data.split('-').reverse().join('/');
-                let horarioTexto = item.horario ? ` • ${item.horario}` : '';
-                htmlBuffer += `
-                    <div class="item-salvo">
-                        <strong>${item.desc}</strong>
-                        <p class="text-success" style="font-weight:600;">${dataForm}${horarioTexto}</p>
-                        <div class="acoes-item">
-                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('agenda', '${item.id}')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('agenda', '${item.id}')">Excluir</button>
-                        </div>
-                    </div>`;
-            });
-            div.innerHTML = htmlBuffer;
+        function calcularTotalTempoReal() {
+            let qtd = parseInt(document.getElementById('qtdProduto').value) || 0;
+            let preco = parseFloat(document.getElementById('precoProduto').value.replace(',', '.')) || 0;
+            let descStr = document.getElementById('descProduto').value.replace(',', '.');
+            let desconto = parseFloat(descStr) || 0;
+            
+            let total = (qtd * preco) * (1 - (desconto / 100));
+            document.getElementById('previewTotalVenda').innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
         function salvarVenda() {
             let produto = document.getElementById('nomeProduto').value;
             let qtd = parseInt(document.getElementById('qtdProduto').value);
-            
-            // Suporte para preços digitados com vírgula (R$)
-            let precoStr = document.getElementById('precoProduto').value.replace(',', '.');
-            let preco = parseFloat(precoStr);
+            let preco = parseFloat(document.getElementById('precoProduto').value.replace(',', '.'));
+            let desconto = parseFloat(document.getElementById('descProduto').value.replace(',', '.')) || 0;
             let data = document.getElementById('dataVenda').value || new Date().toISOString().split('T')[0];
 
             if (!produto || isNaN(qtd) || isNaN(preco)) return alert("Preencha nome, quantidade e preço validos.");
+            
             let vendas = obterDados('vendas');
-            vendas.push({ id: gerarId(), produto, qtd, preco, data });
+            vendas.push({ id: gerarId(), produto, qtd, preco, desconto, data });
             salvarDados('vendas', vendas);
             
-            document.getElementById('nomeProduto').value = '';
+            ['nomeProduto', 'precoProduto'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('qtdProduto').value = '1';
-            document.getElementById('precoProduto').value = '';
-            document.getElementById('dataVenda').value = new Date().toISOString().split('T')[0];
+            document.getElementById('descProduto').value = '0';
+            calcularTotalTempoReal();
             
             renderizarListas(); atualizarDashboard(); alternarAbaVendas('lista');
         }
@@ -1421,21 +900,27 @@
         function renderizarVendas() {
             let div = document.getElementById('listaVendas');
             let vendas = obterDados('vendas');
-            if(vendas.length === 0) { div.innerHTML = `<div class="empty-state"><p>Nenhuma venda registrada.</p></div>`; return; }
+            if(vendas.length === 0) return div.innerHTML = `<div class="empty-state"><p>Nenhuma venda registrada.</p></div>`;
+            
             let htmlBuffer = '';
-            vendas.slice().reverse().forEach(venda => {
-                let totalBRL = (venda.qtd * venda.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                let precoBRL = venda.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                let dataForm = venda.data ? venda.data.split('-').reverse().join('/') : '';
+            vendas.slice().reverse().forEach(v => {
+                let descontoValor = v.desconto || 0;
+                let finalPreco = (v.qtd * v.preco) * (1 - (descontoValor / 100));
+                
+                let totalBRL = finalPreco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                let precoBRL = v.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                let dataForm = v.data ? v.data.split('-').reverse().join('/') : '';
+                
+                let badgeDesc = descontoValor > 0 ? `<span class="badge-desconto">-${descontoValor}%</span>` : '';
 
                 htmlBuffer += `
                     <div class="item-salvo">
-                        <strong>${venda.produto}</strong>
-                        <p>${venda.qtd}x de ${precoBRL} ${dataForm ? `• <span style="color:var(--text-secundary); font-size:0.75rem;">${dataForm}</span>` : ''}</p>
+                        <strong style="display:flex; align-items:center;">${v.produto} ${badgeDesc}</strong>
+                        <p>${v.qtd}x de ${precoBRL} ${dataForm ? `• <span style="color:var(--text-secundary); font-size:0.75rem;">${dataForm}</span>` : ''}</p>
                         <span class="destaque text-success">${totalBRL}</span>
                         <div class="acoes-item">
-                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('vendas', '${venda.id}')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('vendas', '${venda.id}')">Excluir</button>
+                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('vendas', '${v.id}')">Editar</button>
+                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('vendas', '${v.id}')">Excluir</button>
                         </div>
                     </div>`;
             });
@@ -1449,14 +934,12 @@
             }
         }
 
-        function renderizarListas() { 
-            renderizarNotas(); renderizarAgenda(); renderizarVendas(); renderizarEstoque();
-        }
+        function renderizarListas() { renderizarNotas(); renderizarAgenda(); renderizarVendas(); renderizarEstoque(); }
 
         function atualizarDashboard() {
             document.getElementById('dashTotalNotas').innerText = obterDados('conteudos').length;
             
-            let totalV = obterDados('vendas').reduce((acc, v) => acc + (v.qtd * v.preco), 0);
+            let totalV = obterDados('vendas').reduce((acc, v) => acc + ((v.qtd * v.preco) * (1 - ((v.desconto || 0) / 100))), 0);
             document.getElementById('dashTotalVendas').innerText = totalV.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
             let totalE = obterDados('estoque').reduce((acc, p) => acc + p.preco, 0);
@@ -1465,13 +948,9 @@
             let agenda = obterDados('agenda');
             let divAgenda = document.getElementById('dashProximoEvento');
             if (agenda.length > 0) {
-                let ultimo = agenda[agenda.length - 1]; 
-                let dataForm = ultimo.data.split('-').reverse().join('/');
-                let horarioTexto = ultimo.horario ? ` às ${ultimo.horario}` : '';
-                divAgenda.innerHTML = `<strong style="display:block; font-size: 0.9rem; margin-bottom: 2px;">${ultimo.desc}</strong>${dataForm}${horarioTexto}`;
-            } else {
-                divAgenda.innerHTML = 'Nenhum.';
-            }
+                let u = agenda[agenda.length - 1]; 
+                divAgenda.innerHTML = `<strong style="display:block; font-size: 0.9rem; margin-bottom: 2px;">${u.desc}</strong>${u.data.split('-').reverse().join('/')}${u.horario?` às ${u.horario}`:''}`;
+            } else { divAgenda.innerHTML = 'Nenhum.'; }
 
             renderizarGraficoVendas();
         }
