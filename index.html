@@ -13,9 +13,9 @@
 
         :root {
             --bg-app: #0B0C10;         
-            --bg-card: rgba(26, 28, 38, 0.6);        
-            --bg-nav: rgba(15, 17, 24, 0.9);         
-            --bg-input: rgba(19, 21, 31, 0.8);       
+            --bg-card: rgba(26, 28, 38, 0.65);        
+            --bg-nav: rgba(15, 17, 24, 0.92);         
+            --bg-input: rgba(19, 21, 31, 0.85);       
             --bg-input-focus: rgba(28, 31, 46, 1);
             
             --primary: #2F80ED;        
@@ -29,12 +29,12 @@
             
             --text-main: #FFFFFF;      
             --text-secundary: #A1A8B8; 
-            --border: rgba(255, 255, 255, 0.06);         
-            --border-highlight: rgba(255, 255, 255, 0.12);
+            --border: rgba(255, 255, 255, 0.08);         
+            --border-highlight: rgba(255, 255, 255, 0.15);
             
-            --radius-card: 20px; /* Reduzido levemente */
+            --radius-card: 20px;
             --radius-input: 14px;
-            --shadow-subtle: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-subtle: 0 8px 32px rgba(0, 0, 0, 0.35);
             --shadow-glow: 0 4px 20px rgba(47, 128, 237, 0.4);
         }
 
@@ -83,8 +83,8 @@
            2. CABEÇALHO E SCROLLBAR PREMIUM
            ========================================== */
         header {
-            padding: calc(env(safe-area-inset-top) + 12px) 20px 10px; /* Altura reduzida */
-            background: rgba(11, 12, 16, 0.7); 
+            padding: calc(env(safe-area-inset-top) + 14px) 20px 12px;
+            background: rgba(11, 12, 16, 0.75); 
             backdrop-filter: blur(20px); 
             -webkit-backdrop-filter: blur(20px); 
             position: absolute; 
@@ -97,20 +97,19 @@
             border-bottom: 1px solid var(--border); 
             background: rgba(11, 12, 16, 0.95);
         }
-        header h1 { font-size: 1.05rem; font-weight: 800; color: var(--text-main); text-align: center; letter-spacing: 0.5px; }
+        header h1 { font-size: 1.15rem; font-weight: 800; color: var(--text-main); text-align: center; letter-spacing: 0.5px; }
 
         ::-webkit-scrollbar { width: 0px; background: transparent; }
 
         /* ==========================================
-           3. ÁREA DE CONTEÚDO E SCROLL CORRIGIDO
+           3. ÁREA DE CONTEÚDO E SCROLL
            ========================================== */
         .content-area { 
             flex: 1; 
             overflow-y: auto; 
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch; 
-            /* Espaçamento superior e inferior ajustado para caber mais na tela */
-            padding: calc(env(safe-area-inset-top) + 55px) 14px calc(env(safe-area-inset-bottom) + 80px) 14px; 
+            padding: calc(env(safe-area-inset-top) + 60px) 16px calc(env(safe-area-inset-bottom) + 85px) 16px; 
             scroll-behavior: smooth; 
             position: relative;
         }
@@ -124,18 +123,19 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: var(--radius-card); 
-            padding: 14px 16px; /* Reduzido de 18px 20px */
-            margin-bottom: 12px; /* Reduzido de 16px */
+            padding: 16px 18px;
+            margin-bottom: 14px;
             border: 1px solid var(--border); 
             box-shadow: var(--shadow-subtle); 
             position: relative; 
             overflow: hidden; 
         }
+
         .section-title { 
-            font-size: 0.72rem; 
+            font-size: 0.82rem; 
             font-weight: 800; 
             color: var(--text-secundary); 
-            margin-bottom: 10px; 
+            margin-bottom: 12px; 
             text-transform: uppercase; 
             letter-spacing: 1.2px; 
             display: flex; 
@@ -146,11 +146,11 @@
         /* ==========================================
            4. PAINEL DE INÍCIO & GRÁFICO
            ========================================== */
-        .user-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px; }
+        .user-panel { display: flex; justify-content: space-between; align-items: center; }
         .user-info { display: flex; align-items: center; gap: 12px; }
         .user-avatar { 
-            width: 40px; /* Reduzido de 46px */
-            height: 40px; 
+            width: 44px;
+            height: 44px; 
             background: linear-gradient(135deg, rgba(47,128,237,0.25), rgba(157,78,221,0.15)); 
             border-radius: 14px; 
             display: flex; 
@@ -160,35 +160,36 @@
             border: 1px solid rgba(47,128,237,0.3); 
             box-shadow: 0 4px 15px rgba(47,128,237,0.2); 
         }
-        .user-avatar svg { width: 20px; height: 20px; }
-        .user-text span { display: block; font-size: 0.65rem; color: var(--text-secundary); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-        .user-text strong { font-size: 1.05rem; color: var(--text-main); font-weight: 800; }
+        .user-avatar svg { width: 22px; height: 22px; }
+        .user-text span { display: block; font-size: 0.7rem; color: var(--text-secundary); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .user-text strong { font-size: 1.1rem; color: var(--text-main); font-weight: 800; }
+        
         .date-badge { 
-            background: rgba(255,255,255,0.06); 
-            color: var(--text-secundary); 
-            padding: 5px 12px; 
+            background: rgba(255,255,255,0.08); 
+            color: var(--text-main); 
+            padding: 6px 14px; 
             border-radius: 20px; 
-            font-size: 0.7rem; 
-            font-weight: 700; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
             border: 1px solid var(--border); 
         }
         
         .gradient-text-success { background: linear-gradient(135deg, #30D158, #61FF88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-purple { background: linear-gradient(135deg, #9D4EDD, #C77DFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .balance-box { padding: 8px 0 10px; border-bottom: 1px solid var(--border); margin-bottom: 8px; } /* Reduzido */
+        .balance-box { padding: 8px 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
         .balance-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0px; }
-        .balance-box .label { font-size: 0.72rem; color: var(--text-secundary); display: block; margin-bottom: 4px; font-weight: 700; }
-        .balance-box .value { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.5px; } /* Reduzido de 2.1rem */
+        .balance-box .label { font-size: 0.78rem; color: var(--text-secundary); display: block; margin-bottom: 4px; font-weight: 700; }
+        .balance-box .value { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; }
 
-        .chart-container { width: 100%; height: 120px; position: relative; margin-top: 8px; } /* Reduzido de 170px */
+        .chart-container { width: 100%; height: 150px; position: relative; margin-top: 10px; }
 
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; } /* Reduzido de 14px/16px */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
         .dash-card { 
             background: var(--bg-card); 
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            padding: 12px; /* Reduzido de 16px */
+            padding: 14px; 
             border-radius: var(--radius-card); 
             border: 1px solid var(--border); 
             display: flex; 
@@ -199,15 +200,15 @@
         }
         .dash-card:active { transform: scale(0.96); }
         .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .dash-card .icon-box { width: 32px; height: 32px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
-        .dash-card h3 { color: var(--text-secundary); font-size: 0.7rem; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
-        .dash-card span { color: var(--text-main); font-size: 1.2rem; font-weight: 800; }
+        .dash-card .icon-box { width: 36px; height: 36px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+        .dash-card h3 { color: var(--text-secundary); font-size: 0.75rem; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
+        .dash-card span { color: var(--text-main); font-size: 1.25rem; font-weight: 800; }
 
         /* ==========================================
            5. FORMULÁRIOS & CONTROLES
            ========================================== */
         .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 0.75rem; color: var(--text-secundary); margin-bottom: 6px; font-weight: 700; }
+        .form-group label { display: block; font-size: 0.78rem; color: var(--text-secundary); margin-bottom: 6px; font-weight: 700; }
         
         input, textarea, select { 
             width: 100%; 
@@ -216,7 +217,7 @@
             border: 1px solid var(--border); 
             border-radius: var(--radius-input); 
             color: var(--text-main); 
-            font-size: 0.9rem; 
+            font-size: 0.92rem; 
             outline: none; 
             transition: all 0.3s ease; 
             appearance: none; 
@@ -250,7 +251,7 @@
             opacity: 0;
             cursor: pointer;
         }
-        .file-upload-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secundary); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .file-upload-label { font-size: 0.85rem; font-weight: 600; color: var(--text-secundary); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .preview-img-container { display: none; margin-top: 10px; position: relative; }
         .preview-img-container img { width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
         .btn-remover-img { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 5px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
@@ -264,9 +265,9 @@
         .btn-secundario:active { background: rgba(255, 255, 255, 0.15); }
         .btn-perigo { background: rgba(255, 69, 58, 0.15); color: var(--danger); border: 1px solid rgba(255, 69, 58, 0.3); box-shadow: none; }
         
-        .segment-control { display: flex; background: rgba(19, 21, 31, 0.6); border-radius: 16px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--border); overflow-x: auto; backdrop-filter: blur(10px); }
+        .segment-control { display: flex; background: rgba(19, 21, 31, 0.7); border-radius: 16px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--border); overflow-x: auto; backdrop-filter: blur(10px); }
         .segment-control::-webkit-scrollbar { display: none; }
-        .segment-btn { flex: 1; text-align: center; padding: 10px 8px; border-radius: 12px; font-size: 0.78rem; font-weight: 700; color: var(--text-secundary); cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .segment-btn { flex: 1; text-align: center; padding: 10px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; color: var(--text-secundary); cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
         .segment-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid var(--border-highlight); }
         .aba-view { display: none; animation: fadeIn 0.4s ease; }
         .aba-view.active { display: block; }
@@ -277,19 +278,27 @@
         .resultados-container { display: flex; flex-direction: column; gap: 12px; }
         .item-salvo { background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px; border-radius: var(--radius-card); border: 1px solid var(--border); transition: transform 0.2s; position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); }
         
-        .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.65rem; font-weight: 800; margin-bottom: 8px; gap: 6px; background: rgba(47,128,237,0.15); color: #66A3FF; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(47,128,237,0.3); text-transform: uppercase; letter-spacing: 0.8px; }
+        .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.7rem; font-weight: 800; margin-bottom: 8px; gap: 6px; background: rgba(47,128,237,0.15); color: #66A3FF; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(47,128,237,0.3); text-transform: uppercase; letter-spacing: 0.8px; }
         
         .item-salvo strong { display: block; font-size: 1.05rem; margin-bottom: 6px; color: var(--text-main); line-height: 1.4;}
-        .item-salvo p { color: var(--text-secundary); font-size: 0.88rem; line-height: 1.5; }
-        .item-salvo img.img-nota { width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-top: 12px; border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
         
-        .destaque { font-size: 1.2rem; font-weight: 800; display: block; margin-top: 8px; }
+        .item-salvo p { 
+            color: var(--text-secundary); 
+            font-size: 0.9rem; 
+            line-height: 1.5; 
+            white-space: pre-wrap; 
+            word-break: break-word; 
+        }
+
+        .item-salvo img.img-nota { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-top: 12px; border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+        
+        .destaque { font-size: 1.25rem; font-weight: 800; display: block; margin-top: 8px; }
         .text-success { color: var(--success); }
         .text-purple { color: var(--purple); }
-        .badge-desconto { background: rgba(255,159,10,0.2); color: var(--warning); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; border: 1px solid rgba(255,159,10,0.4); margin-left: 8px;}
+        .badge-desconto { background: rgba(255,159,10,0.2); color: var(--warning); padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(255,159,10,0.4); margin-left: 8px;}
 
         .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
-        .btn-pequeno { background: rgba(255,255,255,0.05); border: 1px solid var(--border); font-weight: 800; font-size: 0.75rem; cursor: pointer; padding: 6px 12px; border-radius: 10px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-pequeno { background: rgba(255,255,255,0.05); border: 1px solid var(--border); font-weight: 800; font-size: 0.78rem; cursor: pointer; padding: 7px 14px; border-radius: 10px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
         .btn-pequeno:active { transform: scale(0.92); }
         .btn-editar { color: var(--primary); border-color: rgba(47,128,237,0.4); background: rgba(47,128,237,0.1); }
         .btn-vender-rapido { color: var(--success); border-color: rgba(48,209,88,0.4); background: rgba(48,209,88,0.1); }
@@ -306,27 +315,28 @@
         .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .cat-header strong { color: var(--text-main); font-size: 0.95rem; font-weight: 800; }
         .subcat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 5px 10px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
         .remover-btn { color: var(--danger); cursor: pointer; display: flex; align-items: center; background: none; border: none; padding: 2px; }
 
         .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; margin-bottom: 12px; transition: 0.2s; box-shadow: var(--shadow-subtle); }
         .nav-link-card:active { transform: scale(0.96); background: rgba(255,255,255,0.05); }
-        .nav-link-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 800; margin-bottom: 4px; }
-        .nav-link-card p { font-size: 0.78rem; color: var(--text-secundary); }
+        .nav-link-card h3 { font-size: 0.98rem; color: var(--text-main); font-weight: 800; margin-bottom: 4px; }
+        .nav-link-card p { font-size: 0.82rem; color: var(--text-secundary); }
         
         /* ==========================================
            8. MENU INFERIOR FIXO
            ========================================== */
         .bottom-nav { 
-            position: absolute; bottom: 0; left: 0; right: 0; height: 70px; /* Reduzido de 80px */
+            position: absolute; bottom: 0; left: 0; right: 0; height: 74px;
             padding-bottom: env(safe-area-inset-bottom); background: var(--bg-nav); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
             border-top: 1px solid var(--border-highlight); display: flex; justify-content: space-around; align-items: center; z-index: 100; 
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; height: 100%; cursor: pointer; color: var(--text-secundary); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .nav-item.ativo { color: var(--primary); transform: translateY(-2px); }
-        .nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; }
+        
+        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; }
         .nav-item.ativo svg { stroke-width: 2.5; filter: drop-shadow(0 4px 10px rgba(47,128,237,0.6)); }
-        .nav-item span.label { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.2px; }
+        .nav-item span.label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.2px; }
 
         /* ==========================================
            9. TELAS SOBREPOSTAS E MODAL (EDITAR)
@@ -336,17 +346,49 @@
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
         .overlay-header { padding: calc(env(safe-area-inset-top) + 15px) 20px 10px; display: flex; align-items: center; background: rgba(11, 12, 16, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210;}
-        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 0.9rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        .overlay-body { padding: 14px; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 80px; }
+        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 0.92rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .overlay-body { padding: 16px; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 80px; }
         
         .empty-state { text-align: center; padding: 40px 14px; color: var(--text-secundary); }
-        .empty-state svg { width: 45px; height: 45px; stroke-width: 1.5; margin-bottom: 12px; opacity: 0.5; color: var(--text-secundary); }
-        .empty-state p { font-size: 0.9rem; font-weight: 600; }
+        .empty-state svg { width: 48px; height: 48px; stroke-width: 1.5; margin-bottom: 12px; opacity: 0.5; color: var(--text-secundary); }
+        .empty-state p { font-size: 0.92rem; font-weight: 600; }
         
-        /* Painel Resumo Venda */
         .preview-venda-card {
             background: linear-gradient(135deg, rgba(47, 128, 237, 0.1), rgba(47, 128, 237, 0.05)); padding: 16px; border-radius: 14px; 
             border: 1px solid rgba(47, 128, 237, 0.3); text-align: center; margin-bottom: 14px; box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        /* ==========================================
+           10. BOTÃO SUBIR PARA O TOPO
+           ========================================== */
+        .btn-scroll-top {
+            position: absolute;
+            bottom: 90px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(47, 128, 237, 0.4);
+            cursor: pointer;
+            z-index: 90;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(15px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-scroll-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+        .btn-scroll-top:active {
+            transform: scale(0.9);
         }
     </style>
 </head>
@@ -362,7 +404,7 @@
             
             <!-- TELA INÍCIO -->
             <div id="tela-inicio" class="tela ativa">
-                <div class="card" style="padding: 12px 16px;">
+                <div class="card" style="padding: 14px 16px;">
                     <div class="user-panel">
                         <div class="user-info">
                             <div class="user-avatar">
@@ -384,14 +426,14 @@
                     </div>
                     <div class="balance-box" style="border: none; padding-bottom: 0;">
                         <span class="label">Total em Estoque (À venda)</span>
-                        <div class="value gradient-text-purple" id="dashTotalEstoque" style="font-size: 1.4rem;">R$ 0,00</div>
+                        <div class="value gradient-text-purple" id="dashTotalEstoque" style="font-size: 1.45rem;">R$ 0,00</div>
                     </div>
                 </div>
 
                 <div class="card">
                     <h2 class="section-title">
                         <span>Desempenho Mês a Mês</span>
-                        <span style="font-size: 0.65rem; color: var(--success); font-weight: 800;">Vendas (R$)</span>
+                        <span style="font-size: 0.72rem; color: var(--success); font-weight: 800;">Vendas (R$)</span>
                     </h2>
                     <div class="chart-container">
                         <canvas id="graficoVendasMensal"></canvas>
@@ -402,7 +444,7 @@
                     <div class="dash-card">
                         <div class="header">
                             <div class="icon-box" style="background: rgba(47, 128, 237, 0.15); color: var(--primary);">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
                             </div>
                         </div>
                         <h3>Total de Notas</h3>
@@ -412,11 +454,11 @@
                     <div class="dash-card">
                         <div class="header">
                             <div class="icon-box" style="background: rgba(255, 159, 10, 0.15); color: var(--warning);">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                             </div>
                         </div>
                         <h3>Próximo Evento</h3>
-                        <span id="dashProximoEvento" style="font-size: 0.85rem; font-weight: 700; margin-top: 4px; line-height: 1.3;">Nenhum.</span>
+                        <span id="dashProximoEvento" style="font-size: 0.88rem; font-weight: 700; margin-top: 4px; line-height: 1.3;">Nenhum.</span>
                     </div>
                 </div>
             </div>
@@ -437,12 +479,12 @@
                         </div>
                         <div class="form-group"><label>Título</label><input type="text" id="tituloConteudo" placeholder="Assunto principal"></div>
                         <div class="form-group"><label>Data da Nota</label><input type="date" id="dataNota" style="color-scheme: dark;"></div>
-                        <div class="form-group"><label>Descrição</label><textarea id="textoConteudo" rows="3" placeholder="Detalhes completos..."></textarea></div>
+                        <div class="form-group"><label>Descrição</label><textarea id="textoConteudo" rows="4" placeholder="Detalhes completos..."></textarea></div>
                         <div class="form-group">
                             <label>Anexar Imagem (Opcional)</label>
                             <div class="file-upload-box">
                                 <input type="file" id="imagemConteudo" accept="image/*" onchange="previewUploadImage(this, 'previewNotaBox', 'previewNotaImg')">
-                                <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Escolher Imagem</span></div>
+                                <div class="file-upload-label"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Escolher Imagem</span></div>
                             </div>
                             <div class="preview-img-container" id="previewNotaBox">
                                 <img id="previewNotaImg" src="" alt="Preview">
@@ -488,8 +530,8 @@
                         </div>
 
                         <div class="preview-venda-card">
-                            <span style="font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 6px; text-transform: uppercase; font-weight: 800;">Total a Receber</span>
-                            <strong id="previewTotalVenda" style="font-size: 1.5rem; color: var(--primary);">R$ 0,00</strong>
+                            <span style="font-size: 0.78rem; color: var(--text-secundary); display: block; margin-bottom: 6px; text-transform: uppercase; font-weight: 800;">Total a Receber</span>
+                            <strong id="previewTotalVenda" style="font-size: 1.6rem; color: var(--primary);">R$ 0,00</strong>
                         </div>
 
                         <div class="form-group"><label>Data da Venda</label><input type="date" id="dataVenda" style="color-scheme: dark;"></div>
@@ -507,7 +549,7 @@
                             <label>Foto do Produto (Opcional)</label>
                             <div class="file-upload-box">
                                 <input type="file" id="estImagem" accept="image/*" onchange="previewUploadImage(this, 'previewEstoqueBox', 'previewEstoqueImg')">
-                                <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Carregar Imagem</span></div>
+                                <div class="file-upload-label"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Carregar Imagem</span></div>
                             </div>
                             <div class="preview-img-container" id="previewEstoqueBox">
                                 <img id="previewEstoqueImg" src="" alt="Preview Produto">
@@ -532,11 +574,18 @@
                 </div>
                 <div class="card" style="border-color: rgba(255, 69, 58, 0.4); margin-top: 20px; background: rgba(255, 69, 58, 0.05);">
                     <h2 class="section-title" style="color: var(--danger);">Zona de Perigo</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-secundary); margin-bottom: 16px; line-height: 1.5;">Atenção: Ao apagar os dados, todo o seu histórico, estoque e notas serão perdidos de forma permanente.</p>
+                    <p style="font-size: 0.88rem; color: var(--text-secundary); margin-bottom: 16px; line-height: 1.5;">Atenção: Ao apagar os dados, todo o seu histórico, estoque e notas serão perdidos de forma permanente.</p>
                     <button class="btn-acao btn-perigo" onclick="limparTodosDados()">Apagar Todos os Dados</button>
                 </div>
             </div>
         </div>
+        
+        <!-- BOTÃO VOLTAR AO TOPO -->
+        <button id="btn-scroll-top" class="btn-scroll-top" onclick="subirParaTopo()" aria-label="Voltar ao topo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        </button>
 
         <!-- MENU INFERIOR FIXO -->
         <nav class="bottom-nav">
@@ -627,14 +676,53 @@
             renderEstoque();
             renderVendas();
             
+            // Lógica unificada de Scroll (Header e Botão Topo)
             document.getElementById('main-content').addEventListener('scroll', function() {
                 let header = document.getElementById('main-header');
                 if(this.scrollTop > 10) header.classList.add('header-scrolled');
                 else header.classList.remove('header-scrolled');
+                
+                verificarScrollTop(); // Verifica se precisa mostrar o botão de voltar ao topo
             });
         }
 
         function formatarMoeda(valor) { return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+
+        // ==========================================
+        // BOTÃO VOLTAR AO TOPO (LÓGICA)
+        // ==========================================
+        function subirParaTopo() {
+            document.getElementById('main-content').scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function deveMostrarBtnTopo() {
+            // Verifica se está na aba Histórico de Notas
+            let telaNotas = document.getElementById('tela-conteudo');
+            let abaNotasList = document.getElementById('aba-notas-lista');
+            if (telaNotas.classList.contains('ativa') && abaNotasList.classList.contains('active')) return true;
+
+            // Verifica se está na aba Estoque/Loja ou Histórico de Vendas
+            let telaVendas = document.getElementById('tela-vendas');
+            let abaEstoque = document.getElementById('aba-vendas-estoque');
+            let abaVendasList = document.getElementById('aba-vendas-lista');
+            if (telaVendas.classList.contains('ativa') && (abaEstoque.classList.contains('active') || abaVendasList.classList.contains('active'))) return true;
+
+            return false;
+        }
+
+        function verificarScrollTop() {
+            let content = document.getElementById('main-content');
+            let btnTop = document.getElementById('btn-scroll-top');
+            
+            if (content.scrollTop > 150 && deveMostrarBtnTopo()) {
+                btnTop.classList.add('visible');
+            } else {
+                btnTop.classList.remove('visible');
+            }
+        }
 
         // ==========================================
         // NAVEGAÇÃO
@@ -646,6 +734,7 @@
             if(elemBotao) elemBotao.classList.add('ativo');
             document.getElementById('header-title').innerText = titulo;
             document.getElementById('main-content').scrollTop = 0;
+            verificarScrollTop();
         }
 
         // ==========================================
@@ -675,7 +764,7 @@
         }
 
         // ==========================================
-        // CONTEÚDOS (NOTAS)
+        // CONTEÚDOS (NOTAS) - FIXADO SELECTS
         // ==========================================
         function alternarAbaNotas(aba) {
             document.querySelectorAll('#tela-conteudo .segment-btn').forEach(b => b.classList.remove('active'));
@@ -688,25 +777,43 @@
                 document.getElementById('aba-notas-lista').classList.add('active');
                 renderConteudos();
             }
+            verificarScrollTop(); // Atualiza a visibilidade do botão caso a aba mude a rolagem
         }
 
         function carregarSelectCategorias() {
             let cats = obterDados('categorias');
             let selCat = document.getElementById('categoriaConteudo');
-            selCat.innerHTML = '';
-            cats.forEach(c => { selCat.innerHTML += `<option value="${c.id}">${c.nome}</option>`; });
+            let selSub = document.getElementById('subcategoriaConteudo');
+            
+            if(!selCat || !selSub) return;
+            
+            if (cats.length === 0) {
+                selCat.innerHTML = '<option value="">Sem categorias</option>';
+                selSub.innerHTML = '<option value="">Sem subcategorias</option>';
+                return;
+            }
+
+            let htmlCat = '';
+            cats.forEach(c => { htmlCat += `<option value="${c.id}">${c.nome}</option>`; });
+            selCat.innerHTML = htmlCat;
             atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo');
         }
 
         function atualizarSelectSubcategorias(idSelectCat, idSelectSub) {
             let cats = obterDados('categorias');
-            let catId = document.getElementById(idSelectCat).value;
+            let selCat = document.getElementById(idSelectCat);
             let selSub = document.getElementById(idSelectSub);
-            selSub.innerHTML = '';
+            
+            let catId = selCat ? selCat.value : '';
             let cat = cats.find(c => c.id === catId);
-            if(cat && cat.subcategorias) {
-                cat.subcategorias.forEach(sub => { selSub.innerHTML += `<option value="${sub}">${sub}</option>`; });
+            
+            let htmlSub = '';
+            if (cat && cat.subcategorias && cat.subcategorias.length > 0) {
+                cat.subcategorias.forEach(sub => { htmlSub += `<option value="${sub}">${sub}</option>`; });
+            } else {
+                htmlSub = '<option value="">Sem subcategorias</option>';
             }
+            if(selSub) selSub.innerHTML = htmlSub;
         }
 
         async function salvarConteudo() {
@@ -715,8 +822,8 @@
             
             let novoItem = {
                 id: gerarId(),
-                categoriaId: document.getElementById('categoriaConteudo').value,
-                subcategoria: document.getElementById('subcategoriaConteudo').value,
+                categoriaId: document.getElementById('categoriaConteudo').value || '',
+                subcategoria: document.getElementById('subcategoriaConteudo').value || '',
                 titulo: titulo,
                 data: document.getElementById('dataNota').value,
                 texto: document.getElementById('textoConteudo').value,
@@ -747,19 +854,20 @@
                 return;
             }
             
-            div.innerHTML = '';
+            let htmlFinal = '';
             lista.forEach(item => {
                 let cat = cats.find(c => c.id === item.categoriaId);
                 let catNome = cat ? cat.nome : 'Sem Categoria';
-                let dataFormatada = item.data.split('-').reverse().join('/');
+                let dataFormatada = item.data ? item.data.split('-').reverse().join('/') : '';
+                let subNome = item.subcategoria ? item.subcategoria : 'Geral';
                 
                 let imgHtml = item.imagem ? `<img src="${item.imagem}" class="img-nota" alt="Imagem">` : '';
                 
-                div.innerHTML += `
+                htmlFinal += `
                     <div class="item-salvo">
-                        <div class="caminho-categoria">${catNome} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg> ${item.subcategoria}</div>
+                        <div class="caminho-categoria">${catNome} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg> ${subNome}</div>
                         <strong>${item.titulo}</strong>
-                        <p style="font-size: 0.75rem; margin-bottom: 6px; color: var(--primary);">${dataFormatada}</p>
+                        <p style="font-size: 0.75rem; margin-bottom: 8px; color: var(--primary); font-weight:700;">${dataFormatada}</p>
                         <p>${item.texto}</p>
                         ${imgHtml}
                         <div class="acoes-item">
@@ -769,6 +877,7 @@
                     </div>
                 `;
             });
+            div.innerHTML = htmlFinal;
         }
 
         // ==========================================
@@ -799,10 +908,10 @@
                 div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg><p>Nenhum evento agendado.</p></div>`;
                 return;
             }
-            div.innerHTML = '';
+            let htmlFinal = '';
             lista.forEach(item => {
-                let dataF = item.data.split('-').reverse().join('/');
-                div.innerHTML += `
+                let dataF = item.data ? item.data.split('-').reverse().join('/') : '';
+                htmlFinal += `
                     <div class="item-salvo">
                         <p style="font-size: 0.8rem; color: var(--warning); font-weight: 700; margin-bottom: 4px;">🗓 ${dataF} às ${item.hora}</p>
                         <strong>${item.desc}</strong>
@@ -813,6 +922,7 @@
                     </div>
                 `;
             });
+            div.innerHTML = htmlFinal;
         }
 
         // ==========================================
@@ -833,6 +943,7 @@
                 document.getElementById('aba-vendas-lista').classList.add('active');
                 renderVendas();
             }
+            verificarScrollTop(); // Atualiza a visibilidade do botão caso a aba mude a rolagem
         }
 
         function calcularTotalTempoReal() {
@@ -874,10 +985,10 @@
             let lista = obterDados('estoque');
             let div = document.getElementById('listaEstoque');
             if(lista.length === 0) { div.innerHTML = `<div class="empty-state"><p>Estoque vazio.</p></div>`; return; }
-            div.innerHTML = '';
+            let htmlFinal = '';
             lista.forEach(item => {
                 let imgHtml = item.imagem ? `<img src="${item.imagem}" alt="${item.nome}">` : `<div style="width:75px; height:75px; background: rgba(255,255,255,0.05); border-radius:12px; border:1px solid var(--border); display:flex; justify-content:center; align-items:center; color: var(--text-secundary); font-size: 0.65rem;">Sem Foto</div>`;
-                div.innerHTML += `
+                htmlFinal += `
                     <div class="item-salvo" style="padding: 14px;">
                         <div class="produto-img-lateral">
                             ${imgHtml}
@@ -894,6 +1005,7 @@
                     </div>
                 `;
             });
+            div.innerHTML = htmlFinal;
         }
 
         function preencherVendaRapida(nome, preco) {
@@ -937,15 +1049,15 @@
             let lista = obterDados('vendas');
             let div = document.getElementById('listaVendas');
             if(lista.length === 0) { div.innerHTML = `<div class="empty-state"><p>Nenhuma venda registrada.</p></div>`; return; }
-            div.innerHTML = '';
+            let htmlFinal = '';
             lista.forEach(item => {
-                let dataF = item.data.split('-').reverse().join('/');
+                let dataF = item.data ? item.data.split('-').reverse().join('/') : '';
                 let badgeDesc = item.percentualDesconto > 0 ? `<span class="badge-desconto">-${item.percentualDesconto}%</span>` : '';
-                div.innerHTML += `
+                htmlFinal += `
                     <div class="item-salvo">
                         <div style="display:flex; justify-content: space-between; margin-bottom: 6px;">
                             <strong>${item.qtd}x ${item.nome}</strong>
-                            <span style="font-size:0.75rem; color:var(--text-secundary)">${dataF}</span>
+                            <span style="font-size:0.78rem; color:var(--text-secundary); font-weight:700;">${dataF}</span>
                         </div>
                         <div style="display:flex; align-items: center;">
                             <span class="destaque text-success">${formatarMoeda(item.totalFinal)}</span>
@@ -957,10 +1069,11 @@
                     </div>
                 `;
             });
+            div.innerHTML = htmlFinal;
         }
 
         // ==========================================
-        // GESTÃO DE CATEGORIAS
+        // GESTÃO DE CATEGORIAS - PROTEÇÕES ADICIONADAS
         // ==========================================
         function abrirTelaCategorias() { 
             renderGestaoCategorias(); 
@@ -969,15 +1082,22 @@
         function fecharTelaCategorias() { 
             document.getElementById('tela-gestao-categorias').classList.remove('ativa'); 
             carregarSelectCategorias(); 
+            renderConteudos(); // Atualiza a tela de notas para refletir os nomes novos
         }
 
         function renderGestaoCategorias() {
             let cats = obterDados('categorias');
             let div = document.getElementById('listaGestaoCategorias');
-            div.innerHTML = '';
+            if (cats.length === 0) {
+                div.innerHTML = `<div class="empty-state"><p>Nenhuma categoria criada.</p></div>`;
+                return;
+            }
+            
+            let htmlFinal = '';
             cats.forEach(c => {
-                let subsHTML = c.subcategorias.map((sub, idx) => `<div class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${c.id}', ${idx})"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>`).join('');
-                div.innerHTML += `
+                let subArr = c.subcategorias || [];
+                let subsHTML = subArr.map((sub, idx) => `<div class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${c.id}', ${idx})"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>`).join('');
+                htmlFinal += `
                     <div class="cat-manager-card">
                         <div class="cat-header">
                             <strong>${c.nome}</strong>
@@ -991,10 +1111,11 @@
                     </div>
                 `;
             });
+            div.innerHTML = htmlFinal;
         }
 
         function addCategoria() {
-            let nome = document.getElementById('novaCategoriaNome').value;
+            let nome = document.getElementById('novaCategoriaNome').value.trim();
             if(!nome) return;
             let cats = obterDados('categorias');
             cats.push({ id: gerarId(), nome: nome, subcategorias: ['Geral'] });
@@ -1012,17 +1133,26 @@
 
         function addSubcategoria(catId) {
             let input = document.getElementById('novaSub_' + catId);
-            let nome = input.value;
+            let nome = input.value.trim();
             if(!nome) return;
             let cats = obterDados('categorias');
             let cat = cats.find(c => c.id === catId);
-            if(cat) { cat.subcategorias.push(nome); salvarDados('categorias', cats); renderGestaoCategorias(); }
+            if(cat) { 
+                if(!cat.subcategorias) cat.subcategorias = [];
+                cat.subcategorias.push(nome); 
+                salvarDados('categorias', cats); 
+                renderGestaoCategorias(); 
+            }
         }
 
         function removerSubcategoria(catId, subIdx) {
             let cats = obterDados('categorias');
             let cat = cats.find(c => c.id === catId);
-            if(cat) { cat.subcategorias.splice(subIdx, 1); salvarDados('categorias', cats); renderGestaoCategorias(); }
+            if(cat && cat.subcategorias) { 
+                cat.subcategorias.splice(subIdx, 1); 
+                salvarDados('categorias', cats); 
+                renderGestaoCategorias(); 
+            }
         }
 
         // ==========================================
@@ -1063,9 +1193,21 @@
                 
                 let cats = obterDados('categorias');
                 let selCat = document.getElementById('editCat');
-                cats.forEach(c => { selCat.innerHTML += `<option value="${c.id}" ${c.id === item.categoriaId ? 'selected' : ''}>${c.nome}</option>`; });
+                let htmlCatEdit = '';
+                
+                if(cats.length === 0) {
+                    htmlCatEdit = '<option value="">Sem categorias</option>';
+                } else {
+                    cats.forEach(c => { htmlCatEdit += `<option value="${c.id}" ${c.id === item.categoriaId ? 'selected' : ''}>${c.nome}</option>`; });
+                }
+                
+                selCat.innerHTML = htmlCatEdit;
                 atualizarSelectSubcategorias('editCat', 'editSubcat');
-                setTimeout(() => { document.getElementById('editSubcat').value = item.subcategoria; }, 50);
+                
+                setTimeout(() => { 
+                    let subEdit = document.getElementById('editSubcat');
+                    if(subEdit && item.subcategoria) { subEdit.value = item.subcategoria; }
+                }, 50);
 
             } else if (tipo === 'agenda') {
                 document.getElementById('modalEdicaoTitulo').innerText = "Editar Evento";
@@ -1106,16 +1248,16 @@
             if(idx === -1) return;
 
             if (tipo === 'conteudos') {
-                lista[idx].categoriaId = document.getElementById('editCat').value;
-                lista[idx].subcategoria = document.getElementById('editSubcat').value;
+                lista[idx].categoriaId = document.getElementById('editCat').value || '';
+                lista[idx].subcategoria = document.getElementById('editSubcat').value || '';
                 lista[idx].titulo = document.getElementById('editTitulo').value;
                 lista[idx].data = document.getElementById('editDataNota').value;
                 lista[idx].texto = document.getElementById('editTexto').value;
                 
                 let imgInput = document.getElementById('editImagemConteudo');
-                if (imgInput.dataset.removed === "true") {
+                if (imgInput && imgInput.dataset.removed === "true") {
                     lista[idx].imagem = "";
-                } else if (imgInput.files && imgInput.files.length > 0) {
+                } else if (imgInput && imgInput.files && imgInput.files.length > 0) {
                     lista[idx].imagem = await processarImagemBase64(imgInput.files[0]);
                 }
                 
@@ -1128,9 +1270,9 @@
                 lista[idx].preco = parseFloat(document.getElementById('editEstPreco').value.replace(',', '.'));
                 
                 let imgInput = document.getElementById('editEstImagem');
-                if (imgInput.dataset.removed === "true") {
+                if (imgInput && imgInput.dataset.removed === "true") {
                     lista[idx].imagem = "";
-                } else if (imgInput.files && imgInput.files.length > 0) {
+                } else if (imgInput && imgInput.files && imgInput.files.length > 0) {
                     lista[idx].imagem = await processarImagemBase64(imgInput.files[0]);
                 }
             }
@@ -1172,10 +1314,10 @@
             let notas = obterDados('conteudos');
             let agenda = obterDados('agenda');
 
-            let totalVendas = vendas.reduce((acc, v) => acc + v.totalFinal, 0);
+            let totalVendas = vendas.reduce((acc, v) => acc + (v.totalFinal || 0), 0);
             document.getElementById('dashTotalVendas').innerText = formatarMoeda(totalVendas);
             
-            let totalEstoque = estoque.reduce((acc, e) => acc + e.preco, 0);
+            let totalEstoque = estoque.reduce((acc, e) => acc + (e.preco || 0), 0);
             document.getElementById('dashTotalEstoque').innerText = formatarMoeda(totalEstoque);
             
             document.getElementById('dashTotalNotas').innerText = notas.length;
@@ -1195,34 +1337,56 @@
         function atualizarGraficoVendas(vendas) {
             const ctx = document.getElementById('graficoVendasMensal').getContext('2d');
             
-            let vendasMes = {};
             let mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            
-            vendas.forEach(v => {
-                let [ano, mes] = v.data.split('-');
+            let hoje = new Date();
+            let labels = [];
+            let chaves = [];
+            let vendasMes = {};
+
+            for (let i = 5; i >= 0; i--) {
+                let d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+                let ano = d.getFullYear();
+                let mes = String(d.getMonth() + 1).padStart(2, '0');
                 let chave = `${ano}-${mes}`;
-                vendasMes[chave] = (vendasMes[chave] || 0) + v.totalFinal;
+                chaves.push(chave);
+                labels.push(mesesNome[d.getMonth()]);
+                vendasMes[chave] = 0;
+            }
+
+            vendas.forEach(v => {
+                if (v.data) {
+                    let partes = v.data.split('-');
+                    let chave = `${partes[0]}-${partes[1]}`;
+                    if (vendasMes.hasOwnProperty(chave)) {
+                        vendasMes[chave] += (v.totalFinal || 0);
+                    }
+                }
             });
 
-            let chavesOrdenadas = Object.keys(vendasMes).sort().slice(-6);
-            let labels = chavesOrdenadas.map(c => { let [a, m] = c.split('-'); return mesesNome[parseInt(m)-1]; });
-            let dados = chavesOrdenadas.map(c => vendasMes[c]);
+            let dados = chaves.map(c => vendasMes[c]);
 
-            if(labels.length === 0) { labels = ['Sem dados']; dados = [0]; }
+            if (meuGraficoVendas) meuGraficoVendas.destroy();
 
-            if(meuGraficoVendas) meuGraficoVendas.destroy();
+            let gradient = ctx.createLinearGradient(0, 0, 0, 140);
+            gradient.addColorStop(0, 'rgba(47, 128, 237, 0.4)');
+            gradient.addColorStop(1, 'rgba(47, 128, 237, 0.0)');
 
             meuGraficoVendas = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
                         label: 'Vendas (R$)',
                         data: dados,
-                        backgroundColor: 'rgba(47, 128, 237, 0.8)',
                         borderColor: '#2F80ED',
-                        borderWidth: 1,
-                        borderRadius: 6
+                        backgroundColor: gradient,
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.35,
+                        pointBackgroundColor: '#2F80ED',
+                        pointBorderColor: '#FFFFFF',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
                     }]
                 },
                 options: {
@@ -1232,7 +1396,7 @@
                     scales: {
                         y: { 
                             beginAtZero: true, 
-                            grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                            grid: { color: 'rgba(255,255,255,0.06)', drawBorder: false },
                             ticks: { color: '#A1A8B8', font: { size: 10 } }
                         },
                         x: { 
