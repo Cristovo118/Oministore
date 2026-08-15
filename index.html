@@ -29,12 +29,12 @@
             
             --text-main: #f8fafc;      
             --text-secundary: #94a3b8; 
-            --border: rgba(255, 255, 255, 0.06);         
-            --border-highlight: rgba(255, 255, 255, 0.12);
+            --border: rgba(255, 255, 255, 0.08);         
+            --border-highlight: rgba(255, 255, 255, 0.15);
             
             --radius-card: 20px;
             --radius-input: 14px;
-            --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.5);
             --shadow-glow: 0 4px 20px rgba(59, 130, 246, 0.35);
         }
 
@@ -58,6 +58,16 @@
             overflow: hidden;
         }
 
+        /* Fundo com efeito Premium */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .app-container {
             width: 100%; 
             max-width: 480px; 
@@ -68,6 +78,7 @@
             position: relative; 
             background-color: var(--bg-app); 
             overflow: hidden;
+            z-index: 1;
         }
 
         @media (min-width: 481px) {
@@ -75,7 +86,7 @@
                 height: 94vh;
                 border-radius: 40px;
                 border: 1px solid var(--border-highlight);
-                box-shadow: 0 25px 70px rgba(0,0,0,0.85);
+                box-shadow: 0 25px 70px rgba(0,0,0,0.9);
             }
         }
 
@@ -85,7 +96,7 @@
            2. HEADER & SCROLLBAR
            ========================================== */
         header {
-            padding: calc(env(safe-area-inset-top) + 16px) 20px 14px;
+            padding: calc(env(safe-area-inset-top) + 14px) 20px 10px;
             background: rgba(7, 8, 11, 0.8); 
             backdrop-filter: blur(25px); 
             -webkit-backdrop-filter: blur(25px); 
@@ -111,12 +122,13 @@
             overflow-y: auto; 
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch; 
-            padding: calc(env(safe-area-inset-top) + 60px) 16px 95px 16px; 
+            /* Ajustado padding para maximizar uso da tela */
+            padding: calc(env(safe-area-inset-top) + 54px) 14px 110px 14px; 
             scroll-behavior: smooth; 
             position: relative;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
         
         .tela { display: none; width: 100%; }
@@ -125,7 +137,7 @@
         #tela-inicio.ativa {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px; /* Reduzido para caber tudo na tela */
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -135,7 +147,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius-card); 
-            padding: 18px;
+            padding: 14px; /* Reduzido de 18px */
             border: 1px solid var(--border); 
             box-shadow: var(--shadow-subtle); 
             position: relative; 
@@ -146,7 +158,7 @@
             font-size: 0.72rem; 
             font-weight: 800; 
             color: var(--text-secundary); 
-            margin-bottom: 12px; 
+            margin-bottom: 10px; 
             text-transform: uppercase; 
             letter-spacing: 1.5px; 
             display: flex; 
@@ -159,20 +171,58 @@
            ========================================== */
         .gradient-text-success { background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-purple { background: linear-gradient(135deg, #8b5cf6, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-warning { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-primary { background: linear-gradient(135deg, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .balance-box { padding: 4px 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
-        .balance-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0px; }
-        .balance-box .label { font-size: 0.75rem; color: var(--text-secundary); display: block; margin-bottom: 4px; font-weight: 700; }
-        .balance-box .value { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
+        /* Novo Grid para os Balanços Ajustado para caber sem rolar */
+        .balance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px; /* Espaço reduzido */
+        }
+        
+        .balance-box { 
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px; 
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Modificado: Agora do mesmo tamanho que os outros, sem empurrar o resto para baixo */
+        .balance-box.full-width {
+            grid-column: span 1; /* Retirado o span 2 */
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.02));
+            border-color: rgba(59, 130, 246, 0.2);
+            align-items: flex-start; /* Alinhamento à esquerda como os outros */
+            text-align: left;
+        }
 
-        .chart-container { width: 100%; height: 120px; position: relative; margin-top: 6px; }
+        .balance-box .label { 
+            font-size: 0.65rem; /* Ajustado para caber o texto */
+            color: var(--text-secundary); 
+            display: block; 
+            margin-bottom: 4px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 0.2px;
+            line-height: 1.1;
+        }
+        
+        .balance-box .value { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
+        /* Removido o font-size: 2rem da class full-width para unificar os tamanhos */
+        .balance-box.full-width .value { font-size: 1.25rem; }
 
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .chart-container { width: 100%; height: 95px; position: relative; margin-top: 4px; } /* Altura ajustada para caber */
+
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .dash-card { 
             background: var(--bg-card); 
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 16px; 
+            padding: 12px; 
             border-radius: var(--radius-card); 
             border: 1px solid var(--border); 
             display: flex; 
@@ -182,10 +232,10 @@
             transition: transform 0.2s ease; 
         }
         .dash-card:active { transform: scale(0.97); }
-        .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .dash-card .icon-box { width: 36px; height: 36px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
-        .dash-card h3 { color: var(--text-secundary); font-size: 0.68rem; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
-        .dash-card span { color: var(--text-main); font-size: 1.2rem; font-weight: 800; }
+        .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .dash-card .icon-box { width: 32px; height: 32px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+        .dash-card h3 { color: var(--text-secundary); font-size: 0.65rem; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
+        .dash-card span { color: var(--text-main); font-size: 1.1rem; font-weight: 800; }
 
         /* ==========================================
            5. FORMS & CONTROLS
@@ -251,14 +301,14 @@
         .segment-control { display: flex; background: rgba(14, 16, 23, 0.8); border-radius: 16px; padding: 4px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
         .segment-btn { flex: 1; text-align: center; padding: 10px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; color: var(--text-secundary); cursor: pointer; transition: all 0.25s ease; white-space: nowrap; }
         .segment-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid var(--border-highlight); }
-        .aba-view { display: none; animation: fadeIn 0.35s ease; margin-top: 16px; }
+        .aba-view { display: none; animation: fadeIn 0.35s ease; margin-top: 14px; }
         .aba-view.active { display: block; }
 
         /* ==========================================
            6. LISTS & ITEMS
            ========================================== */
         .resultados-container { display: flex; flex-direction: column; gap: 14px; }
-        .item-salvo { background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 18px; border-radius: var(--radius-card); border: 1px solid var(--border); position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); }
+        .item-salvo { background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 16px; border-radius: var(--radius-card); border: 1px solid var(--border); position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); }
         
         .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 800; margin-bottom: 8px; gap: 6px; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.3); text-transform: uppercase; letter-spacing: 0.8px; }
         
@@ -270,7 +320,12 @@
         .destaque { font-size: 1.25rem; font-weight: 800; display: block; margin-top: 6px; }
         .text-success { color: var(--success); }
         .text-purple { color: var(--purple); }
-        .badge-desconto { background: rgba(245,158,11,0.15); color: var(--warning); padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(245,158,11,0.3); margin-left: 8px; }
+        
+        /* Badges de Status / Descontos */
+        .badge-status { padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; border: 1px solid; margin-left: 8px; }
+        .badge-desconto { background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3); }
+        .badge-recebido { background: rgba(16,185,129,0.15); color: var(--success); border-color: rgba(16,185,129,0.3); }
+        .badge-aliberar { background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3); }
 
         .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
         .btn-pequeno { background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-weight: 800; font-size: 0.78rem; cursor: pointer; padding: 8px 14px; border-radius: 10px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
@@ -303,26 +358,26 @@
            ========================================== */
         .bottom-nav { 
             position: absolute; 
-            bottom: 16px; 
-            left: 16px; 
-            right: 16px; 
-            height: 64px;
-            padding-bottom: env(safe-area-inset-bottom); 
-            background: rgba(11, 13, 18, 0.9); 
+            bottom: 30px; 
+            left: 14px; 
+            right: 14px; 
+            height: 64px; 
+            padding-bottom: 0; 
+            background: rgba(11, 13, 18, 0.92); 
             backdrop-filter: blur(35px); 
             -webkit-backdrop-filter: blur(35px); 
-            border: 1px solid var(--border-highlight); 
-            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 20px;
             display: flex; 
             justify-content: space-around; 
             align-items: center; 
             z-index: 9999; 
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(59, 130, 246, 0.15);
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; height: 100%; cursor: pointer; color: var(--text-secundary); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .nav-item.ativo { color: var(--primary); transform: translateY(-2px); }
+        .nav-item.ativo { color: var(--primary); transform: translateY(-4px); }
         
-        .nav-item svg { width: 20px; height: 20px; margin-bottom: 3px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; flex-shrink: 0; }
+        .nav-item svg { width: 20px; height: 20px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; flex-shrink: 0; }
         .nav-item.ativo svg { stroke-width: 2.5; filter: drop-shadow(0 4px 10px rgba(59,130,246,0.6)); }
         .nav-item span.label { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.3px; flex-shrink: 0; }
 
@@ -351,8 +406,8 @@
            ========================================== */
         .btn-scroll-top {
             position: absolute;
-            bottom: 90px;
-            right: 20px;
+            bottom: 105px; 
+            right: 16px;
             width: 44px;
             height: 44px;
             background: var(--primary);
@@ -390,14 +445,26 @@
             
             <!-- TELA INÍCIO -->
             <div id="tela-inicio" class="tela ativa">
+                
+                <!-- NOVO CARD COM GRID DE BALANÇOS (Ajustado para caber na tela sem rolar) -->
                 <div class="card">
-                    <div class="balance-box">
-                        <span class="label">Total de Vendas Realizadas</span>
-                        <div class="value gradient-text-success" id="dashTotalVendas">R$ 0,00</div>
-                    </div>
-                    <div class="balance-box">
-                        <span class="label">Total em Estoque (À venda)</span>
-                        <div class="value gradient-text-purple" id="dashTotalEstoque" style="font-size: 1.3rem;">R$ 0,00</div>
+                    <div class="balance-grid">
+                        <div class="balance-box">
+                            <span class="label">Vendas Recebidas</span>
+                            <div class="value gradient-text-success" id="dashTotalVendas">R$ 0,00</div>
+                        </div>
+                        <div class="balance-box">
+                            <span class="label">Valor a Liberar</span>
+                            <div class="value gradient-text-warning" id="dashValorLiberar">R$ 0,00</div>
+                        </div>
+                        <div class="balance-box">
+                            <span class="label">Total em Estoque</span>
+                            <div class="value gradient-text-purple" id="dashTotalEstoque">R$ 0,00</div>
+                        </div>
+                        <div class="balance-box full-width">
+                            <span class="label">Valor Total (Soma)</span>
+                            <div class="value gradient-text-primary" id="dashValorTotal">R$ 0,00</div>
+                        </div>
                     </div>
                 </div>
 
@@ -503,9 +570,17 @@
 
                         <div class="form-group">
                             <div class="preview-venda-card">
-                                <span style="font-size: 0.72rem; color: var(--text-secundary); display: block; margin-bottom: 4px; text-transform: uppercase; font-weight: 800;">Total a Receber</span>
+                                <span style="font-size: 0.72rem; color: var(--text-secundary); display: block; margin-bottom: 4px; text-transform: uppercase; font-weight: 800;">Total a Receber / Liberar</span>
                                 <strong id="previewTotalVenda" style="font-size: 1.5rem; color: var(--primary);">R$ 0,00</strong>
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status do Pagamento</label>
+                            <select id="statusVenda">
+                                <option value="recebido">Já Recebido</option>
+                                <option value="aliberar">A Liberar (Pendente)</option>
+                            </select>
                         </div>
 
                         <div class="form-group"><label>Data da Venda</label><input type="date" id="dataVenda" style="color-scheme: dark;"></div>
@@ -963,6 +1038,7 @@
             let preco = parseFloat(document.getElementById('precoProduto').value.replace(',', '.')) || 0;
             let desc = parseFloat(document.getElementById('descProduto').value) || 0;
             let data = document.getElementById('dataVenda').value;
+            let status = document.getElementById('statusVenda').value || 'recebido';
             
             if(!nome || preco <= 0) return alert("Preencha os dados da venda.");
 
@@ -971,7 +1047,7 @@
             let total = subtotal - valDesc;
 
             let lista = obterDados('vendas');
-            lista.unshift({ id: gerarId(), nome, qtd, precoOriginal: preco, percentualDesconto: desc, totalFinal: total, data });
+            lista.unshift({ id: gerarId(), nome, qtd, precoOriginal: preco, percentualDesconto: desc, totalFinal: total, data, status });
             salvarDados('vendas', lista);
 
             document.getElementById('nomeProduto').value = '';
@@ -992,16 +1068,21 @@
             let htmlFinal = '';
             lista.forEach(item => {
                 let dataF = item.data ? item.data.split('-').reverse().join('/') : '';
-                let badgeDesc = item.percentualDesconto > 0 ? `<span class="badge-desconto">-${item.percentualDesconto}%</span>` : '';
+                let badgeDesc = item.percentualDesconto > 0 ? `<span class="badge-status badge-desconto">-${item.percentualDesconto}%</span>` : '';
+                let statusPagamento = item.status === 'aliberar' 
+                    ? `<span class="badge-status badge-aliberar">A Liberar</span>` 
+                    : `<span class="badge-status badge-recebido">Recebido</span>`;
+
                 htmlFinal += `
                     <div class="item-salvo">
                         <div style="display:flex; justify-content: space-between; margin-bottom: 6px;">
                             <strong>${item.qtd}x ${item.nome}</strong>
                             <span style="font-size:0.75rem; color:var(--text-secundary); font-weight:700;">${dataF}</span>
                         </div>
-                        <div style="display:flex; align-items: center;">
+                        <div style="display:flex; align-items: center; gap: 6px;">
                             <span class="destaque text-success">${formatarMoeda(item.totalFinal)}</span>
                             ${badgeDesc}
+                            ${statusPagamento}
                         </div>
                         <div class="acoes-item">
                             <button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'vendas')">Estornar Venda</button>
@@ -1245,11 +1326,16 @@
             let notas = obterDados('conteudos');
             let agenda = obterDados('agenda');
 
-            let totalVendas = vendas.reduce((acc, v) => acc + (v.totalFinal || 0), 0);
-            document.getElementById('dashTotalVendas').innerText = formatarMoeda(totalVendas);
-            
+            // Cálculos para o novo painel de Balanços
+            let totalVendasRecebidas = vendas.filter(v => v.status !== 'aliberar').reduce((acc, v) => acc + (v.totalFinal || 0), 0);
+            let valorALiberar = vendas.filter(v => v.status === 'aliberar').reduce((acc, v) => acc + (v.totalFinal || 0), 0);
             let totalEstoque = estoque.reduce((acc, e) => acc + (e.preco || 0), 0);
+            let valorTotal = totalVendasRecebidas + valorALiberar + totalEstoque;
+
+            document.getElementById('dashTotalVendas').innerText = formatarMoeda(totalVendasRecebidas);
+            document.getElementById('dashValorLiberar').innerText = formatarMoeda(valorALiberar);
             document.getElementById('dashTotalEstoque').innerText = formatarMoeda(totalEstoque);
+            document.getElementById('dashValorTotal').innerText = formatarMoeda(valorTotal);
             
             document.getElementById('dashTotalNotas').innerText = notas.length;
 
