@@ -316,7 +316,7 @@
                         <h2 class="section-title">Adicionar à Loja</h2>
                         <div class="form-group"><label>Nome</label><input type="text" id="estNome" placeholder="Nome do produto"></div>
                         <div class="form-group input-row">
-                            <div style="flex: 1.2;"><label>Valor (R$)</label><input type="text" inputmode="decimal" id="estPreco" placeholder="0.00"></div>
+                            <div style="flex: 1.2;"><label>Valor Bruto (R$)</label><input type="text" inputmode="decimal" id="estPreco" placeholder="0.00"></div>
                             <div style="flex: 0.8;"><label>Qtd.</label><input type="number" id="estQtd" value="1"></div>
                             <div style="flex: 0.9;"><label>Desc. (%)</label><input type="number" id="estDesc" value="0"></div>
                         </div>
@@ -560,7 +560,6 @@
             document.getElementById('previewNotaBox').style.display = 'none';
             document.getElementById('previewNotaImg').src = '';
             
-            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
             renderConteudos();
             showToast('Nota salva com sucesso!', 'success');
@@ -589,7 +588,6 @@
             salvarDados('agenda', lista); 
             document.getElementById('descAgenda').value = '';
             
-            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
             renderAgenda();
             showToast('Evento agendado!', 'success');
@@ -632,11 +630,12 @@
             
             document.getElementById('estNome').value = '';
             document.getElementById('estPreco').value = '';
+            document.getElementById('estDesc').value = '0';
+            document.getElementById('estQtd').value = '1';
             document.getElementById('estImagem').value = '';
             document.getElementById('previewEstoqueBox').style.display = 'none';
             document.getElementById('previewEstoqueImg').src = '';
             
-            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
             renderEstoque();
             showToast('Adicionado ao estoque!', 'success');
@@ -647,12 +646,14 @@
             if(!lista.length) { div.innerHTML = `<div class="empty-state"><p>Estoque vazio.</p></div>`; return; }
             div.innerHTML = lista.map(item => {
                 let precoFinal = item.preco * (1 - (item.desc || 0) / 100);
+                let descBadge = (item.desc && item.desc > 0) ? `<span style="font-size:0.7rem; color:var(--warning); display:block; font-weight:700;">Desc: ${item.desc}%</span>` : '';
                 return `<div class="item-salvo">
                     <div class="produto-img-lateral">
                         ${item.imagem ? `<img src="${item.imagem}">` : `<div style="width:75px;height:75px;background:rgba(255,255,255,0.04);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--text-secundary);">Sem Foto</div>`}
                         <div class="produto-info">
                             <strong>${item.nome}</strong>
                             <span class="destaque text-purple">${formatarMoeda(precoFinal)}</span>
+                            ${descBadge}
                             <span class="badge-status badge-estoque">📦 ${item.qtd} un</span>
                         </div>
                     </div>
@@ -668,6 +669,7 @@
         function preencherVendaRapida(nome, preco) {
             document.getElementById('nomeProduto').value = nome;
             document.getElementById('precoProduto').value = preco.toFixed(2);
+            document.getElementById('descProduto').value = 0; // Preço já está com desconto aplicado do estoque
             calcularTotalTempoReal();
             alternarAbaVendas('nova');
         }
@@ -679,10 +681,9 @@
             let desc = parseFloat(document.getElementById('descProduto').value) || 0;
             let total = (qtd * preco) * (1 - desc / 100);
             let lista = obterDados('vendas');
-            lista.unshift({ id: gerarId(), nome, qtd, totalFinal: total, data: document.getElementById('dataVenda').value, status: document.getElementById('statusVenda').value });
+            lista.unshift({ id: gerarId(), nome, qtd, desc, totalFinal: total, data: document.getElementById('dataVenda').value, status: document.getElementById('statusVenda').value });
             salvarDados('vendas', lista); 
             
-            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
             renderVendas();
             alternarAbaVendas('lista'); 
@@ -692,11 +693,26 @@
         function renderVendas() {
             let lista = obterDados('vendas'), div = document.getElementById('listaVendas');
             if(!lista.length) { div.innerHTML = `<div class="empty-state"><p>Nenhuma venda.</p></div>`; return; }
-            div.innerHTML = lista.map(item => `<div class="item-salvo">
-                <div style="display:flex; justify-content:space-between;"><strong>${item.qtd}x ${item.nome}</strong><span style="font-size:0.72rem; color:var(--text-secundary);">${item.data.split('-').reverse().join('/')}</span></div>
-                <span class="destaque text-success">${formatarMoeda(item.totalFinal)}</span>
-                <div class="acoes-item"><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'vendas')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'vendas')">Estornar</button></div>
-            </div>`).join('');
+            div.innerHTML = lista.map(item => {
+                let statusBadge = item.status === 'aliberar' 
+                    ? `<span class="badge-status" style="background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3);">⏳ A Liberar</span>`
+                    : `<span class="badge-status" style="background: rgba(16,185,129,0.15); color: var(--success); border-color: rgba(16,185,129,0.3);">✔ Recebido</span>`;
+                let descInfo = (item.desc && item.desc > 0) ? `<span style="font-size:0.7rem; color:var(--warning); font-weight:700;">Desc: ${item.desc}%</span>` : '';
+                return `<div class="item-salvo">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong>${item.qtd}x ${item.nome}</strong>
+                        <span style="font-size:0.72rem; color:var(--text-secundary);">${item.data ? item.data.split('-').reverse().join('/') : ''}</span>
+                    </div>
+                    <div style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <span class="destaque text-success">${formatarMoeda(item.totalFinal)}</span>
+                            ${descInfo}
+                        </div>
+                        ${statusBadge}
+                    </div>
+                    <div class="acoes-item"><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'vendas')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'vendas')">Estornar</button></div>
+                </div>`;
+            }).join('');
         }
 
         function abrirTelaCategorias() { renderGestaoCategorias(); document.getElementById('tela-gestao-categorias').classList.add('ativa'); }
@@ -816,16 +832,28 @@
                 html = `
                     <div class="form-group"><label>Nome</label><input type="text" id="editEstNome" value="${item.nome || ''}"></div>
                     <div class="form-group input-row">
-                        <div style="flex: 1;"><label>Preço (R$)</label><input type="text" id="editEstPreco" value="${item.preco || 0}"></div>
-                        <div style="flex: 1;"><label>Qtd.</label><input type="number" id="editEstQtd" value="${item.qtd || 1}"></div>
+                        <div style="flex: 1.2;"><label>Valor Bruto (R$)</label><input type="text" id="editEstPreco" value="${item.preco || 0}"></div>
+                        <div style="flex: 0.8;"><label>Qtd.</label><input type="number" id="editEstQtd" value="${item.qtd || 1}"></div>
+                        <div style="flex: 0.9;"><label>Desc. (%)</label><input type="number" id="editEstDesc" value="${item.desc || 0}"></div>
                     </div>
                 `;
             } else if(tipo === 'vendas') {
                 html = `
                     <div class="form-group"><label>Produto</label><input type="text" id="editVendaNome" value="${item.nome || ''}"></div>
                     <div class="form-group input-row">
-                        <div style="flex: 1;"><label>Qtd.</label><input type="number" id="editVendaQtd" value="${item.qtd || 1}"></div>
-                        <div style="flex: 1;"><label>Total (R$)</label><input type="text" id="editVendaTotal" value="${item.totalFinal || 0}"></div>
+                        <div style="flex: 0.8;"><label>Qtd.</label><input type="number" id="editVendaQtd" value="${item.qtd || 1}"></div>
+                        <div style="flex: 1.4;"><label>Total (R$)</label><input type="text" id="editVendaTotal" value="${item.totalFinal || 0}"></div>
+                        <div style="flex: 0.9;"><label>Desc. (%)</label><input type="number" id="editVendaDesc" value="${item.desc || 0}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="select-wrapper">
+                            <div class="select-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                            <select id="editVendaStatus">
+                                <option value="recebido" ${item.status === 'recebido' ? 'selected' : ''}>Já Recebido</option>
+                                <option value="aliberar" ${item.status === 'aliberar' ? 'selected' : ''}>A Liberar (Pendente)</option>
+                            </select>
+                        </div>
                     </div>
                 `;
             }
@@ -875,11 +903,14 @@
                 lista[index].nome = document.getElementById('editEstNome').value;
                 lista[index].preco = parseFloat(document.getElementById('editEstPreco').value.replace(',', '.')) || 0;
                 lista[index].qtd = parseInt(document.getElementById('editEstQtd').value) || 1;
+                lista[index].desc = parseFloat(document.getElementById('editEstDesc').value) || 0;
                 renderEstoque();
             } else if(tipo === 'vendas') {
                 lista[index].nome = document.getElementById('editVendaNome').value;
                 lista[index].qtd = parseFloat(document.getElementById('editVendaQtd').value) || 1;
                 lista[index].totalFinal = parseFloat(document.getElementById('editVendaTotal').value.replace(',', '.')) || 0;
+                lista[index].desc = parseFloat(document.getElementById('editVendaDesc').value) || 0;
+                lista[index].status = document.getElementById('editVendaStatus').value;
                 renderVendas();
             }
 
@@ -964,4 +995,3 @@
     </script>
 </body>
 </html>
-
