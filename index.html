@@ -6,450 +6,170 @@
     <title>Store Dashboard Premium</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ==========================================
-           1. VARIABLES & TYPOGRAPHY
-           ========================================== */
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
         :root {
-            --bg-app: #07080b;         
-            --bg-card: rgba(20, 22, 30, 0.75);        
-            --bg-nav: rgba(11, 13, 18, 0.95);         
-            --bg-input: rgba(14, 16, 23, 0.9);       
-            --bg-input-focus: rgba(22, 25, 36, 1);
-            
-            --primary: #3b82f6;        
-            --primary-glow: rgba(59, 130, 246, 0.4);
-            --primary-hover: #2563eb;
-            --success: #10b981;        
-            --success-glow: rgba(16, 185, 129, 0.3);
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --purple: #8b5cf6;         
-            
-            --text-main: #f8fafc;      
-            --text-secundary: #94a3b8; 
-            --border: rgba(255, 255, 255, 0.08);         
-            --border-highlight: rgba(255, 255, 255, 0.15);
-            
-            --radius-card: 20px;
-            --radius-input: 14px;
-            --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.5);
-            --shadow-glow: 0 4px 20px rgba(59, 130, 246, 0.35);
+            --bg-app: #030406; --bg-card: rgba(15, 18, 26, 0.9); --bg-input: rgba(9, 11, 16, 0.95); --bg-input-focus: rgba(18, 22, 32, 1);
+            --primary: #3b82f6; --primary-glow: rgba(59, 130, 246, 0.4); --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --purple: #8b5cf6;
+            --text-main: #f8fafc; --text-secundary: #94a3b8; --border: rgba(255, 255, 255, 0.08); --border-highlight: rgba(59, 130, 246, 0.35);
+            --radius-card: 22px; --radius-input: 14px; --shadow-subtle: 0 12px 40px rgba(0, 0, 0, 0.7); --shadow-glow: 0 8px 25px rgba(59, 130, 246, 0.3);
         }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            height: 100dvh; 
-            background-color: #020204;
-            color: var(--text-main); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            overflow: hidden;
-        }
-
-        /* Fundo com efeito Premium */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .app-container {
-            width: 100%; 
-            max-width: 480px; 
-            height: 100%;
-            height: 100dvh; 
-            display: flex; 
-            flex-direction: column; 
-            position: relative; 
-            background-color: var(--bg-app); 
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        @media (min-width: 481px) {
-            .app-container {
-                height: 94vh;
-                border-radius: 40px;
-                border: 1px solid var(--border-highlight);
-                box-shadow: 0 25px 70px rgba(0,0,0,0.9);
-            }
-        }
-
-        svg { display: inline-block; vertical-align: middle; }
-
-        /* ==========================================
-           2. HEADER & SCROLLBAR
-           ========================================== */
-        header {
-            padding: calc(env(safe-area-inset-top) + 14px) 20px 10px;
-            background: rgba(7, 8, 11, 0.8); 
-            backdrop-filter: blur(25px); 
-            -webkit-backdrop-filter: blur(25px); 
-            position: absolute; 
-            top: 0; left: 0; right: 0;
-            z-index: 10; 
-            border-bottom: 1px solid transparent; 
-            transition: all 0.3s ease;
-        }
-        .header-scrolled { 
-            border-bottom: 1px solid var(--border); 
-            background: rgba(7, 8, 11, 0.98);
-        }
-        header h1 { font-size: 1.1rem; font-weight: 800; color: var(--text-main); text-align: center; letter-spacing: 0.8px; }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { width: 100%; height: 100%; height: 100dvh; background-color: #010204; color: var(--text-main); display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        body::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 70%); z-index: 0; pointer-events: none; }
+        .app-container { width: 100%; max-width: 480px; height: 100%; height: 100dvh; display: flex; flex-direction: column; position: relative; background-color: var(--bg-app); overflow: hidden; z-index: 1; }
+        @media (min-width: 481px) { .app-container { height: 94vh; border-radius: 36px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 30px 90px rgba(0,0,0,0.95); } }
+        header { padding: calc(env(safe-area-inset-top) + 16px) 18px 12px; background: rgba(3, 4, 6, 0.85); backdrop-filter: blur(25px); position: absolute; top: 0; left: 0; right: 0; z-index: 10; border-bottom: 1px solid transparent; transition: all 0.3s ease; }
+        header.header-scrolled { border-bottom: 1px solid var(--border); background: rgba(3, 4, 6, 0.98); }
+        header h1 { font-size: 1.15rem; font-weight: 800; text-align: center; letter-spacing: 0.5px; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         ::-webkit-scrollbar { width: 0px; background: transparent; }
-
-        /* ==========================================
-           3. CONTENT AREA
-           ========================================== */
-        .content-area { 
-            flex: 1; 
-            overflow-y: auto; 
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch; 
-            padding: calc(env(safe-area-inset-top) + 54px) 14px 110px 14px; 
-            scroll-behavior: smooth; 
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
+        .content-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: calc(env(safe-area-inset-top) + 60px) 16px 110px 16px; scroll-behavior: smooth; position: relative; display: flex; flex-direction: column; gap: 14px; }
         .tela { display: none; width: 100%; }
-        .tela.ativa { display: block; animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        #tela-inicio.ativa {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
+        .tela.ativa { display: block; animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        #tela-inicio.ativa { display: flex; flex-direction: column; gap: 14px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card { 
-            background: var(--bg-card); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-card); 
-            padding: 14px; 
-            border: 1px solid var(--border); 
-            box-shadow: var(--shadow-subtle); 
-            position: relative; 
-            overflow: hidden; 
-        }
-
-        .section-title { 
-            font-size: 0.72rem; 
-            font-weight: 800; 
-            color: var(--text-secundary); 
-            margin-bottom: 10px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-        }
-
-        /* ==========================================
-           4. DASHBOARD & CHARTS
-           ========================================== */
+        
+        .card { background: var(--bg-card); backdrop-filter: blur(25px); border-radius: var(--radius-card); padding: 18px; border: 1px solid var(--border); box-shadow: var(--shadow-subtle); position: relative; transition: border-color 0.25s; }
+        .card:hover { border-color: rgba(255, 255, 255, 0.15); }
+        .section-title { font-size: 0.72rem; font-weight: 800; color: var(--text-secundary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.2px; display: flex; align-items: center; justify-content: space-between; }
+        
         .gradient-text-success { background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-purple { background: linear-gradient(135deg, #8b5cf6, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-warning { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-primary { background: linear-gradient(135deg, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .balance-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px; 
-        }
         
-        .balance-box { 
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 12px; 
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .balance-box.full-width {
-            grid-column: span 1; 
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.02));
-            border-color: rgba(59, 130, 246, 0.2);
-            align-items: flex-start; 
-            text-align: left;
-        }
-
-        .balance-box .label { 
-            font-size: 0.65rem; 
-            color: var(--text-secundary); 
-            display: block; 
-            margin-bottom: 4px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            letter-spacing: 0.2px;
-            line-height: 1.1;
-        }
-        
+        .balance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .balance-box { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); padding: 14px; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; }
+        .balance-box.full-width { background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(59, 130, 246, 0.02)); border-color: rgba(59, 130, 246, 0.25); }
+        .balance-box .label { font-size: 0.62rem; color: var(--text-secundary); display: block; margin-bottom: 6px; font-weight: 800; text-transform: uppercase; }
         .balance-box .value { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
-        .balance-box.full-width .value { font-size: 1.25rem; }
-
-        .chart-container { width: 100%; height: 95px; position: relative; margin-top: 4px; } 
-
+        .chart-container { width: 100%; height: 100px; position: relative; margin-top: 6px; }
+        
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .dash-card { 
-            background: var(--bg-card); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 12px; 
-            border-radius: var(--radius-card); 
-            border: 1px solid var(--border); 
-            display: flex; 
-            flex-direction: column; 
-            box-shadow: var(--shadow-subtle); 
-            transition: transform 0.2s ease; 
-        }
-        .dash-card:active { transform: scale(0.97); }
+        .dash-card { background: var(--bg-card); backdrop-filter: blur(25px); padding: 14px; border-radius: var(--radius-card); border: 1px solid var(--border); display: flex; flex-direction: column; box-shadow: var(--shadow-subtle); }
         .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .dash-card .icon-box { width: 32px; height: 32px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
-        .dash-card h3 { color: var(--text-secundary); font-size: 0.65rem; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
-        .dash-card span { color: var(--text-main); font-size: 1.1rem; font-weight: 800; display: block; margin-bottom: 8px; }
-
-        /* ==========================================
-           5. FORMS & CONTROLS (MELHORIA AQUI)
-           ========================================== */
+        .dash-card .icon-box { width: 34px; height: 34px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+        .dash-card h3 { color: var(--text-secundary); font-size: 0.62rem; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; }
+        .dash-card span { color: var(--text-main); font-size: 1.1rem; font-weight: 800; display: block; margin-bottom: 6px; }
+        
         .form-group { margin-bottom: 14px; }
         .form-group:last-child { margin-bottom: 0; }
-        .form-group label { display: block; font-size: 0.78rem; color: var(--text-secundary); margin-bottom: 6px; font-weight: 700; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-secundary); margin-bottom: 6px; font-weight: 700; }
         
-        input, textarea, select { 
-            width: 100%; 
-            padding: 14px; 
-            background-color: var(--bg-input); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-input); 
-            color: var(--text-main); 
-            font-size: 0.95rem; 
-            outline: none; 
-            transition: all 0.25s ease; 
-            appearance: none; 
-        }
+        input, textarea, select { width: 100%; padding: 13px 15px; background-color: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-input); color: var(--text-main); font-size: 0.92rem; outline: none; transition: all 0.25s ease; appearance: none; }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); background-color: var(--bg-input-focus); box-shadow: 0 0 0 4px var(--primary-glow); }
         
-        input:focus, textarea:focus, select:focus { 
-            border-color: var(--primary); 
-            background-color: var(--bg-input-focus); 
-            box-shadow: 0 0 0 4px var(--primary-glow); 
-        }
-
-        /* Estilo Premium para os Selects */
-        select {
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            background-size: 16px;
-            padding-right: 40px;
-            cursor: pointer;
-        }
-
+        .select-wrapper { position: relative; width: 100%; }
+        .select-wrapper select { padding-left: 40px; padding-right: 40px; cursor: pointer; text-overflow: ellipsis; }
+        .select-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--primary); pointer-events: none; display: flex; align-items: center; justify-content: center; }
+        select { background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 14px; }
+        
         .input-row { display: flex; gap: 10px; }
-
-        .file-upload-box {
-            border: 2px dashed var(--border-highlight);
-            border-radius: var(--radius-input);
-            padding: 16px;
-            text-align: center;
-            background: rgba(255,255,255,0.01);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            position: relative;
-        }
-        .file-upload-box:hover, .file-upload-box:active {
-            border-color: var(--primary);
-            background: rgba(59,130,246,0.05);
-        }
-        .file-upload-box input[type="file"] {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-        .file-upload-label { font-size: 0.82rem; font-weight: 600; color: var(--text-secundary); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
+        .file-upload-box { border: 2px dashed rgba(59, 130, 246, 0.4); border-radius: var(--radius-input); padding: 18px; text-align: center; background: rgba(59, 130, 246, 0.03); cursor: pointer; position: relative; transition: all 0.2s ease; }
+        .file-upload-box:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.06); }
+        .file-upload-box input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .file-upload-label { font-size: 0.82rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
         .preview-img-container { display: none; margin-top: 10px; position: relative; }
-        .preview-img-container img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
-        .btn-remover-img { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
+        .preview-img-container img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .btn-remover-img { position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn-remover-img:hover { background: rgba(239, 68, 68, 0.8); }
 
-        .btn-acao { 
-            width: 100%; padding: 14px; border: none; border-radius: var(--radius-input); font-size: 0.95rem; font-weight: 800; color: #FFFFFF; 
-            background: linear-gradient(135deg, var(--primary), #1d4ed8); cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: var(--shadow-glow); 
-        }
-        .btn-acao:active { transform: scale(0.97); }
+        .btn-acao { width: 100%; padding: 14px; border: none; border-radius: var(--radius-input); font-size: 0.95rem; font-weight: 800; color: #FFFFFF; background: linear-gradient(135deg, var(--primary), #1d4ed8); cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: var(--shadow-glow); transition: transform 0.15s ease, filter 0.2s ease; }
+        .btn-acao:active { transform: scale(0.97); filter: brightness(1.1); }
         .btn-secundario { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); color: var(--text-main); box-shadow: none; }
-        .btn-perigo { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: none; }
+        .btn-perigo { background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1)); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.4); box-shadow: none; }
         
-        .segment-control { display: flex; background: rgba(14, 16, 23, 0.8); border-radius: 16px; padding: 4px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
-        .segment-btn { flex: 1; text-align: center; padding: 10px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; color: var(--text-secundary); cursor: pointer; transition: all 0.25s ease; white-space: nowrap; }
-        .segment-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid var(--border-highlight); }
-        .aba-view { display: none; animation: fadeIn 0.35s ease; margin-top: 14px; }
+        .segment-control { display: flex; background: rgba(10, 13, 20, 0.95); border-radius: 16px; padding: 5px; border: 1px solid rgba(59, 130, 246, 0.25); backdrop-filter: blur(20px); gap: 6px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        .segment-btn { flex: 1; text-align: center; padding: 11px 6px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; color: var(--text-secundary); cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent; }
+        .segment-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.04); }
+        .segment-btn.active { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #ffffff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); border: 1px solid rgba(255, 255, 255, 0.15); }
+        
+        .aba-view { display: none; animation: fadeIn 0.3s ease; margin-top: 14px; }
         .aba-view.active { display: block; }
-
-        /* ==========================================
-           6. LISTS & ITEMS
-           ========================================== */
         .resultados-container { display: flex; flex-direction: column; gap: 14px; }
-        .item-salvo { background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 16px; border-radius: var(--radius-card); border: 1px solid var(--border); position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); transition: background 0.3s ease;}
-        .item-salvo:hover { background: rgba(30, 34, 45, 0.8); }
         
-        .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 800; margin-bottom: 8px; gap: 6px; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.3); text-transform: uppercase; letter-spacing: 0.8px; }
+        .item-salvo { background: var(--bg-card); backdrop-filter: blur(25px); padding: 16px; border-radius: var(--radius-card); border: 1px solid var(--border); position: relative; box-shadow: var(--shadow-subtle); transition: border-color 0.2s; }
+        .item-salvo:hover { border-color: rgba(255,255,255,0.15); }
+        .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.65rem; font-weight: 800; margin-bottom: 8px; gap: 4px; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.3); text-transform: uppercase; }
         
-        .item-salvo strong { display: block; font-size: 1.05rem; margin-bottom: 6px; color: var(--text-main); line-height: 1.4; }
-        .item-salvo p { color: var(--text-secundary); font-size: 0.9rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
-
-        .item-salvo img.img-nota { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-top: 12px; border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+        .item-salvo strong { display: block; font-size: 1.05rem; margin-bottom: 4px; color: var(--text-main); word-break: break-word; overflow-wrap: break-word; }
+        .item-salvo p { color: var(--text-secundary); font-size: 0.88rem; line-height: 1.5; word-break: break-word; overflow-wrap: break-word; white-space: pre-wrap; }
         
-        .destaque { font-size: 1.25rem; font-weight: 800; display: block; margin-top: 6px; }
-        .text-success { color: var(--success); }
-        .text-purple { color: var(--purple); }
+        .item-salvo img.img-nota { width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-top: 10px; border: 1px solid var(--border); }
+        .destaque { font-size: 1.25rem; font-weight: 800; display: block; margin-top: 4px; }
+        .text-success { color: var(--success); } .text-purple { color: var(--purple); }
         
-        /* Badges de Status / Descontos */
-        .badge-status { padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; border: 1px solid; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; }
-        .badge-desconto { background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3); }
-        .badge-recebido { background: rgba(16,185,129,0.15); color: var(--success); border-color: rgba(16,185,129,0.3); }
-        .badge-aliberar { background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3); }
+        .badge-status { padding: 4px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 800; border: 1px solid; margin-left: 6px; display: inline-flex; align-items: center; gap: 4px; }
         .badge-estoque { background: rgba(59,130,246,0.15); color: var(--primary); border-color: rgba(59,130,246,0.3); margin-left: 0; margin-top: 6px; }
-
+        
         .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
-        .btn-pequeno { background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-weight: 800; font-size: 0.78rem; cursor: pointer; padding: 8px 14px; border-radius: 10px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
-        .btn-pequeno:active { transform: scale(0.92); }
-        .btn-editar { color: var(--primary); border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); }
-        .btn-vender-rapido { color: var(--success); border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.1); }
-        .btn-excluir { color: var(--danger); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.1); }
-
-        .produto-img-lateral { display: flex; gap: 14px; align-items: center; }
+        .btn-pequeno { background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-weight: 800; font-size: 0.72rem; cursor: pointer; padding: 7px 12px; border-radius: 9px; color: var(--text-main); display: inline-flex; align-items: center; gap: 4px; transition: transform 0.1s ease, background 0.2s ease, border-color 0.2s; }
+        .btn-pequeno:active { transform: scale(0.95); }
+        .btn-editar { color: var(--primary); border-color: rgba(59,130,246,0.35); background: rgba(59,130,246,0.1); }
+        .btn-editar:hover { background: rgba(59,130,246,0.2); }
+        .btn-vender-rapido { color: var(--success); border-color: rgba(16,185,129,0.35); background: rgba(16,185,129,0.1); }
+        .btn-vender-rapido:hover { background: rgba(16,185,129,0.2); }
+        .btn-excluir { color: var(--danger); border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.1); }
+        .btn-excluir:hover { background: rgba(239,68,68,0.2); }
+        
+        .produto-img-lateral { display: flex; gap: 12px; align-items: center; }
         .produto-img-lateral img { width: 75px; height: 75px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); }
         .produto-info { flex: 1; display: flex; flex-direction: column; align-items: flex-start; }
-
-        /* ==========================================
-           7. CATEGORY MANAGEMENT
-           ========================================== */
-        .cat-manager-card { background: rgba(0,0,0,0.25); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
-        .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .cat-header strong { color: var(--text-main); font-size: 0.95rem; font-weight: 800; }
-        .subcat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 6px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-        .remover-btn { color: var(--danger); cursor: pointer; display: flex; align-items: center; background: none; border: none; padding: 2px; }
-
-        .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 18px; background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-subtle); }
-        .nav-link-card:active { transform: scale(0.97); background: rgba(255,255,255,0.04); }
-        .nav-link-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 800; margin-bottom: 4px; }
-        .nav-link-card p { font-size: 0.8rem; color: var(--text-secundary); }
         
-        /* ==========================================
-           8. FLOATING BOTTOM NAVIGATION
-           ========================================== */
-        .bottom-nav { 
-            position: absolute; 
-            bottom: 30px; 
-            left: 14px; 
-            right: 14px; 
-            height: 64px; 
-            padding-bottom: 0; 
-            background: rgba(11, 13, 18, 0.92); 
-            backdrop-filter: blur(35px); 
-            -webkit-backdrop-filter: blur(35px); 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            border-radius: 20px;
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            z-index: 9999; 
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(59, 130, 246, 0.15);
-        }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; height: 100%; cursor: pointer; color: var(--text-secundary); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .nav-item.ativo { color: var(--primary); transform: translateY(-4px); }
+        .cat-manager-card { background: rgba(255,255,255,0.025); border-radius: 14px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .subcat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .subcat-badge { background: var(--bg-input); border: 1px solid var(--border); padding: 6px 12px; border-radius: 9px; font-size: 0.72rem; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+        .remover-btn { color: var(--danger); cursor: pointer; background: none; border: none; padding: 2px; font-weight: bold; font-size: 0.9rem; }
         
-        .nav-item svg { width: 20px; height: 20px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; flex-shrink: 0; }
-        .nav-item.ativo svg { stroke-width: 2.5; filter: drop-shadow(0 4px 10px rgba(59,130,246,0.6)); }
-        .nav-item span.label { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.3px; flex-shrink: 0; }
-
-        /* ==========================================
-           9. OVERLAYS, MODALS & TOASTS
-           ========================================== */
+        .nav-link-card { display: flex; justify-content: space-between; align-items: center; padding: 18px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; box-shadow: var(--shadow-subtle); transition: all 0.2s ease; }
+        .nav-link-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        
+        .bottom-nav { position: absolute; bottom: 16px; left: 16px; right: 16px; height: 64px; background: rgba(8, 10, 16, 0.95); backdrop-filter: blur(35px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; display: flex; justify-content: space-around; align-items: center; z-index: 9999; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; height: 100%; cursor: pointer; color: var(--text-secundary); transition: all 0.2s ease; }
+        .nav-item.ativo { color: var(--primary); transform: translateY(-3px); }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 3px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .nav-item.ativo svg { stroke-width: 2.5; filter: drop-shadow(0 4px 10px rgba(59,130,246,0.7)); }
+        .nav-item span.label { font-size: 0.62rem; font-weight: 800; }
+        
         .tela-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg-app); z-index: 200; display: none; flex-direction: column; }
-        .tela-overlay.ativa { display: flex; animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .tela-overlay.ativa { display: flex; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .overlay-header { padding: calc(env(safe-area-inset-top) + 16px) 20px 14px; display: flex; align-items: center; background: rgba(7, 8, 11, 0.9); backdrop-filter: blur(25px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210;}
-        .btn-voltar { background: none; border: none; color: var(--primary); font-size: 0.9rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        .overlay-body { padding: 16px; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 90px; display: flex; flex-direction: column; gap: 16px; }
+        .overlay-header { padding: calc(env(safe-area-inset-top) + 16px) 18px 12px; display: flex; align-items: center; background: rgba(3, 4, 6, 0.95); backdrop-filter: blur(25px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 210; }
+        .btn-voltar { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text-main); font-size: 0.8rem; font-weight: 800; cursor: pointer; padding: 8px 14px; border-radius: 10px; display: flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .btn-voltar:hover { background: rgba(255,255,255,0.1); }
+        .overlay-body { padding: 16px; flex: 1; overflow-y: auto; padding-bottom: 90px; display: flex; flex-direction: column; gap: 14px; }
         
         .empty-state { text-align: center; padding: 40px 16px; color: var(--text-secundary); }
-        .empty-state svg { width: 48px; height: 48px; stroke-width: 1.5; margin-bottom: 12px; opacity: 0.4; }
-        .empty-state p { font-size: 0.9rem; font-weight: 600; }
+        .empty-state p { font-size: 0.88rem; font-weight: 600; }
         
-        .preview-venda-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(59, 130, 246, 0.04)); padding: 18px; border-radius: var(--radius-input); 
-            border: 1px solid rgba(59, 130, 246, 0.3); text-align: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
-        }
-
-        /* Toasts Customizados */
-        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none; }
-        .toast { background: rgba(14, 16, 23, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); color: var(--text-main); padding: 14px 20px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.6); animation: toastIn 0.3s ease forwards; display: flex; align-items: center; gap: 12px; pointer-events: auto; }
-        .toast.success { border-color: var(--success); border-left: 4px solid var(--success); }
-        .toast.error { border-color: var(--danger); border-left: 4px solid var(--danger); }
-        .toast.fadeOut { animation: toastOut 0.3s ease forwards; }
-        @keyframes toastIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes toastOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-20px); opacity: 0; } }
-
-        /* Modal de Confirmação Customizado */
-        .confirm-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 10001; display: none; align-items: center; justify-content: center; }
-        .confirm-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
-        .confirm-box { background: var(--bg-card); border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-card); max-width: 320px; width: 90%; text-align: center; box-shadow: var(--shadow-subtle); }
-        .confirm-box h3 { margin-bottom: 10px; font-size: 1.1rem; color: var(--text-main); }
-        .confirm-box p { color: var(--text-secundary); font-size: 0.9rem; margin-bottom: 24px; line-height: 1.5; }
-        .confirm-btns { display: flex; gap: 10px; }
-        .confirm-btns button { flex: 1; padding: 12px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
-        .confirm-btns button:active { transform: scale(0.95); }
-        .btn-confirm-cancel { background: rgba(255,255,255,0.1); color: var(--text-main); }
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 8px; width: 92%; max-width: 380px; pointer-events: none; }
+        .toast { background: rgba(16, 19, 28, 0.96); backdrop-filter: blur(15px); border: 1px solid var(--border); color: var(--text-main); padding: 14px 18px; border-radius: 12px; font-size: 0.88rem; font-weight: 600; box-shadow: 0 12px 30px rgba(0,0,0,0.7); display: flex; align-items: center; gap: 12px; pointer-events: auto; animation: toastIn 0.3s ease; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .toast.success { border-left: 4px solid var(--success); } .toast.error { border-left: 4px solid var(--danger); }
+        
+        .confirm-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); z-index: 10001; display: none; align-items: center; justify-content: center; }
+        .confirm-overlay.active { display: flex; }
+        .confirm-box { background: var(--bg-card); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius-card); max-width: 320px; width: 90%; text-align: center; box-shadow: var(--shadow-subtle); }
+        .confirm-btns { display: flex; gap: 10px; margin-top: 18px; }
+        .confirm-btns button { flex: 1; padding: 12px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: filter 0.2s; }
+        .btn-confirm-cancel { background: rgba(255,255,255,0.08); color: var(--text-main); }
         .btn-confirm-action { background: var(--primary); color: white; }
         .btn-confirm-action.danger { background: var(--danger); }
-
-        /* ==========================================
-           10. SCROLL TOP BUTTON
-           ========================================== */
-        .btn-scroll-top {
-            position: absolute; bottom: 105px; right: 16px; width: 44px; height: 44px; background: var(--primary); color: white; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); cursor: pointer; z-index: 90; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transform: translateY(15px) scale(0.9); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
-        .btn-scroll-top:active { transform: scale(0.9); }
+        
+        .btn-scroll-top { position: absolute; bottom: 92px; right: 16px; width: 44px; height: 44px; background: var(--primary); color: white; border: none; border-radius: 50%; cursor: pointer; z-index: 90; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.25s; box-shadow: var(--shadow-glow); }
+        .btn-scroll-top.visible { opacity: 1; pointer-events: auto; }
     </style>
 </head>
 <body>
 
-    <!-- Container de Toasts -->
     <div class="toast-container" id="toastBox"></div>
-
-    <!-- Custom Confirm Modal -->
     <div class="confirm-overlay" id="customConfirm">
         <div class="confirm-box">
             <h3 id="confirmTitle">Atenção</h3>
-            <p id="confirmMsg">Tem certeza que deseja realizar esta ação?</p>
+            <p id="confirmMsg" style="margin-top: 8px; font-size: 0.88rem; color: var(--text-secundary);">Tem certeza?</p>
             <div class="confirm-btns">
                 <button class="btn-confirm-cancel" onclick="fecharConfirm()">Cancelar</button>
                 <button class="btn-confirm-action" id="btnConfirmAction">Confirmar</button>
@@ -458,71 +178,43 @@
     </div>
 
     <div class="app-container" id="app-principal">
-        
-        <header id="main-header">
-            <h1 id="header-title">Visão Geral</h1>
-        </header>
+        <header id="main-header"><h1 id="header-title">Visão Geral</h1></header>
 
         <div class="content-area" id="main-content">
-            
             <!-- TELA INÍCIO -->
             <div id="tela-inicio" class="tela ativa">
-                
                 <div class="card">
                     <div class="balance-grid">
-                        <div class="balance-box">
-                            <span class="label">Vendas Recebidas</span>
-                            <div class="value gradient-text-success" id="dashTotalVendas">R$ 0,00</div>
-                        </div>
-                        <div class="balance-box">
-                            <span class="label">Valor a Liberar</span>
-                            <div class="value gradient-text-warning" id="dashValorLiberar">R$ 0,00</div>
-                        </div>
-                        <div class="balance-box">
-                            <span class="label">Total em Estoque</span>
-                            <div class="value gradient-text-purple" id="dashTotalEstoque">R$ 0,00</div>
-                        </div>
-                        <div class="balance-box full-width">
-                            <span class="label">Valor Total (Soma)</span>
-                            <div class="value gradient-text-primary" id="dashValorTotal">R$ 0,00</div>
-                        </div>
+                        <div class="balance-box"><span class="label">Vendas Recebidas</span><div class="value gradient-text-success" id="dashTotalVendas">R$ 0,00</div></div>
+                        <div class="balance-box"><span class="label">Valor a Liberar</span><div class="value gradient-text-warning" id="dashValorLiberar">R$ 0,00</div></div>
+                        <div class="balance-box"><span class="label">Total em Estoque</span><div class="value gradient-text-purple" id="dashTotalEstoque">R$ 0,00</div></div>
+                        <div class="balance-box full-width"><span class="label">Valor Total (Soma)</span><div class="value gradient-text-primary" id="dashValorTotal">R$ 0,00</div></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h2 class="section-title">
-                        <span>Desempenho Mês a Mês</span>
-                        <span style="font-size: 0.65rem; color: var(--success); font-weight: 800;">Vendas (R$)</span>
-                    </h2>
-                    <div class="chart-container">
-                        <canvas id="graficoVendasMensal"></canvas>
-                    </div>
+                    <h2 class="section-title"><span>Desempenho Mês a Mês</span><span style="font-size: 0.65rem; color: var(--success);">Vendas (R$)</span></h2>
+                    <div class="chart-container"><canvas id="graficoVendasMensal"></canvas></div>
                 </div>
 
                 <div class="dash-grid">
                     <div class="dash-card">
-                        <div class="header">
-                            <div class="icon-box" style="background: rgba(59, 130, 246, 0.15); color: var(--primary);">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
-                            </div>
-                        </div>
-                        <h3>Total de Notas</h3>
-                        <span id="dashTotalNotas">0</span>
-                        
-                        <div style="border-top: 1px solid var(--border); margin-top: 4px; padding-top: 8px;">
-                            <h3 style="color: var(--purple);">Itens na Loja</h3>
-                            <span id="dashTotalItensLoja" style="font-size: 0.9rem; color: var(--text-secundary); margin-bottom: 0;">0 itens</span>
+                        <div class="header"><div class="icon-box" style="background: rgba(59, 130, 246, 0.15); color: var(--primary);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div></div>
+                        <h3>Total de Notas</h3><span id="dashTotalNotas">0</span>
+                        <div style="border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px;">
+                            <h3 style="color: var(--purple);">Itens na Loja</h3><span id="dashTotalItensLoja" style="font-size: 0.88rem; color: var(--text-main); font-weight: 800;">0 itens</span>
                         </div>
                     </div>
 
                     <div class="dash-card">
-                        <div class="header">
-                            <div class="icon-box" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
-                            </div>
-                        </div>
+                        <div class="header"><div class="icon-box" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect></svg></div></div>
                         <h3>Próximo Evento</h3>
-                        <span id="dashProximoEvento" style="font-size: 0.78rem; font-weight: 700; margin-top: 2px; line-height: 1.2;">Nenhum.</span>
+                        <span id="dashProximoEvento" style="font-size: 0.78rem; font-weight: 700; margin-top: 2px;">Nenhum.</span>
+                        
+                        <div style="border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px;">
+                            <h3 style="color: var(--success);">Média Mensal</h3>
+                            <span id="dashMediaMensal" style="font-size: 0.92rem; color: var(--text-main); font-weight: 800;">R$ 0,00</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -533,22 +225,33 @@
                     <div class="segment-btn active" id="btnAbaNotasAdd" onclick="alternarAbaNotas('add')">Nova Nota</div>
                     <div class="segment-btn" id="btnAbaNotasList" onclick="alternarAbaNotas('lista')">Histórico</div>
                 </div>
-                
                 <div id="aba-notas-add" class="aba-view active">
                     <div class="card">
                         <h2 class="section-title">Escrever Nota</h2>
                         <div class="input-row" style="margin-bottom: 14px;">
-                            <div class="form-group" style="flex: 1; margin-bottom:0;"><label>Categoria</label><select id="categoriaConteudo" onchange="atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo')"></select></div>
-                            <div class="form-group" style="flex: 1; margin-bottom:0;"><label>Subcategoria</label><select id="subcategoriaConteudo"></select></div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Categoria</label>
+                                <div class="select-wrapper">
+                                    <div class="select-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div>
+                                    <select id="categoriaConteudo" onchange="atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo')"></select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Subcategoria</label>
+                                <div class="select-wrapper">
+                                    <div class="select-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg></div>
+                                    <select id="subcategoriaConteudo"></select>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group"><label>Título</label><input type="text" id="tituloConteudo" placeholder="Assunto principal"></div>
                         <div class="form-group"><label>Data da Nota</label><input type="date" id="dataNota" style="color-scheme: dark;"></div>
-                        <div class="form-group"><label>Descrição</label><textarea id="textoConteudo" rows="4" placeholder="Detalhes completos..."></textarea></div>
+                        <div class="form-group"><label>Descrição</label><textarea id="textoConteudo" rows="3" placeholder="Detalhes..."></textarea></div>
                         <div class="form-group">
                             <label>Anexar Imagem (Opcional)</label>
                             <div class="file-upload-box">
                                 <input type="file" id="imagemConteudo" accept="image/*" onchange="previewUploadImage(this, 'previewNotaBox', 'previewNotaImg')">
-                                <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Escolher Imagem</span></div>
+                                <div class="file-upload-label"><span>Escolher Imagem</span></div>
                             </div>
                             <div class="preview-img-container" id="previewNotaBox">
                                 <img id="previewNotaImg" src="" alt="Preview">
@@ -566,13 +269,13 @@
                 <div class="card">
                     <h2 class="section-title">Novo Evento</h2>
                     <div class="input-row" style="margin-bottom: 14px;">
-                        <div class="form-group" style="flex: 1.2; margin-bottom:0;"><label>Data</label><input type="date" id="dataAgenda" style="color-scheme: dark;"></div>
-                        <div class="form-group" style="flex: 0.8; margin-bottom:0;"><label>Horário</label><input type="time" id="horarioAgenda" style="color-scheme: dark;"></div>
+                        <div class="form-group" style="flex: 1.2;"><label>Data</label><input type="date" id="dataAgenda" style="color-scheme: dark;"></div>
+                        <div class="form-group" style="flex: 0.8;"><label>Horário</label><input type="time" id="horarioAgenda" style="color-scheme: dark;"></div>
                     </div>
                     <div class="form-group"><label>Descrição</label><input type="text" id="descAgenda" placeholder="Título do evento"></div>
                     <button class="btn-acao" style="margin-top: 16px;" onclick="salvarAgenda()">Agendar Evento</button>
                 </div>
-                <div class="resultados-container" id="listaAgenda" style="margin-top: 16px;"></div>
+                <div class="resultados-container" id="listaAgenda" style="margin-top: 14px;"></div>
             </div>
 
             <!-- TELA VENDAS & LOJA -->
@@ -582,123 +285,125 @@
                     <div class="segment-btn" id="btnAbaVendasEstoque" onclick="alternarAbaVendas('estoque')">Loja / Estoque</div>
                     <div class="segment-btn" id="btnAbaVendasLista" onclick="alternarAbaVendas('lista')">Histórico</div>
                 </div>
-
                 <div id="aba-vendas-nova" class="aba-view active">
                     <div class="card">
                         <h2 class="section-title">Registrar Saída/Venda</h2>
-                        <div class="form-group"><label>Produto / Serviço</label><input type="text" id="nomeProduto" placeholder="Nome do item vendido"></div>
-                        
+                        <div class="form-group"><label>Produto</label><input type="text" id="nomeProduto" placeholder="Nome do item"></div>
                         <div class="form-group input-row">
-                            <div style="flex: 0.8;"><label>Qtd.</label><input type="number" id="qtdProduto" placeholder="1" value="1" oninput="calcularTotalTempoReal()"></div>
+                            <div style="flex: 0.8;"><label>Qtd.</label><input type="number" id="qtdProduto" value="1" oninput="calcularTotalTempoReal()"></div>
                             <div style="flex: 1.4;"><label>Preço Unid. (R$)</label><input type="text" inputmode="decimal" id="precoProduto" placeholder="0.00" oninput="calcularTotalTempoReal()"></div>
-                            <div style="flex: 0.9;"><label>Desc. (%)</label><input type="number" id="descProduto" placeholder="0" value="0" oninput="calcularTotalTempoReal()"></div>
+                            <div style="flex: 0.9;"><label>Desc. (%)</label><input type="number" id="descProduto" value="0" oninput="calcularTotalTempoReal()"></div>
                         </div>
-
                         <div class="form-group">
-                            <div class="preview-venda-card">
-                                <span style="font-size: 0.72rem; color: var(--text-secundary); display: block; margin-bottom: 4px; text-transform: uppercase; font-weight: 800;">Total a Receber / Liberar</span>
-                                <strong id="previewTotalVenda" style="font-size: 1.5rem; color: var(--primary);">R$ 0,00</strong>
+                            <div style="background: rgba(59, 130, 246, 0.12); padding: 14px; border-radius: 12px; text-align: center; border: 1px solid rgba(59,130,246,0.3); box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);">
+                                <span style="font-size: 0.68rem; color: var(--text-secundary); font-weight:800;">TOTAL DA VENDA</span>
+                                <strong id="previewTotalVenda" style="font-size: 1.3rem; color: var(--primary); display:block; margin-top: 2px;">R$ 0,00</strong>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label>Status do Pagamento</label>
-                            <select id="statusVenda">
-                                <option value="recebido">Já Recebido</option>
-                                <option value="aliberar">A Liberar (Pendente)</option>
-                            </select>
+                            <label>Status</label>
+                            <div class="select-wrapper">
+                                <div class="select-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                                <select id="statusVenda"><option value="recebido">Já Recebido</option><option value="aliberar">A Liberar (Pendente)</option></select>
+                            </div>
                         </div>
-
-                        <div class="form-group"><label>Data da Venda</label><input type="date" id="dataVenda" style="color-scheme: dark;"></div>
+                        <div class="form-group"><label>Data</label><input type="date" id="dataVenda" style="color-scheme: dark;"></div>
                         <button class="btn-acao" style="margin-top: 16px;" onclick="salvarVenda()">Confirmar Venda</button>
                     </div>
                 </div>
-
                 <div id="aba-vendas-estoque" class="aba-view">
-                    <div class="card" style="margin-bottom: 16px;">
+                    <div class="card" style="margin-bottom: 14px;">
                         <h2 class="section-title">Adicionar à Loja</h2>
-                        <div class="form-group"><label>Nome do Produto</label><input type="text" id="estNome" placeholder="Ex: Tênis Nike, Camiseta..."></div>
+                        <div class="form-group"><label>Nome</label><input type="text" id="estNome" placeholder="Nome do produto"></div>
                         <div class="form-group input-row">
-                            <div style="flex: 1;"><label>Valor de Venda (R$)</label><input type="text" inputmode="decimal" id="estPreco" placeholder="0.00"></div>
-                            <div style="flex: 0.8;"><label>Quantidade</label><input type="number" id="estQtd" placeholder="1" value="1"></div>
+                            <div style="flex: 1.2;"><label>Valor (R$)</label><input type="text" inputmode="decimal" id="estPreco" placeholder="0.00"></div>
+                            <div style="flex: 0.8;"><label>Qtd.</label><input type="number" id="estQtd" value="1"></div>
+                            <div style="flex: 0.9;"><label>Desc. (%)</label><input type="number" id="estDesc" value="0"></div>
                         </div>
                         <div class="form-group">
-                            <label>Foto do Produto (Opcional)</label>
-                            <div class="file-upload-box">
-                                <input type="file" id="estImagem" accept="image/*" onchange="previewUploadImage(this, 'previewEstoqueBox', 'previewEstoqueImg')">
-                                <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Carregar Imagem</span></div>
-                            </div>
-                            <div class="preview-img-container" id="previewEstoqueBox">
-                                <img id="previewEstoqueImg" src="" alt="Preview Produto">
-                                <button class="btn-remover-img" onclick="limparPreview('previewEstoqueBox', 'previewEstoqueImg', 'estImagem')">Remover</button>
-                            </div>
+                            <label>Foto (Opcional)</label>
+                            <div class="file-upload-box"><input type="file" id="estImagem" accept="image/*" onchange="previewUploadImage(this, 'previewEstoqueBox', 'previewEstoqueImg')"><div class="file-upload-label"><span>Carregar Imagem</span></div></div>
+                            <div class="preview-img-container" id="previewEstoqueBox"><img id="previewEstoqueImg" src=""><button class="btn-remover-img" onclick="limparPreview('previewEstoqueBox', 'previewEstoqueImg', 'estImagem')">Remover</button></div>
                         </div>
-                        <button class="btn-acao" style="margin-top: 16px; background: linear-gradient(135deg, var(--purple), #7c3aed); box-shadow: 0 4px 20px rgba(139,92,246,0.35);" onclick="salvarEstoque()">Adicionar ao Estoque</button>
+                        <button class="btn-acao" style="margin-top: 16px; background: linear-gradient(135deg, var(--purple), #7c3aed);" onclick="salvarEstoque()">Adicionar ao Estoque</button>
                     </div>
                     <div class="resultados-container" id="listaEstoque"></div>
                 </div>
-
-                <div id="aba-vendas-lista" class="aba-view">
-                    <div class="resultados-container" id="listaVendas"></div>
-                </div>
+                <div id="aba-vendas-lista" class="aba-view"><div class="resultados-container" id="listaVendas"></div></div>
             </div>
 
             <!-- TELA CONFIGURAÇÕES -->
             <div id="tela-config" class="tela">
                 <div class="nav-link-card" onclick="abrirTelaCategorias()">
-                    <div><h3>Categorias de Notas</h3><p>Personalize os assuntos e subcategorias</p></div>
-                    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                    <div><h3>Categorias de Notas</h3><p style="font-size: 0.78rem; color: var(--text-secundary);">Gerencie categorias e subcategorias</p></div>
+                    <div style="font-size: 1.3rem; color: var(--primary);">›</div>
                 </div>
-                <div class="card" style="border-color: rgba(239, 68, 68, 0.3); margin-top: 16px; background: rgba(239, 68, 68, 0.04);">
+                <div class="card" style="border-color: rgba(239, 68, 68, 0.35); margin-top: 14px; background: rgba(239, 68, 68, 0.04);">
                     <h2 class="section-title" style="color: var(--danger);">Zona de Perigo</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-secundary); margin-bottom: 16px; line-height: 1.5;">Atenção: Ao apagar os dados, todo o seu histórico, estoque e notas serão perdidos de forma permanente.</p>
                     <button class="btn-acao btn-perigo" onclick="limparTodosDados()">Apagar Todos os Dados</button>
                 </div>
             </div>
         </div>
-        
-        <!-- SCROLL TO TOP -->
-        <button id="btn-scroll-top" class="btn-scroll-top" onclick="subirParaTopo()" aria-label="Voltar ao topo">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="18 15 12 9 6 15"></polyline>
-            </svg>
-        </button>
 
-        <!-- BOTTOM NAV -->
+        <button id="btn-scroll-top" class="btn-scroll-top" onclick="subirParaTopo()">↑</button>
+
+        <!-- MENU INFERIOR CORRIGIDO -->
         <nav class="bottom-nav">
-            <div class="nav-item ativo" onclick="abrirTela('tela-inicio', 'Visão Geral', this)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="label">Início</span></div>
-            <div class="nav-item" onclick="abrirTela('tela-conteudo', 'Notas & Ideias', this)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path></svg><span class="label">Notas</span></div>
-            <div class="nav-item" onclick="abrirTela('tela-agenda', 'Agenda', this)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg><span class="label">Agenda</span></div>
-            <div class="nav-item" onclick="abrirTela('tela-vendas', 'Vendas e Loja', this)"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span class="label">Vendas</span></div>
-            <div class="nav-item" onclick="abrirTela('tela-config', 'Configurações', this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span class="label">Config</span></div>
+            <div class="nav-item ativo" onclick="abrirTela('tela-inicio', 'Visão Geral', this)">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                <span class="label">Início</span>
+            </div>
+            <div class="nav-item" onclick="abrirTela('tela-conteudo', 'Notas & Ideias', this)">
+                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <span class="label">Notas</span>
+            </div>
+            <div class="nav-item" onclick="abrirTela('tela-agenda', 'Agenda', this)">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span class="label">Agenda</span>
+            </div>
+            <div class="nav-item" onclick="abrirTela('tela-vendas', 'Vendas e Loja', this)">
+                <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                <span class="label">Vendas</span>
+            </div>
+            <div class="nav-item" onclick="abrirTela('tela-config', 'Configurações', this)">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span class="label">Config</span>
+            </div>
         </nav>
     </div>
 
-    <!-- OVERLAYS & MODALS -->
+    <!-- OVERLAYS -->
     <div id="tela-gestao-categorias" class="tela-overlay">
         <div class="overlay-header">
-            <button class="btn-voltar" onclick="fecharTelaCategorias()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>Voltar</button>
-            <h2 style="font-size: 1rem; font-weight: 800; margin-left: auto; margin-right: auto; padding-right: 65px;">Categorias</h2>
+            <button class="btn-voltar" onclick="fecharTelaCategorias()">← Voltar</button>
+            <h2 style="font-size: 1rem; margin-left: 10px;">Gerenciar Categorias</h2>
         </div>
         <div class="overlay-body">
             <div class="card">
-                <h2 class="section-title">Nova Categoria Principal</h2>
-                <div class="input-row"><input type="text" id="novaCategoriaNome" placeholder="Ex: Finanças, Projetos..."><button class="btn-acao" style="width: auto; padding: 0 20px;" onclick="addCategoria()">Criar</button></div>
+                <h2 class="section-title">Nova Categoria</h2>
+                <div class="input-row">
+                    <input type="text" id="novaCategoriaNome" placeholder="Nome da categoria...">
+                    <button class="btn-acao" style="width: auto; padding: 0 18px;" onclick="addCategoria()">Criar</button>
+                </div>
             </div>
-            <div class="card"><h2 class="section-title">Estrutura Atual</h2><div id="listaGestaoCategorias"></div></div>
+            <div class="card">
+                <h2 class="section-title">Categorias Existentes</h2>
+                <div id="listaGestaoCategorias"></div>
+            </div>
         </div>
     </div>
 
     <div id="modal-edicao" class="tela-overlay">
         <div class="overlay-header">
-            <button class="btn-voltar" onclick="fecharModalEdicao()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>Cancelar</button>
-            <h2 id="modalEdicaoTitulo" style="font-size: 1rem; font-weight: 800; margin-left: auto; margin-right: auto; padding-right: 75px;">Editar Item</h2>
+            <button class="btn-voltar" onclick="fecharModalEdicao()">← Cancelar</button>
+            <h2 id="modalEdicaoTitulo" style="font-size: 1rem; margin-left: 10px;">Editar Item</h2>
         </div>
         <div class="overlay-body">
             <div class="card">
-                <input type="hidden" id="editItemId"><input type="hidden" id="editItemTipo">
-                <div id="containerCamposEdicao" style="display: flex; flex-direction: column; gap: 14px;"></div>
-                <button class="btn-acao" style="margin-top: 16px;" onclick="salvarEdicao()">Salvar Alterações</button>
+                <input type="hidden" id="editItemId">
+                <input type="hidden" id="editItemTipo">
+                <div id="containerCamposEdicao" style="display:flex; flex-direction:column; gap:14px;"></div>
+                <button class="btn-acao" style="margin-top:16px;" onclick="salvarEdicao()">Salvar Alterações</button>
             </div>
         </div>
     </div>
@@ -709,38 +414,23 @@
         const gerarId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
         let meuGraficoVendas = null;
 
-        /* === SISTEMA DE TOASTS === */
         function showToast(mensagem, tipo = 'success') {
             const container = document.getElementById('toastBox');
             const toast = document.createElement('div');
             toast.className = `toast ${tipo}`;
-            const icon = tipo === 'success' 
-                ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`
-                : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
-            toast.innerHTML = `${icon} <span>${mensagem}</span>`;
+            toast.innerHTML = `<span>${mensagem}</span>`;
             container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.add('fadeOut');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            setTimeout(() => toast.remove(), 2500);
         }
 
-        /* === SISTEMA DE MODAL DE CONFIRMAÇÃO === */
         function showConfirm(titulo, mensagem, callback, isDanger = false) {
             document.getElementById('confirmTitle').innerText = titulo;
             document.getElementById('confirmMsg').innerText = mensagem;
             let btnConfirm = document.getElementById('btnConfirmAction');
             btnConfirm.className = 'btn-confirm-action ' + (isDanger ? 'danger' : '');
-            
             let newBtn = btnConfirm.cloneNode(true);
             btnConfirm.parentNode.replaceChild(newBtn, btnConfirm);
-            
-            newBtn.onclick = () => {
-                fecharConfirm();
-                callback();
-            };
-            
+            newBtn.onclick = () => { fecharConfirm(); callback(); };
             document.getElementById('customConfirm').classList.add('active');
         }
         function fecharConfirm() { document.getElementById('customConfirm').classList.remove('active'); }
@@ -753,11 +443,9 @@
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         let width = img.width, height = img.height;
-                        if (width > height) { if (width > 800) { height = Math.round(height *= 800 / width); width = 800; } } 
-                        else { if (height > 800) { width = Math.round(width *= 800 / height); height = 800; } }
+                        if (width > 800) { height = Math.round(height *= 800 / width); width = 800; }
                         canvas.width = width; canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
                         resolve(canvas.toDataURL('image/jpeg', 0.8));
                     };
                     img.src = e.target.result;
@@ -768,8 +456,7 @@
 
         const categoriasDefault = [
             { id: 'cat_1', nome: 'Ideias / Projetos', subcategorias: ['Em andamento', 'Concluído', 'Nova Ideia'] },
-            { id: 'cat_2', nome: 'Finanças Pessoais', subcategorias: ['Ganhos', 'Despesas', 'Investimentos'] },
-            { id: 'cat_3', nome: 'Outros', subcategorias: ['Diversos'] }
+            { id: 'cat_2', nome: 'Finanças Pessoais', subcategorias: ['Ganhos', 'Despesas', 'Investimentos'] }
         ];
 
         function initApp() {
@@ -780,11 +467,9 @@
             
             atualizarDashboard();
             carregarSelectCategorias();
-            renderConteudos();
-            renderAgenda();
-            renderEstoque();
-            renderVendas();
-            
+            renderConteudos(); renderAgenda(); renderEstoque(); renderVendas();
+            calcularTotalTempoReal();
+
             document.getElementById('main-content').addEventListener('scroll', function() {
                 let header = document.getElementById('main-header');
                 if(this.scrollTop > 10) header.classList.add('header-scrolled');
@@ -794,32 +479,13 @@
         }
 
         function formatarMoeda(valor) { return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
-
-        function subirParaTopo() {
-            document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function deveMostrarBtnTopo() {
-            let telaNotas = document.getElementById('tela-conteudo');
-            let abaNotasList = document.getElementById('aba-notas-lista');
-            if (telaNotas.classList.contains('ativa') && abaNotasList.classList.contains('active')) return true;
-
-            let telaVendas = document.getElementById('tela-vendas');
-            let abaEstoque = document.getElementById('aba-vendas-estoque');
-            let abaVendasList = document.getElementById('aba-vendas-lista');
-            if (telaVendas.classList.contains('ativa') && (abaEstoque.classList.contains('active') || abaVendasList.classList.contains('active'))) return true;
-
-            return false;
-        }
-
+        function subirParaTopo() { document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' }); }
+        
         function verificarScrollTop() {
             let content = document.getElementById('main-content');
             let btnTop = document.getElementById('btn-scroll-top');
-            if (content.scrollTop > 150 && deveMostrarBtnTopo()) {
-                btnTop.classList.add('visible');
-            } else {
-                btnTop.classList.remove('visible');
-            }
+            if (content.scrollTop > 150) btnTop.classList.add('visible');
+            else btnTop.classList.remove('visible');
         }
 
         function abrirTela(idTela, titulo, elemBotao) {
@@ -829,505 +495,353 @@
             if(elemBotao) elemBotao.classList.add('ativo');
             document.getElementById('header-title').innerText = titulo;
             document.getElementById('main-content').scrollTop = 0;
-            verificarScrollTop();
         }
 
         function previewUploadImage(input, boxId, imgId) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e) => {
                     document.getElementById(imgId).src = e.target.result;
                     document.getElementById(boxId).style.display = 'block';
-                    if(input.dataset) input.dataset.removed = "false";
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         function limparPreview(boxId, imgId, inputId) {
-            event.preventDefault(); 
+            event.preventDefault();
             document.getElementById(boxId).style.display = 'none';
             document.getElementById(imgId).src = '';
-            let input = document.getElementById(inputId);
-            if(input) {
-                input.value = '';
-                input.dataset.removed = "true";
-            }
+            document.getElementById(inputId).value = '';
+            document.getElementById(inputId).dataset.removed = "true";
         }
 
         function alternarAbaNotas(aba) {
             document.querySelectorAll('#tela-conteudo .segment-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('#tela-conteudo .aba-view').forEach(v => v.classList.remove('active'));
-            if(aba === 'add') {
-                document.getElementById('btnAbaNotasAdd').classList.add('active');
-                document.getElementById('aba-notas-add').classList.add('active');
-            } else {
-                document.getElementById('btnAbaNotasList').classList.add('active');
-                document.getElementById('aba-notas-lista').classList.add('active');
-                renderConteudos();
-            }
-            verificarScrollTop();
+            if(aba === 'add') { document.getElementById('btnAbaNotasAdd').classList.add('active'); document.getElementById('aba-notas-add').classList.add('active'); }
+            else { document.getElementById('btnAbaNotasList').classList.add('active'); document.getElementById('aba-notas-lista').classList.add('active'); renderConteudos(); }
         }
 
         function carregarSelectCategorias() {
             let cats = obterDados('categorias');
             let selCat = document.getElementById('categoriaConteudo');
-            let selSub = document.getElementById('subcategoriaConteudo');
-            if(!selCat || !selSub) return;
-            
-            if (cats.length === 0) {
-                selCat.innerHTML = '<option value="">Sem categorias</option>';
-                selSub.innerHTML = '<option value="">Sem subcategorias</option>';
-                return;
-            }
-
-            let htmlCat = '';
-            cats.forEach(c => { htmlCat += `<option value="${c.id}">${c.nome}</option>`; });
-            selCat.innerHTML = htmlCat;
+            if(!selCat) return;
+            selCat.innerHTML = cats.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
             atualizarSelectSubcategorias('categoriaConteudo', 'subcategoriaConteudo');
         }
 
-        function atualizarSelectSubcategorias(idSelectCat, idSelectSub) {
+        function atualizarSelectSubcategorias(idSelectCat, idSelectSub, selectedSub = "") {
             let cats = obterDados('categorias');
-            let selCat = document.getElementById(idSelectCat);
-            let selSub = document.getElementById(idSelectSub);
-            let catId = selCat ? selCat.value : '';
+            let catId = document.getElementById(idSelectCat)?.value;
             let cat = cats.find(c => c.id === catId);
-            
-            let htmlSub = '';
-            if (cat && cat.subcategorias && cat.subcategorias.length > 0) {
-                cat.subcategorias.forEach(sub => { htmlSub += `<option value="${sub}">${sub}</option>`; });
-            } else {
-                htmlSub = '<option value="">Sem subcategorias</option>';
+            let selSub = document.getElementById(idSelectSub);
+            if(selSub) {
+                selSub.innerHTML = cat?.subcategorias?.length ? cat.subcategorias.map(s => `<option value="${s}" ${s === selectedSub ? 'selected' : ''}>${s}</option>`).join('') : '<option value="">Geral</option>';
             }
-            if(selSub) selSub.innerHTML = htmlSub;
         }
 
         async function salvarConteudo() {
             let titulo = document.getElementById('tituloConteudo').value;
-            if(!titulo) return showToast("Por favor, digite o título da nota.", "error");
-            
+            if(!titulo) return showToast("Digite o título da nota.", "error");
             let novoItem = {
-                id: gerarId(),
-                categoriaId: document.getElementById('categoriaConteudo').value || '',
-                subcategoria: document.getElementById('subcategoriaConteudo').value || '',
-                titulo: titulo,
-                data: document.getElementById('dataNota').value,
-                texto: document.getElementById('textoConteudo').value,
-                imagem: ""
+                id: gerarId(), categoriaId: document.getElementById('categoriaConteudo').value,
+                subcategoria: document.getElementById('subcategoriaConteudo').value,
+                titulo, data: document.getElementById('dataNota').value,
+                texto: document.getElementById('textoConteudo').value, imagem: ""
             };
-
             let fileInput = document.getElementById('imagemConteudo');
-            if (fileInput.files.length > 0) { novoItem.imagem = await processarImagemBase64(fileInput.files[0]); }
-
-            let lista = obterDados('conteudos');
-            lista.unshift(novoItem);
-            salvarDados('conteudos', lista);
+            if (fileInput.files.length > 0) novoItem.imagem = await processarImagemBase64(fileInput.files[0]);
+            let lista = obterDados('conteudos'); lista.unshift(novoItem); salvarDados('conteudos', lista);
             
-            document.getElementById('tituloConteudo').value = '';
+            document.getElementById('tituloConteudo').value = ''; 
             document.getElementById('textoConteudo').value = '';
-            limparPreview('previewNotaBox', 'previewNotaImg', 'imagemConteudo');
-            showToast('Nota salva com sucesso!', 'success');
+            document.getElementById('imagemConteudo').value = '';
+            document.getElementById('previewNotaBox').style.display = 'none';
+            document.getElementById('previewNotaImg').src = '';
+            
+            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
+            renderConteudos();
+            showToast('Nota salva com sucesso!', 'success');
         }
 
         function renderConteudos() {
-            let lista = obterDados('conteudos');
-            let cats = obterDados('categorias');
-            let div = document.getElementById('listaConteudos');
-            
-            if(lista.length === 0) {
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg><p>Nenhuma nota salva.</p></div>`;
-                return;
-            }
-            
-            let htmlFinal = '';
-            lista.forEach(item => {
+            let lista = obterDados('conteudos'), cats = obterDados('categorias'), div = document.getElementById('listaConteudos');
+            if(!lista.length) { div.innerHTML = `<div class="empty-state"><p>Nenhuma nota salva.</p></div>`; return; }
+            div.innerHTML = lista.map(item => {
                 let cat = cats.find(c => c.id === item.categoriaId);
-                let catNome = cat ? cat.nome : 'Sem Categoria';
-                let dataFormatada = item.data ? item.data.split('-').reverse().join('/') : '';
-                let subNome = item.subcategoria ? item.subcategoria : 'Geral';
-                let imgHtml = item.imagem ? `<img src="${item.imagem}" class="img-nota" alt="Imagem">` : '';
-                
-                htmlFinal += `
-                    <div class="item-salvo">
-                        <div class="caminho-categoria">${catNome} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg> ${subNome}</div>
-                        <strong>${item.titulo}</strong>
-                        <p style="font-size: 0.72rem; margin-bottom: 6px; color: var(--primary); font-weight:700;">${dataFormatada}</p>
-                        <p>${item.texto}</p>
-                        ${imgHtml}
-                        <div class="acoes-item">
-                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'conteudos')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'conteudos')">Excluir</button>
-                        </div>
-                    </div>
-                `;
-            });
-            div.innerHTML = htmlFinal;
+                return `<div class="item-salvo">
+                    <div class="caminho-categoria">${cat?.nome || 'Geral'} > ${item.subcategoria || 'Geral'}</div>
+                    <strong>${item.titulo}</strong><p>${item.texto}</p>
+                    ${item.imagem ? `<img src="${item.imagem}" class="img-nota">` : ''}
+                    <div class="acoes-item"><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'conteudos')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'conteudos')">Excluir</button></div>
+                </div>`;
+            }).join('');
         }
 
         function salvarAgenda() {
             let desc = document.getElementById('descAgenda').value;
-            if(!desc) return showToast("Digite a descrição do evento.", "error");
+            if(!desc) return showToast("Digite a descrição.", "error");
             let lista = obterDados('agenda');
-            lista.push({
-                id: gerarId(),
-                data: document.getElementById('dataAgenda').value,
-                hora: document.getElementById('horarioAgenda').value,
-                desc: desc
-            });
+            lista.push({ id: gerarId(), data: document.getElementById('dataAgenda').value, hora: document.getElementById('horarioAgenda').value, desc });
             lista.sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
-            salvarDados('agenda', lista);
+            salvarDados('agenda', lista); 
             document.getElementById('descAgenda').value = '';
-            showToast('Evento agendado com sucesso!', 'success');
-            renderAgenda();
+            
+            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
+            renderAgenda();
+            showToast('Evento agendado!', 'success');
         }
 
         function renderAgenda() {
-            let lista = obterDados('agenda');
-            let div = document.getElementById('listaAgenda');
-            if(lista.length === 0) {
-                div.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg><p>Nenhum evento agendado.</p></div>`;
-                return;
-            }
-            let htmlFinal = '';
-            lista.forEach(item => {
-                let dataF = item.data ? item.data.split('-').reverse().join('/') : '';
-                htmlFinal += `
-                    <div class="item-salvo">
-                        <p style="font-size: 0.78rem; color: var(--warning); font-weight: 700; margin-bottom: 4px;">🗓 ${dataF} às ${item.hora}</p>
-                        <strong>${item.desc}</strong>
-                        <div class="acoes-item">
-                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'agenda')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'agenda')">Excluir</button>
-                        </div>
-                    </div>
-                `;
-            });
-            div.innerHTML = htmlFinal;
+            let lista = obterDados('agenda'), div = document.getElementById('listaAgenda');
+            if(!lista.length) { div.innerHTML = `<div class="empty-state"><p>Nenhum evento.</p></div>`; return; }
+            div.innerHTML = lista.map(item => `<div class="item-salvo">
+                <p style="color: var(--warning); font-weight: 700;">🗓 ${item.data.split('-').reverse().join('/')} às ${item.hora}</p>
+                <strong>${item.desc}</strong>
+                <div class="acoes-item"><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'agenda')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'agenda')">Excluir</button></div>
+            </div>`).join('');
         }
 
         function alternarAbaVendas(aba) {
             document.querySelectorAll('#tela-vendas .segment-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('#tela-vendas .aba-view').forEach(v => v.classList.remove('active'));
-            if(aba === 'nova') {
-                document.getElementById('btnAbaVendasNova').classList.add('active');
-                document.getElementById('aba-vendas-nova').classList.add('active');
-            } else if (aba === 'estoque') {
-                document.getElementById('btnAbaVendasEstoque').classList.add('active');
-                document.getElementById('aba-vendas-estoque').classList.add('active');
-                renderEstoque();
-            } else {
-                document.getElementById('btnAbaVendasLista').classList.add('active');
-                document.getElementById('aba-vendas-lista').classList.add('active');
-                renderVendas();
-            }
-            verificarScrollTop();
+            if(aba === 'nova') { document.getElementById('btnAbaVendasNova').classList.add('active'); document.getElementById('aba-vendas-nova').classList.add('active'); }
+            else if(aba === 'estoque') { document.getElementById('btnAbaVendasEstoque').classList.add('active'); document.getElementById('aba-vendas-estoque').classList.add('active'); renderEstoque(); }
+            else { document.getElementById('btnAbaVendasLista').classList.add('active'); document.getElementById('aba-vendas-lista').classList.add('active'); renderVendas(); }
         }
 
         function calcularTotalTempoReal() {
             let qtd = parseFloat(document.getElementById('qtdProduto').value) || 0;
-            let precoTexto = document.getElementById('precoProduto').value.replace(',', '.');
-            let preco = parseFloat(precoTexto) || 0;
+            let precoStr = document.getElementById('precoProduto').value.replace(',', '.');
+            let preco = parseFloat(precoStr) || 0;
             let desc = parseFloat(document.getElementById('descProduto').value) || 0;
-            
-            let subtotal = qtd * preco;
-            let descontoReais = subtotal * (desc / 100);
-            let total = subtotal - descontoReais;
-            
+            let total = (qtd * preco) * (1 - desc / 100);
             document.getElementById('previewTotalVenda').innerText = formatarMoeda(total);
         }
 
         async function salvarEstoque() {
-            let nome = document.getElementById('estNome').value;
-            let precoT = document.getElementById('estPreco').value.replace(',', '.');
-            let preco = parseFloat(precoT);
-            let qtd = parseInt(document.getElementById('estQtd').value) || 1;
-            
-            if(!nome || isNaN(preco)) return showToast("Preencha nome e valor corretamente.", "error");
-
-            let novoItem = { id: gerarId(), nome: nome, preco: preco, qtd: qtd, imagem: "" };
+            let nome = document.getElementById('estNome').value, preco = parseFloat(document.getElementById('estPreco').value.replace(',', '.'));
+            if(!nome || isNaN(preco)) return showToast("Preencha corretamente.", "error");
+            let novoItem = { id: gerarId(), nome, preco, qtd: parseInt(document.getElementById('estQtd').value) || 1, desc: parseFloat(document.getElementById('estDesc').value) || 0, imagem: "" };
             let fileInput = document.getElementById('estImagem');
-            if (fileInput.files.length > 0) { novoItem.imagem = await processarImagemBase64(fileInput.files[0]); }
-
-            let lista = obterDados('estoque');
-            lista.unshift(novoItem);
-            salvarDados('estoque', lista);
+            if (fileInput.files.length > 0) novoItem.imagem = await processarImagemBase64(fileInput.files[0]);
+            let lista = obterDados('estoque'); lista.unshift(novoItem); salvarDados('estoque', lista);
             
             document.getElementById('estNome').value = '';
             document.getElementById('estPreco').value = '';
-            document.getElementById('estQtd').value = '1';
-            limparPreview('previewEstoqueBox', 'previewEstoqueImg', 'estImagem');
+            document.getElementById('estImagem').value = '';
+            document.getElementById('previewEstoqueBox').style.display = 'none';
+            document.getElementById('previewEstoqueImg').src = '';
             
-            showToast('Produto adicionado ao estoque!', 'success');
-            renderEstoque();
+            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
+            renderEstoque();
+            showToast('Adicionado ao estoque!', 'success');
         }
 
         function renderEstoque() {
-            let lista = obterDados('estoque');
-            let div = document.getElementById('listaEstoque');
-            if(lista.length === 0) { div.innerHTML = `<div class="empty-state"><p>Estoque vazio.</p></div>`; return; }
-            let htmlFinal = '';
-            lista.forEach(item => {
-                let imgHtml = item.imagem ? `<img src="${item.imagem}" alt="${item.nome}">` : `<div style="width:75px; height:75px; background: rgba(255,255,255,0.04); border-radius:12px; border:1px solid var(--border); display:flex; justify-content:center; align-items:center; color: var(--text-secundary); font-size: 0.65rem;">Sem Foto</div>`;
-                let qtdAtual = item.qtd || 1;
-                
-                htmlFinal += `
-                    <div class="item-salvo">
-                        <div class="produto-img-lateral">
-                            ${imgHtml}
-                            <div class="produto-info">
-                                <strong style="font-size: 0.95rem; margin-bottom: 2px;">${item.nome}</strong>
-                                <span class="destaque text-purple" style="font-size: 1.1rem;">${formatarMoeda(item.preco)}</span>
-                                <span class="badge-status badge-estoque">📦 ${qtdAtual} ${qtdAtual > 1 ? 'itens' : 'item'}</span>
-                            </div>
-                        </div>
-                        <div class="acoes-item">
-                            <button class="btn-pequeno btn-vender-rapido" onclick="preencherVendaRapida('${item.nome}', ${item.preco})">Vender</button>
-                            <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'estoque')">Editar</button>
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'estoque')">Excluir</button>
+            let lista = obterDados('estoque'), div = document.getElementById('listaEstoque');
+            if(!lista.length) { div.innerHTML = `<div class="empty-state"><p>Estoque vazio.</p></div>`; return; }
+            div.innerHTML = lista.map(item => {
+                let precoFinal = item.preco * (1 - (item.desc || 0) / 100);
+                return `<div class="item-salvo">
+                    <div class="produto-img-lateral">
+                        ${item.imagem ? `<img src="${item.imagem}">` : `<div style="width:75px;height:75px;background:rgba(255,255,255,0.04);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--text-secundary);">Sem Foto</div>`}
+                        <div class="produto-info">
+                            <strong>${item.nome}</strong>
+                            <span class="destaque text-purple">${formatarMoeda(precoFinal)}</span>
+                            <span class="badge-status badge-estoque">📦 ${item.qtd} un</span>
                         </div>
                     </div>
-                `;
-            });
-            div.innerHTML = htmlFinal;
+                    <div class="acoes-item">
+                        <button class="btn-pequeno btn-vender-rapido" onclick="preencherVendaRapida('${item.nome}', ${precoFinal})">Vender</button>
+                        <button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'estoque')">Editar</button>
+                        <button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'estoque')">Excluir</button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function preencherVendaRapida(nome, preco) {
             document.getElementById('nomeProduto').value = nome;
             document.getElementById('precoProduto').value = preco.toFixed(2);
-            document.getElementById('qtdProduto').value = 1;
-            document.getElementById('descProduto').value = 0;
             calcularTotalTempoReal();
             alternarAbaVendas('nova');
         }
 
         function salvarVenda() {
-            let nome = document.getElementById('nomeProduto').value;
+            let nome = document.getElementById('nomeProduto').value, preco = parseFloat(document.getElementById('precoProduto').value.replace(',', '.')) || 0;
+            if(!nome || preco <= 0) return showToast("Preencha os dados da venda.", "error");
             let qtd = parseFloat(document.getElementById('qtdProduto').value) || 1;
-            let preco = parseFloat(document.getElementById('precoProduto').value.replace(',', '.')) || 0;
             let desc = parseFloat(document.getElementById('descProduto').value) || 0;
-            let data = document.getElementById('dataVenda').value;
-            let status = document.getElementById('statusVenda').value || 'recebido';
-            
-            if(!nome || preco <= 0) return showToast("Preencha os dados da venda corretamente.", "error");
-
-            let subtotal = qtd * preco;
-            let valDesc = subtotal * (desc / 100);
-            let total = subtotal - valDesc;
-
+            let total = (qtd * preco) * (1 - desc / 100);
             let lista = obterDados('vendas');
-            lista.unshift({ id: gerarId(), nome, qtd, precoOriginal: preco, percentualDesconto: desc, totalFinal: total, data, status });
-            salvarDados('vendas', lista);
-
-            document.getElementById('nomeProduto').value = '';
-            document.getElementById('precoProduto').value = '';
-            document.getElementById('qtdProduto').value = '1';
-            document.getElementById('descProduto').value = '0';
-            document.getElementById('previewTotalVenda').innerText = 'R$ 0,00';
+            lista.unshift({ id: gerarId(), nome, qtd, totalFinal: total, data: document.getElementById('dataVenda').value, status: document.getElementById('statusVenda').value });
+            salvarDados('vendas', lista); 
             
-            showToast('Venda registrada com sucesso!', 'success');
-            alternarAbaVendas('lista');
+            // ATUALIZAÇÃO INSTANTÂNEA
             atualizarDashboard();
+            renderVendas();
+            alternarAbaVendas('lista'); 
+            showToast('Venda registrada com sucesso!', 'success');
         }
 
         function renderVendas() {
-            let lista = obterDados('vendas');
-            let div = document.getElementById('listaVendas');
-            if(lista.length === 0) { div.innerHTML = `<div class="empty-state"><p>Nenhuma venda registrada.</p></div>`; return; }
-            let htmlFinal = '';
-            lista.forEach(item => {
-                let dataF = item.data ? item.data.split('-').reverse().join('/') : '';
-                let badgeDesc = item.percentualDesconto > 0 ? `<span class="badge-status badge-desconto">-${item.percentualDesconto}%</span>` : '';
-                let statusPagamento = item.status === 'aliberar' 
-                    ? `<span class="badge-status badge-aliberar">A Liberar</span>` 
-                    : `<span class="badge-status badge-recebido">Recebido</span>`;
-
-                htmlFinal += `
-                    <div class="item-salvo">
-                        <div style="display:flex; justify-content: space-between; margin-bottom: 6px;">
-                            <strong>${item.qtd}x ${item.nome}</strong>
-                            <span style="font-size:0.75rem; color:var(--text-secundary); font-weight:700;">${dataF}</span>
-                        </div>
-                        <div style="display:flex; align-items: center; gap: 6px;">
-                            <span class="destaque text-success">${formatarMoeda(item.totalFinal)}</span>
-                            ${badgeDesc}
-                            ${statusPagamento}
-                        </div>
-                        <div class="acoes-item">
-                            <button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'vendas')">Estornar Venda</button>
-                        </div>
-                    </div>
-                `;
-            });
-            div.innerHTML = htmlFinal;
+            let lista = obterDados('vendas'), div = document.getElementById('listaVendas');
+            if(!lista.length) { div.innerHTML = `<div class="empty-state"><p>Nenhuma venda.</p></div>`; return; }
+            div.innerHTML = lista.map(item => `<div class="item-salvo">
+                <div style="display:flex; justify-content:space-between;"><strong>${item.qtd}x ${item.nome}</strong><span style="font-size:0.72rem; color:var(--text-secundary);">${item.data.split('-').reverse().join('/')}</span></div>
+                <span class="destaque text-success">${formatarMoeda(item.totalFinal)}</span>
+                <div class="acoes-item"><button class="btn-pequeno btn-editar" onclick="abrirModalEdicao('${item.id}', 'vendas')">Editar</button><button class="btn-pequeno btn-excluir" onclick="excluirItem('${item.id}', 'vendas')">Estornar</button></div>
+            </div>`).join('');
         }
 
-        function abrirTelaCategorias() { 
-            renderGestaoCategorias(); 
-            document.getElementById('tela-gestao-categorias').classList.add('ativa'); 
-        }
-        function fecharTelaCategorias() { 
-            document.getElementById('tela-gestao-categorias').classList.remove('ativa'); 
-            carregarSelectCategorias(); 
-            renderConteudos(); 
-        }
+        function abrirTelaCategorias() { renderGestaoCategorias(); document.getElementById('tela-gestao-categorias').classList.add('ativa'); }
+        function fecharTelaCategorias() { document.getElementById('tela-gestao-categorias').classList.remove('ativa'); carregarSelectCategorias(); }
 
         function renderGestaoCategorias() {
-            let cats = obterDados('categorias');
-            let div = document.getElementById('listaGestaoCategorias');
-            if (cats.length === 0) {
-                div.innerHTML = `<div class="empty-state"><p>Nenhuma categoria criada.</p></div>`;
-                return;
-            }
-            
-            let htmlFinal = '';
-            cats.forEach(c => {
-                let subArr = c.subcategorias || [];
-                let subsHTML = subArr.map((sub, idx) => `<div class="subcat-badge">${sub} <button class="remover-btn" onclick="removerSubcategoria('${c.id}', ${idx})"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>`).join('');
-                htmlFinal += `
-                    <div class="cat-manager-card">
-                        <div class="cat-header">
-                            <strong>${c.nome}</strong>
-                            <button class="remover-btn" onclick="excluirCategoriaPrincipal('${c.id}')" style="font-size: 0.72rem; background:rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 6px;">Excluir</button>
-                        </div>
-                        <div class="subcat-list">${subsHTML}</div>
-                        <div class="input-row" style="margin-top: 8px;">
-                            <input type="text" id="novaSub_${c.id}" placeholder="Nova subcategoria..." style="padding: 10px; font-size: 0.8rem;">
-                            <button class="btn-acao" style="width: auto; padding: 0 16px;" onclick="addSubcategoria('${c.id}')">+</button>
-                        </div>
+            let cats = obterDados('categorias'), div = document.getElementById('listaGestaoCategorias');
+            if(!cats.length) { div.innerHTML = `<div class="empty-state"><p>Nenhuma categoria.</p></div>`; return; }
+            div.innerHTML = cats.map(c => `
+                <div class="cat-manager-card">
+                    <div class="cat-header">
+                        <strong>${c.nome}</strong>
+                        <button class="btn-pequeno btn-excluir" onclick="excluirCategoria('${c.id}')">Excluir</button>
                     </div>
-                `;
-            });
-            div.innerHTML = htmlFinal;
+                    <div class="input-row" style="margin-top:8px;">
+                        <input type="text" id="novaSub_${c.id}" placeholder="Nova subcategoria..." style="font-size:0.82rem; padding:10px;">
+                        <button class="btn-acao" style="width: auto; padding: 0 14px; font-size:0.82rem;" onclick="addSubcategoria('${c.id}')">Add</button>
+                    </div>
+                    <div class="subcat-list">
+                        ${(c.subcategorias || []).map((sub, idx) => `
+                            <div class="subcat-badge">${sub} <button class="remover-btn" onclick="excluirSubcategoria('${c.id}', ${idx})">&times;</button></div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
         }
 
         function addCategoria() {
             let nome = document.getElementById('novaCategoriaNome').value.trim();
-            if(!nome) return;
+            if(!nome) return showToast("Digite o nome da categoria.", "error");
             let cats = obterDados('categorias');
-            cats.push({ id: gerarId(), nome: nome, subcategorias: ['Geral'] });
+            cats.push({ id: gerarId(), nome, subcategorias: ['Geral'] });
             salvarDados('categorias', cats);
             document.getElementById('novaCategoriaNome').value = '';
             renderGestaoCategorias();
+            showToast("Categoria criada!", "success");
         }
 
-        function excluirCategoriaPrincipal(id) {
-            showConfirm("Excluir Categoria", "Tem certeza que deseja excluir esta categoria inteira?", () => {
+        function excluirCategoria(id) {
+            showConfirm("Excluir Categoria", "Deseja apagar esta categoria?", () => {
                 let cats = obterDados('categorias').filter(c => c.id !== id);
                 salvarDados('categorias', cats);
                 renderGestaoCategorias();
-                showToast("Categoria excluída.", "success");
+                showToast("Categoria removida.", "success");
             }, true);
         }
 
         function addSubcategoria(catId) {
-            let input = document.getElementById('novaSub_' + catId);
-            let nome = input.value.trim();
-            if(!nome) return;
+            let input = document.getElementById(`novaSub_${catId}`);
+            let subNome = input.value.trim();
+            if(!subNome) return showToast("Digite o nome da subcategoria.", "error");
             let cats = obterDados('categorias');
             let cat = cats.find(c => c.id === catId);
-            if(cat) { 
+            if(cat) {
                 if(!cat.subcategorias) cat.subcategorias = [];
-                cat.subcategorias.push(nome); 
-                salvarDados('categorias', cats); 
-                renderGestaoCategorias(); 
+                cat.subcategorias.push(subNome);
+                salvarDados('categorias', cats);
+                renderGestaoCategorias();
+                showToast("Subcategoria adicionada!", "success");
             }
         }
 
-        function removerSubcategoria(catId, subIdx) {
+        function excluirSubcategoria(catId, subIdx) {
             let cats = obterDados('categorias');
             let cat = cats.find(c => c.id === catId);
-            if(cat && cat.subcategorias) { 
-                cat.subcategorias.splice(subIdx, 1); 
-                salvarDados('categorias', cats); 
-                renderGestaoCategorias(); 
+            if(cat && cat.subcategorias) {
+                cat.subcategorias.splice(subIdx, 1);
+                salvarDados('categorias', cats);
+                renderGestaoCategorias();
+                showToast("Subcategoria removida.", "success");
             }
         }
 
-        function abrirModalEdicao(idItem, tipo) {
-            let lista = obterDados(tipo);
-            let item = lista.find(i => i.id === idItem);
-            if(!item) return;
-
-            document.getElementById('editItemId').value = idItem;
+        function abrirModalEdicao(id, tipo) {
+            document.getElementById('editItemId').value = id;
             document.getElementById('editItemTipo').value = tipo;
             let container = document.getElementById('containerCamposEdicao');
+            let lista = obterDados(tipo);
+            let item = lista.find(i => i.id === id);
+            if(!item) return;
 
-            if (tipo === 'conteudos') {
-                document.getElementById('modalEdicaoTitulo').innerText = "Editar Nota";
-                container.innerHTML = `
-                    <div class="input-row">
-                        <div class="form-group" style="flex:1; margin-bottom:0;"><label>Categoria</label><select id="editCat" onchange="atualizarSelectSubcategorias('editCat', 'editSubcat')"></select></div>
-                        <div class="form-group" style="flex:1; margin-bottom:0;"><label>Subcategoria</label><select id="editSubcat"></select></div>
-                    </div>
-                    <div class="form-group"><label>Título</label><input type="text" id="editTitulo" value="${item.titulo}"></div>
-                    <div class="form-group"><label>Data</label><input type="date" id="editDataNota" value="${item.data}" style="color-scheme:dark;"></div>
-                    <div class="form-group"><label>Descrição</label><textarea id="editTexto" rows="4">${item.texto}</textarea></div>
-                    
-                    <div class="form-group">
-                        <label>Atualizar Imagem</label>
-                        <div class="file-upload-box">
-                            <input type="file" id="editImagemConteudo" accept="image/*" onchange="previewUploadImage(this, 'editPreviewNotaBox', 'editPreviewNotaImg')">
-                            <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Escolher Nova Imagem</span></div>
-                        </div>
-                        <div class="preview-img-container" id="editPreviewNotaBox" style="display: ${item.imagem ? 'block' : 'none'};">
-                            <img id="editPreviewNotaImg" src="${item.imagem || ''}" alt="Preview">
-                            <button class="btn-remover-img" onclick="limparPreview('editPreviewNotaBox', 'editPreviewNotaImg', 'editImagemConteudo')">Remover</button>
-                        </div>
-                    </div>
-                `;
-                
+            let html = '';
+            if(tipo === 'conteudos') {
                 let cats = obterDados('categorias');
-                let selCat = document.getElementById('editCat');
-                let htmlCatEdit = '';
-                if(cats.length === 0) {
-                    htmlCatEdit = '<option value="">Sem categorias</option>';
-                } else {
-                    cats.forEach(c => { htmlCatEdit += `<option value="${c.id}" ${c.id === item.categoriaId ? 'selected' : ''}>${c.nome}</option>`; });
-                }
-                selCat.innerHTML = htmlCatEdit;
-                atualizarSelectSubcategorias('editCat', 'editSubcat');
-                
-                setTimeout(() => { 
-                    let subEdit = document.getElementById('editSubcat');
-                    if(subEdit && item.subcategoria) { subEdit.value = item.subcategoria; }
-                }, 50);
-
-            } else if (tipo === 'agenda') {
-                document.getElementById('modalEdicaoTitulo').innerText = "Editar Evento";
-                container.innerHTML = `
-                    <div class="input-row">
-                        <div class="form-group" style="flex: 1.2; margin-bottom:0;"><label>Data</label><input type="date" id="editDataAg" value="${item.data}" style="color-scheme:dark;"></div>
-                        <div class="form-group" style="flex: 0.8; margin-bottom:0;"><label>Horário</label><input type="time" id="editHoraAg" value="${item.hora}" style="color-scheme:dark;"></div>
-                    </div>
-                    <div class="form-group"><label>Descrição</label><input type="text" id="editDescAg" value="${item.desc}"></div>
-                `;
-            } else if (tipo === 'estoque') {
-                document.getElementById('modalEdicaoTitulo').innerText = "Editar Produto";
-                container.innerHTML = `
-                    <div class="form-group"><label>Nome</label><input type="text" id="editEstNome" value="${item.nome}"></div>
-                    <div class="input-row">
-                        <div class="form-group" style="flex: 1;"><label>Valor (R$)</label><input type="text" inputmode="decimal" id="editEstPreco" value="${item.preco}"></div>
-                        <div class="form-group" style="flex: 0.8;"><label>Qtd. em Estoque</label><input type="number" id="editEstQtd" value="${item.qtd || 1}"></div>
-                    </div>
-                    
+                html = `
                     <div class="form-group">
-                        <label>Atualizar Imagem</label>
+                        <label>Categoria</label>
+                        <select id="editCategoria" onchange="atualizarSelectSubcategorias('editCategoria', 'editSubcategoria')">
+                            ${cats.map(c => `<option value="${c.id}" ${c.id === item.categoriaId ? 'selected' : ''}>${c.nome}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subcategoria</label>
+                        <select id="editSubcategoria"></select>
+                    </div>
+                    <div class="form-group"><label>Título</label><input type="text" id="editTitulo" value="${item.titulo || ''}"></div>
+                    <div class="form-group"><label>Descrição</label><textarea id="editTexto" rows="3">${item.texto || ''}</textarea></div>
+                    <div class="form-group">
+                        <label>Alterar / Adicionar Imagem</label>
                         <div class="file-upload-box">
-                            <input type="file" id="editEstImagem" accept="image/*" onchange="previewUploadImage(this, 'editPreviewEstoqueBox', 'editPreviewEstoqueImg')">
-                            <div class="file-upload-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Escolher Nova Imagem</span></div>
+                            <input type="file" id="editImagemConteudo" accept="image/*" onchange="previewUploadImage(this, 'previewEditNotaBox', 'previewEditNotaImg')">
+                            <div class="file-upload-label"><span>Escolher Nova Imagem</span></div>
                         </div>
-                        <div class="preview-img-container" id="editPreviewEstoqueBox" style="display: ${item.imagem ? 'block' : 'none'};">
-                            <img id="editPreviewEstoqueImg" src="${item.imagem || ''}" alt="Preview Produto">
-                            <button class="btn-remover-img" onclick="limparPreview('editPreviewEstoqueBox', 'editPreviewEstoqueImg', 'editEstImagem')">Remover</button>
+                        <div class="preview-img-container" id="previewEditNotaBox" style="display: ${item.imagem ? 'block' : 'none'};">
+                            <img id="previewEditNotaImg" src="${item.imagem || ''}" alt="Preview">
+                            <button class="btn-remover-img" onclick="removerImagemEdicao()">Remover</button>
                         </div>
+                    </div>
+                `;
+            } else if(tipo === 'agenda') {
+                html = `
+                    <div class="form-group"><label>Data</label><input type="date" id="editData" value="${item.data || ''}" style="color-scheme: dark;"></div>
+                    <div class="form-group"><label>Horário</label><input type="time" id="editHora" value="${item.hora || ''}" style="color-scheme: dark;"></div>
+                    <div class="form-group"><label>Descrição</label><input type="text" id="editDesc" value="${item.desc || ''}"></div>
+                `;
+            } else if(tipo === 'estoque') {
+                html = `
+                    <div class="form-group"><label>Nome</label><input type="text" id="editEstNome" value="${item.nome || ''}"></div>
+                    <div class="form-group input-row">
+                        <div style="flex: 1;"><label>Preço (R$)</label><input type="text" id="editEstPreco" value="${item.preco || 0}"></div>
+                        <div style="flex: 1;"><label>Qtd.</label><input type="number" id="editEstQtd" value="${item.qtd || 1}"></div>
+                    </div>
+                `;
+            } else if(tipo === 'vendas') {
+                html = `
+                    <div class="form-group"><label>Produto</label><input type="text" id="editVendaNome" value="${item.nome || ''}"></div>
+                    <div class="form-group input-row">
+                        <div style="flex: 1;"><label>Qtd.</label><input type="number" id="editVendaQtd" value="${item.qtd || 1}"></div>
+                        <div style="flex: 1;"><label>Total (R$)</label><input type="text" id="editVendaTotal" value="${item.totalFinal || 0}"></div>
                     </div>
                 `;
             }
+            container.innerHTML = html;
+            if(tipo === 'conteudos') {
+                atualizarSelectSubcategorias('editCategoria', 'editSubcategoria', item.subcategoria);
+            }
             document.getElementById('modal-edicao').classList.add('ativa');
+        }
+
+        function removerImagemEdicao() {
+            event.preventDefault();
+            document.getElementById('previewEditNotaBox').style.display = 'none';
+            document.getElementById('previewEditNotaImg').src = '';
+            document.getElementById('editImagemConteudo').value = '';
+            document.getElementById('editImagemConteudo').dataset.removida = "true";
         }
 
         function fecharModalEdicao() { document.getElementById('modal-edicao').classList.remove('ativa'); }
@@ -1336,104 +850,89 @@
             let id = document.getElementById('editItemId').value;
             let tipo = document.getElementById('editItemTipo').value;
             let lista = obterDados(tipo);
-            let idx = lista.findIndex(i => i.id === id);
-            if(idx === -1) return;
+            let index = lista.findIndex(i => i.id === id);
+            if(index === -1) return;
 
-            if (tipo === 'conteudos') {
-                lista[idx].categoriaId = document.getElementById('editCat').value || '';
-                lista[idx].subcategoria = document.getElementById('editSubcat').value || '';
-                lista[idx].titulo = document.getElementById('editTitulo').value;
-                lista[idx].data = document.getElementById('editDataNota').value;
-                lista[idx].texto = document.getElementById('editTexto').value;
+            if(tipo === 'conteudos') {
+                lista[index].categoriaId = document.getElementById('editCategoria').value;
+                lista[index].subcategoria = document.getElementById('editSubcategoria').value;
+                lista[index].titulo = document.getElementById('editTitulo').value;
+                lista[index].texto = document.getElementById('editTexto').value;
                 
-                let imgInput = document.getElementById('editImagemConteudo');
-                if (imgInput && imgInput.dataset.removed === "true") {
-                    lista[idx].imagem = "";
-                } else if (imgInput && imgInput.files && imgInput.files.length > 0) {
-                    lista[idx].imagem = await processarImagemBase64(imgInput.files[0]);
+                let fileInput = document.getElementById('editImagemConteudo');
+                if (fileInput && fileInput.files.length > 0) {
+                    lista[index].imagem = await processarImagemBase64(fileInput.files[0]);
+                } else if (fileInput && fileInput.dataset.removida === "true") {
+                    lista[index].imagem = "";
                 }
-                
-            } else if (tipo === 'agenda') {
-                lista[idx].data = document.getElementById('editDataAg').value;
-                lista[idx].hora = document.getElementById('editHoraAg').value;
-                lista[idx].desc = document.getElementById('editDescAg').value;
-            } else if (tipo === 'estoque') {
-                lista[idx].nome = document.getElementById('editEstNome').value;
-                lista[idx].preco = parseFloat(document.getElementById('editEstPreco').value.replace(',', '.'));
-                lista[idx].qtd = parseInt(document.getElementById('editEstQtd').value) || 1;
-                
-                let imgInput = document.getElementById('editEstImagem');
-                if (imgInput && imgInput.dataset.removed === "true") {
-                    lista[idx].imagem = "";
-                } else if (imgInput && imgInput.files && imgInput.files.length > 0) {
-                    lista[idx].imagem = await processarImagemBase64(imgInput.files[0]);
-                }
+                renderConteudos();
+            } else if(tipo === 'agenda') {
+                lista[index].data = document.getElementById('editData').value;
+                lista[index].hora = document.getElementById('editHora').value;
+                lista[index].desc = document.getElementById('editDesc').value;
+                renderAgenda();
+            } else if(tipo === 'estoque') {
+                lista[index].nome = document.getElementById('editEstNome').value;
+                lista[index].preco = parseFloat(document.getElementById('editEstPreco').value.replace(',', '.')) || 0;
+                lista[index].qtd = parseInt(document.getElementById('editEstQtd').value) || 1;
+                renderEstoque();
+            } else if(tipo === 'vendas') {
+                lista[index].nome = document.getElementById('editVendaNome').value;
+                lista[index].qtd = parseFloat(document.getElementById('editVendaQtd').value) || 1;
+                lista[index].totalFinal = parseFloat(document.getElementById('editVendaTotal').value.replace(',', '.')) || 0;
+                renderVendas();
             }
 
             salvarDados(tipo, lista);
             fecharModalEdicao();
-            showToast("Alterações salvas!", "success");
-            
-            if(tipo === 'conteudos') renderConteudos();
-            if(tipo === 'agenda') { lista.sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora)); salvarDados('agenda', lista); renderAgenda(); }
-            if(tipo === 'estoque') renderEstoque();
             atualizarDashboard();
+            showToast("Item atualizado com sucesso!", "success");
         }
 
         function excluirItem(id, tipo) {
-            showConfirm("Excluir", "Deseja realmente apagar este item permanentemente?", () => {
-                let lista = obterDados(tipo).filter(i => i.id !== id);
-                salvarDados(tipo, lista);
-                if(tipo === 'conteudos') renderConteudos();
+            showConfirm("Excluir", "Deseja apagar?", () => {
+                salvarDados(tipo, obterDados(tipo).filter(i => i.id !== id));
+                if(tipo === 'conteudos') renderConteudos(); 
                 if(tipo === 'agenda') renderAgenda();
-                if(tipo === 'estoque') renderEstoque();
+                if(tipo === 'estoque') renderEstoque(); 
                 if(tipo === 'vendas') renderVendas();
-                atualizarDashboard();
-                showToast("Item excluído com sucesso.", "success");
+                atualizarDashboard(); 
+                showToast("Item excluído.", "success");
             }, true);
         }
 
         function limparTodosDados() {
-            showConfirm("Apagar Todos os Dados", "ATENÇÃO: Isso apagará TODOS os dados do aplicativo para sempre. Confirma?", () => {
-                showConfirm("Tem Certeza?", "Essa ação é irreversível e você perderá todas as vendas, notas e configurações.", () => {
-                    localStorage.clear();
-                    location.reload();
-                }, true);
-            }, true);
+            showConfirm("Apagar Tudo", "Deseja resetar tudo?", () => { localStorage.clear(); location.reload(); }, true);
         }
 
         function atualizarDashboard() {
-            let vendas = obterDados('vendas');
-            let estoque = obterDados('estoque');
-            let notas = obterDados('conteudos');
-            let agenda = obterDados('agenda');
+            let vendas = obterDados('vendas'), estoque = obterDados('estoque'), notas = obterDados('conteudos'), agenda = obterDados('agenda');
+            let totalRec = vendas.filter(v => v.status !== 'aliberar').reduce((acc, v) => acc + v.totalFinal, 0);
+            let liberando = vendas.filter(v => v.status === 'aliberar').reduce((acc, v) => acc + v.totalFinal, 0);
+            let estTotal = estoque.reduce((acc, e) => acc + (e.preco * (1 - (e.desc || 0)/100) * e.qtd), 0);
+            let totalItensLoja = estoque.reduce((acc, e) => acc + (parseInt(e.qtd) || 0), 0);
 
-            let totalVendasRecebidas = vendas.filter(v => v.status !== 'aliberar').reduce((acc, v) => acc + (v.totalFinal || 0), 0);
-            let valorALiberar = vendas.filter(v => v.status === 'aliberar').reduce((acc, v) => acc + (v.totalFinal || 0), 0);
-            
-            // O valor total de estoque agora considera a quantidade disponível de cada item
-            let totalEstoque = estoque.reduce((acc, e) => acc + ((e.preco || 0) * (e.qtd || 1)), 0);
-            let valorTotal = totalVendasRecebidas + valorALiberar + totalEstoque;
-
-            document.getElementById('dashTotalVendas').innerText = formatarMoeda(totalVendasRecebidas);
-            document.getElementById('dashValorLiberar').innerText = formatarMoeda(valorALiberar);
-            document.getElementById('dashTotalEstoque').innerText = formatarMoeda(totalEstoque);
-            document.getElementById('dashValorTotal').innerText = formatarMoeda(valorTotal);
-            
+            document.getElementById('dashTotalVendas').innerText = formatarMoeda(totalRec);
+            document.getElementById('dashValorLiberar').innerText = formatarMoeda(liberando);
+            document.getElementById('dashTotalEstoque').innerText = formatarMoeda(estTotal);
+            document.getElementById('dashValorTotal').innerText = formatarMoeda(totalRec + liberando + estTotal);
             document.getElementById('dashTotalNotas').innerText = notas.length;
-
-            // Nova funcionalidade: Total de itens na loja (Soma de todas as quantidades)
-            let totalItensLoja = estoque.reduce((acc, curr) => acc + (parseInt(curr.qtd) || 1), 0);
-            document.getElementById('dashTotalItensLoja').innerText = `${totalItensLoja} ${totalItensLoja === 1 ? 'item' : 'itens'}`;
+            document.getElementById('dashTotalItensLoja').innerText = `${totalItensLoja} itens`;
 
             let agora = new Date().toISOString().split('T')[0];
-            let agFiltro = agenda.filter(a => a.data >= agora).sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
-            if(agFiltro.length > 0) {
-                let d = agFiltro[0].data.split('-').reverse().join('/');
-                document.getElementById('dashProximoEvento').innerText = `${d} - ${agFiltro[0].desc.substring(0, 15)}...`;
-            } else {
-                document.getElementById('dashProximoEvento').innerText = "Nenhum.";
-            }
+            let prox = agenda.filter(a => a.data >= agora).sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora))[0];
+            document.getElementById('dashProximoEvento').innerText = prox ? `${prox.data.split('-').reverse().join('/')} - ${prox.desc}` : "Nenhum.";
+
+            let mesesVendas = {};
+            vendas.forEach(v => {
+                if (v.data) {
+                    let chaveMes = v.data.substring(0, 7);
+                    mesesVendas[chaveMes] = (mesesVendas[chaveMes] || 0) + (v.totalFinal || 0);
+                }
+            });
+            let valoresMeses = Object.values(mesesVendas).filter(val => val > 0);
+            let mediaMensal = valoresMeses.length > 0 ? (valoresMeses.reduce((a, b) => a + b, 0) / valoresMeses.length) : 0;
+            document.getElementById('dashMediaMensal').innerText = formatarMoeda(mediaMensal);
 
             atualizarGraficoVendas(vendas);
         }
@@ -1441,72 +940,23 @@
         function atualizarGraficoVendas(vendas) {
             const ctx = document.getElementById('graficoVendasMensal').getContext('2d');
             let mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            let hoje = new Date();
-            let labels = [];
-            let chaves = [];
-            let vendasMes = {};
-
+            let hoje = new Date(), chaves = [], labels = [], vendasMes = {};
             for (let i = 5; i >= 0; i--) {
                 let d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
-                let ano = d.getFullYear();
-                let mes = String(d.getMonth() + 1).padStart(2, '0');
-                let chave = `${ano}-${mes}`;
-                chaves.push(chave);
-                labels.push(mesesNome[d.getMonth()]);
-                vendasMes[chave] = 0;
+                let chave = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                chaves.push(chave); labels.push(mesesNome[d.getMonth()]); vendasMes[chave] = 0;
             }
-
             vendas.forEach(v => {
                 if (v.data) {
-                    let partes = v.data.split('-');
-                    let chave = `${partes[0]}-${partes[1]}`;
-                    if (vendasMes.hasOwnProperty(chave)) {
-                        vendasMes[chave] += (v.totalFinal || 0);
-                    }
+                    let chave = v.data.substring(0, 7);
+                    if (vendasMes.hasOwnProperty(chave)) vendasMes[chave] += (v.totalFinal || 0);
                 }
             });
-
-            let dados = chaves.map(c => vendasMes[c]);
             if (meuGraficoVendas) meuGraficoVendas.destroy();
-
-            let gradient = ctx.createLinearGradient(0, 0, 0, 120);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.35)');
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
-
             meuGraficoVendas = new Chart(ctx, {
                 type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Vendas (R$)',
-                        data: dados,
-                        borderColor: '#3b82f6',
-                        backgroundColor: gradient,
-                        borderWidth: 2.5,
-                        fill: true,
-                        tension: 0.35,
-                        pointBackgroundColor: '#3b82f6',
-                        pointBorderColor: '#FFFFFF',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { 
-                            beginAtZero: true, 
-                            grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-                            ticks: { color: '#94a3b8', font: { size: 9 } }
-                        },
-                        x: { 
-                            grid: { display: false },
-                            ticks: { color: '#94a3b8', font: { size: 10, weight: 'bold' } }
-                        }
-                    }
-                }
+                data: { labels, datasets: [{ data: chaves.map(c => vendasMes[c]), borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.25)', borderWidth: 2.5, fill: true, tension: 0.35 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9, weight: '700' } } } } }
             });
         }
 
@@ -1514,3 +964,4 @@
     </script>
 </body>
 </html>
+
