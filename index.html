@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Store Dashboard</title>
+    <title>Store Dashboard Premium</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* ==========================================
@@ -122,7 +122,6 @@
             overflow-y: auto; 
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch; 
-            /* Ajustado padding para maximizar uso da tela */
             padding: calc(env(safe-area-inset-top) + 54px) 14px 110px 14px; 
             scroll-behavior: smooth; 
             position: relative;
@@ -137,7 +136,7 @@
         #tela-inicio.ativa {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* Reduzido para caber tudo na tela */
+            gap: 10px;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -147,7 +146,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius-card); 
-            padding: 14px; /* Reduzido de 18px */
+            padding: 14px; 
             border: 1px solid var(--border); 
             box-shadow: var(--shadow-subtle); 
             position: relative; 
@@ -174,11 +173,10 @@
         .gradient-text-warning { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-primary { background: linear-gradient(135deg, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* Novo Grid para os Balanços Ajustado para caber sem rolar */
         .balance-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px; /* Espaço reduzido */
+            gap: 10px; 
         }
         
         .balance-box { 
@@ -191,17 +189,16 @@
             justify-content: center;
         }
         
-        /* Modificado: Agora do mesmo tamanho que os outros, sem empurrar o resto para baixo */
         .balance-box.full-width {
-            grid-column: span 1; /* Retirado o span 2 */
+            grid-column: span 1; 
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.02));
             border-color: rgba(59, 130, 246, 0.2);
-            align-items: flex-start; /* Alinhamento à esquerda como os outros */
+            align-items: flex-start; 
             text-align: left;
         }
 
         .balance-box .label { 
-            font-size: 0.65rem; /* Ajustado para caber o texto */
+            font-size: 0.65rem; 
             color: var(--text-secundary); 
             display: block; 
             margin-bottom: 4px; 
@@ -212,10 +209,9 @@
         }
         
         .balance-box .value { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
-        /* Removido o font-size: 2rem da class full-width para unificar os tamanhos */
         .balance-box.full-width .value { font-size: 1.25rem; }
 
-        .chart-container { width: 100%; height: 95px; position: relative; margin-top: 4px; } /* Altura ajustada para caber */
+        .chart-container { width: 100%; height: 95px; position: relative; margin-top: 4px; } 
 
         .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .dash-card { 
@@ -227,7 +223,6 @@
             border: 1px solid var(--border); 
             display: flex; 
             flex-direction: column; 
-            justify-content: space-between; 
             box-shadow: var(--shadow-subtle); 
             transition: transform 0.2s ease; 
         }
@@ -235,10 +230,10 @@
         .dash-card .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .dash-card .icon-box { width: 32px; height: 32px; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
         .dash-card h3 { color: var(--text-secundary); font-size: 0.65rem; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
-        .dash-card span { color: var(--text-main); font-size: 1.1rem; font-weight: 800; }
+        .dash-card span { color: var(--text-main); font-size: 1.1rem; font-weight: 800; display: block; margin-bottom: 8px; }
 
         /* ==========================================
-           5. FORMS & CONTROLS
+           5. FORMS & CONTROLS (MELHORIA AQUI)
            ========================================== */
         .form-group { margin-bottom: 14px; }
         .form-group:last-child { margin-bottom: 0; }
@@ -261,6 +256,16 @@
             border-color: var(--primary); 
             background-color: var(--bg-input-focus); 
             box-shadow: 0 0 0 4px var(--primary-glow); 
+        }
+
+        /* Estilo Premium para os Selects */
+        select {
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+            cursor: pointer;
         }
 
         .input-row { display: flex; gap: 10px; }
@@ -308,7 +313,8 @@
            6. LISTS & ITEMS
            ========================================== */
         .resultados-container { display: flex; flex-direction: column; gap: 14px; }
-        .item-salvo { background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 16px; border-radius: var(--radius-card); border: 1px solid var(--border); position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); }
+        .item-salvo { background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 16px; border-radius: var(--radius-card); border: 1px solid var(--border); position: relative; overflow: hidden; box-shadow: var(--shadow-subtle); transition: background 0.3s ease;}
+        .item-salvo:hover { background: rgba(30, 34, 45, 0.8); }
         
         .caminho-categoria { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 800; margin-bottom: 8px; gap: 6px; background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.3); text-transform: uppercase; letter-spacing: 0.8px; }
         
@@ -322,10 +328,11 @@
         .text-purple { color: var(--purple); }
         
         /* Badges de Status / Descontos */
-        .badge-status { padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; border: 1px solid; margin-left: 8px; }
+        .badge-status { padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; border: 1px solid; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; }
         .badge-desconto { background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3); }
         .badge-recebido { background: rgba(16,185,129,0.15); color: var(--success); border-color: rgba(16,185,129,0.3); }
         .badge-aliberar { background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3); }
+        .badge-estoque { background: rgba(59,130,246,0.15); color: var(--primary); border-color: rgba(59,130,246,0.3); margin-left: 0; margin-top: 6px; }
 
         .acoes-item { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
         .btn-pequeno { background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-weight: 800; font-size: 0.78rem; cursor: pointer; padding: 8px 14px; border-radius: 10px; color: var(--text-main); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
@@ -336,7 +343,7 @@
 
         .produto-img-lateral { display: flex; gap: 14px; align-items: center; }
         .produto-img-lateral img { width: 75px; height: 75px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); }
-        .produto-info { flex: 1; }
+        .produto-info { flex: 1; display: flex; flex-direction: column; align-items: flex-start; }
 
         /* ==========================================
            7. CATEGORY MANAGEMENT
@@ -382,7 +389,7 @@
         .nav-item span.label { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.3px; flex-shrink: 0; }
 
         /* ==========================================
-           9. OVERLAYS & MODALS
+           9. OVERLAYS, MODALS & TOASTS
            ========================================== */
         .tela-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg-app); z-index: 200; display: none; flex-direction: column; }
         .tela-overlay.ativa { display: flex; animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -401,39 +408,54 @@
             border: 1px solid rgba(59, 130, 246, 0.3); text-align: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
         }
 
+        /* Toasts Customizados */
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none; }
+        .toast { background: rgba(14, 16, 23, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); color: var(--text-main); padding: 14px 20px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.6); animation: toastIn 0.3s ease forwards; display: flex; align-items: center; gap: 12px; pointer-events: auto; }
+        .toast.success { border-color: var(--success); border-left: 4px solid var(--success); }
+        .toast.error { border-color: var(--danger); border-left: 4px solid var(--danger); }
+        .toast.fadeOut { animation: toastOut 0.3s ease forwards; }
+        @keyframes toastIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes toastOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-20px); opacity: 0; } }
+
+        /* Modal de Confirmação Customizado */
+        .confirm-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 10001; display: none; align-items: center; justify-content: center; }
+        .confirm-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+        .confirm-box { background: var(--bg-card); border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-card); max-width: 320px; width: 90%; text-align: center; box-shadow: var(--shadow-subtle); }
+        .confirm-box h3 { margin-bottom: 10px; font-size: 1.1rem; color: var(--text-main); }
+        .confirm-box p { color: var(--text-secundary); font-size: 0.9rem; margin-bottom: 24px; line-height: 1.5; }
+        .confirm-btns { display: flex; gap: 10px; }
+        .confirm-btns button { flex: 1; padding: 12px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .confirm-btns button:active { transform: scale(0.95); }
+        .btn-confirm-cancel { background: rgba(255,255,255,0.1); color: var(--text-main); }
+        .btn-confirm-action { background: var(--primary); color: white; }
+        .btn-confirm-action.danger { background: var(--danger); }
+
         /* ==========================================
            10. SCROLL TOP BUTTON
            ========================================== */
         .btn-scroll-top {
-            position: absolute;
-            bottom: 105px; 
-            right: 16px;
-            width: 44px;
-            height: 44px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            cursor: pointer;
-            z-index: 90;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(15px) scale(0.9);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute; bottom: 105px; right: 16px; width: 44px; height: 44px; background: var(--primary); color: white; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); cursor: pointer; z-index: 90; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transform: translateY(15px) scale(0.9); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .btn-scroll-top.visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0) scale(1);
-        }
+        .btn-scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
         .btn-scroll-top:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
+
+    <!-- Container de Toasts -->
+    <div class="toast-container" id="toastBox"></div>
+
+    <!-- Custom Confirm Modal -->
+    <div class="confirm-overlay" id="customConfirm">
+        <div class="confirm-box">
+            <h3 id="confirmTitle">Atenção</h3>
+            <p id="confirmMsg">Tem certeza que deseja realizar esta ação?</p>
+            <div class="confirm-btns">
+                <button class="btn-confirm-cancel" onclick="fecharConfirm()">Cancelar</button>
+                <button class="btn-confirm-action" id="btnConfirmAction">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
     <div class="app-container" id="app-principal">
         
@@ -446,7 +468,6 @@
             <!-- TELA INÍCIO -->
             <div id="tela-inicio" class="tela ativa">
                 
-                <!-- NOVO CARD COM GRID DE BALANÇOS (Ajustado para caber na tela sem rolar) -->
                 <div class="card">
                     <div class="balance-grid">
                         <div class="balance-box">
@@ -487,6 +508,11 @@
                         </div>
                         <h3>Total de Notas</h3>
                         <span id="dashTotalNotas">0</span>
+                        
+                        <div style="border-top: 1px solid var(--border); margin-top: 4px; padding-top: 8px;">
+                            <h3 style="color: var(--purple);">Itens na Loja</h3>
+                            <span id="dashTotalItensLoja" style="font-size: 0.9rem; color: var(--text-secundary); margin-bottom: 0;">0 itens</span>
+                        </div>
                     </div>
 
                     <div class="dash-card">
@@ -592,7 +618,10 @@
                     <div class="card" style="margin-bottom: 16px;">
                         <h2 class="section-title">Adicionar à Loja</h2>
                         <div class="form-group"><label>Nome do Produto</label><input type="text" id="estNome" placeholder="Ex: Tênis Nike, Camiseta..."></div>
-                        <div class="form-group"><label>Valor de Venda (R$)</label><input type="text" inputmode="decimal" id="estPreco" placeholder="0.00"></div>
+                        <div class="form-group input-row">
+                            <div style="flex: 1;"><label>Valor de Venda (R$)</label><input type="text" inputmode="decimal" id="estPreco" placeholder="0.00"></div>
+                            <div style="flex: 0.8;"><label>Quantidade</label><input type="number" id="estQtd" placeholder="1" value="1"></div>
+                        </div>
                         <div class="form-group">
                             <label>Foto do Produto (Opcional)</label>
                             <div class="file-upload-box">
@@ -679,6 +708,42 @@
         const salvarDados = (chave, dados) => localStorage.setItem(chave, JSON.stringify(dados));
         const gerarId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
         let meuGraficoVendas = null;
+
+        /* === SISTEMA DE TOASTS === */
+        function showToast(mensagem, tipo = 'success') {
+            const container = document.getElementById('toastBox');
+            const toast = document.createElement('div');
+            toast.className = `toast ${tipo}`;
+            const icon = tipo === 'success' 
+                ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`
+                : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
+            toast.innerHTML = `${icon} <span>${mensagem}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('fadeOut');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        /* === SISTEMA DE MODAL DE CONFIRMAÇÃO === */
+        function showConfirm(titulo, mensagem, callback, isDanger = false) {
+            document.getElementById('confirmTitle').innerText = titulo;
+            document.getElementById('confirmMsg').innerText = mensagem;
+            let btnConfirm = document.getElementById('btnConfirmAction');
+            btnConfirm.className = 'btn-confirm-action ' + (isDanger ? 'danger' : '');
+            
+            let newBtn = btnConfirm.cloneNode(true);
+            btnConfirm.parentNode.replaceChild(newBtn, btnConfirm);
+            
+            newBtn.onclick = () => {
+                fecharConfirm();
+                callback();
+            };
+            
+            document.getElementById('customConfirm').classList.add('active');
+        }
+        function fecharConfirm() { document.getElementById('customConfirm').classList.remove('active'); }
 
         function processarImagemBase64(file) {
             return new Promise((resolve) => {
@@ -840,7 +905,7 @@
 
         async function salvarConteudo() {
             let titulo = document.getElementById('tituloConteudo').value;
-            if(!titulo) return alert("Digite o título.");
+            if(!titulo) return showToast("Por favor, digite o título da nota.", "error");
             
             let novoItem = {
                 id: gerarId(),
@@ -862,7 +927,7 @@
             document.getElementById('tituloConteudo').value = '';
             document.getElementById('textoConteudo').value = '';
             limparPreview('previewNotaBox', 'previewNotaImg', 'imagemConteudo');
-            alert('Nota salva com sucesso!');
+            showToast('Nota salva com sucesso!', 'success');
             atualizarDashboard();
         }
 
@@ -903,7 +968,7 @@
 
         function salvarAgenda() {
             let desc = document.getElementById('descAgenda').value;
-            if(!desc) return alert("Digite a descrição.");
+            if(!desc) return showToast("Digite a descrição do evento.", "error");
             let lista = obterDados('agenda');
             lista.push({
                 id: gerarId(),
@@ -914,7 +979,7 @@
             lista.sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
             salvarDados('agenda', lista);
             document.getElementById('descAgenda').value = '';
-            alert('Evento agendado!');
+            showToast('Evento agendado com sucesso!', 'success');
             renderAgenda();
             atualizarDashboard();
         }
@@ -978,9 +1043,11 @@
             let nome = document.getElementById('estNome').value;
             let precoT = document.getElementById('estPreco').value.replace(',', '.');
             let preco = parseFloat(precoT);
-            if(!nome || isNaN(preco)) return alert("Preencha nome e valor corretamente.");
+            let qtd = parseInt(document.getElementById('estQtd').value) || 1;
+            
+            if(!nome || isNaN(preco)) return showToast("Preencha nome e valor corretamente.", "error");
 
-            let novoItem = { id: gerarId(), nome: nome, preco: preco, imagem: "" };
+            let novoItem = { id: gerarId(), nome: nome, preco: preco, qtd: qtd, imagem: "" };
             let fileInput = document.getElementById('estImagem');
             if (fileInput.files.length > 0) { novoItem.imagem = await processarImagemBase64(fileInput.files[0]); }
 
@@ -990,8 +1057,10 @@
             
             document.getElementById('estNome').value = '';
             document.getElementById('estPreco').value = '';
+            document.getElementById('estQtd').value = '1';
             limparPreview('previewEstoqueBox', 'previewEstoqueImg', 'estImagem');
-            alert('Produto adicionado ao estoque!');
+            
+            showToast('Produto adicionado ao estoque!', 'success');
             renderEstoque();
             atualizarDashboard();
         }
@@ -1003,13 +1072,16 @@
             let htmlFinal = '';
             lista.forEach(item => {
                 let imgHtml = item.imagem ? `<img src="${item.imagem}" alt="${item.nome}">` : `<div style="width:75px; height:75px; background: rgba(255,255,255,0.04); border-radius:12px; border:1px solid var(--border); display:flex; justify-content:center; align-items:center; color: var(--text-secundary); font-size: 0.65rem;">Sem Foto</div>`;
+                let qtdAtual = item.qtd || 1;
+                
                 htmlFinal += `
                     <div class="item-salvo">
                         <div class="produto-img-lateral">
                             ${imgHtml}
                             <div class="produto-info">
-                                <strong style="font-size: 0.95rem;">${item.nome}</strong>
-                                <span class="destaque text-purple" style="font-size: 1.1rem; margin-top:4px;">${formatarMoeda(item.preco)}</span>
+                                <strong style="font-size: 0.95rem; margin-bottom: 2px;">${item.nome}</strong>
+                                <span class="destaque text-purple" style="font-size: 1.1rem;">${formatarMoeda(item.preco)}</span>
+                                <span class="badge-status badge-estoque">📦 ${qtdAtual} ${qtdAtual > 1 ? 'itens' : 'item'}</span>
                             </div>
                         </div>
                         <div class="acoes-item">
@@ -1040,7 +1112,7 @@
             let data = document.getElementById('dataVenda').value;
             let status = document.getElementById('statusVenda').value || 'recebido';
             
-            if(!nome || preco <= 0) return alert("Preencha os dados da venda.");
+            if(!nome || preco <= 0) return showToast("Preencha os dados da venda corretamente.", "error");
 
             let subtotal = qtd * preco;
             let valDesc = subtotal * (desc / 100);
@@ -1056,7 +1128,7 @@
             document.getElementById('descProduto').value = '0';
             document.getElementById('previewTotalVenda').innerText = 'R$ 0,00';
             
-            alert('Venda registrada com sucesso!');
+            showToast('Venda registrada com sucesso!', 'success');
             alternarAbaVendas('lista');
             atualizarDashboard();
         }
@@ -1143,10 +1215,12 @@
         }
 
         function excluirCategoriaPrincipal(id) {
-            if(!confirm("Excluir esta categoria?")) return;
-            let cats = obterDados('categorias').filter(c => c.id !== id);
-            salvarDados('categorias', cats);
-            renderGestaoCategorias();
+            showConfirm("Excluir Categoria", "Tem certeza que deseja excluir esta categoria inteira?", () => {
+                let cats = obterDados('categorias').filter(c => c.id !== id);
+                salvarDados('categorias', cats);
+                renderGestaoCategorias();
+                showToast("Categoria excluída.", "success");
+            }, true);
         }
 
         function addSubcategoria(catId) {
@@ -1235,7 +1309,10 @@
                 document.getElementById('modalEdicaoTitulo').innerText = "Editar Produto";
                 container.innerHTML = `
                     <div class="form-group"><label>Nome</label><input type="text" id="editEstNome" value="${item.nome}"></div>
-                    <div class="form-group"><label>Valor (R$)</label><input type="text" inputmode="decimal" id="editEstPreco" value="${item.preco}"></div>
+                    <div class="input-row">
+                        <div class="form-group" style="flex: 1;"><label>Valor (R$)</label><input type="text" inputmode="decimal" id="editEstPreco" value="${item.preco}"></div>
+                        <div class="form-group" style="flex: 0.8;"><label>Qtd. em Estoque</label><input type="number" id="editEstQtd" value="${item.qtd || 1}"></div>
+                    </div>
                     
                     <div class="form-group">
                         <label>Atualizar Imagem</label>
@@ -1283,6 +1360,7 @@
             } else if (tipo === 'estoque') {
                 lista[idx].nome = document.getElementById('editEstNome').value;
                 lista[idx].preco = parseFloat(document.getElementById('editEstPreco').value.replace(',', '.'));
+                lista[idx].qtd = parseInt(document.getElementById('editEstQtd').value) || 1;
                 
                 let imgInput = document.getElementById('editEstImagem');
                 if (imgInput && imgInput.dataset.removed === "true") {
@@ -1294,6 +1372,8 @@
 
             salvarDados(tipo, lista);
             fecharModalEdicao();
+            showToast("Alterações salvas!", "success");
+            
             if(tipo === 'conteudos') renderConteudos();
             if(tipo === 'agenda') { lista.sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora)); salvarDados('agenda', lista); renderAgenda(); }
             if(tipo === 'estoque') renderEstoque();
@@ -1301,23 +1381,25 @@
         }
 
         function excluirItem(id, tipo) {
-            if(!confirm("Tem certeza que deseja excluir?")) return;
-            let lista = obterDados(tipo).filter(i => i.id !== id);
-            salvarDados(tipo, lista);
-            if(tipo === 'conteudos') renderConteudos();
-            if(tipo === 'agenda') renderAgenda();
-            if(tipo === 'estoque') renderEstoque();
-            if(tipo === 'vendas') renderVendas();
-            atualizarDashboard();
+            showConfirm("Excluir", "Deseja realmente apagar este item permanentemente?", () => {
+                let lista = obterDados(tipo).filter(i => i.id !== id);
+                salvarDados(tipo, lista);
+                if(tipo === 'conteudos') renderConteudos();
+                if(tipo === 'agenda') renderAgenda();
+                if(tipo === 'estoque') renderEstoque();
+                if(tipo === 'vendas') renderVendas();
+                atualizarDashboard();
+                showToast("Item excluído com sucesso.", "success");
+            }, true);
         }
 
         function limparTodosDados() {
-            if(confirm("ATENÇÃO: Isso apagará TODOS os dados do aplicativo para sempre. Confirmar?")) {
-                if(confirm("Tem certeza absoluta?")) {
+            showConfirm("Apagar Todos os Dados", "ATENÇÃO: Isso apagará TODOS os dados do aplicativo para sempre. Confirma?", () => {
+                showConfirm("Tem Certeza?", "Essa ação é irreversível e você perderá todas as vendas, notas e configurações.", () => {
                     localStorage.clear();
                     location.reload();
-                }
-            }
+                }, true);
+            }, true);
         }
 
         function atualizarDashboard() {
@@ -1326,10 +1408,11 @@
             let notas = obterDados('conteudos');
             let agenda = obterDados('agenda');
 
-            // Cálculos para o novo painel de Balanços
             let totalVendasRecebidas = vendas.filter(v => v.status !== 'aliberar').reduce((acc, v) => acc + (v.totalFinal || 0), 0);
             let valorALiberar = vendas.filter(v => v.status === 'aliberar').reduce((acc, v) => acc + (v.totalFinal || 0), 0);
-            let totalEstoque = estoque.reduce((acc, e) => acc + (e.preco || 0), 0);
+            
+            // O valor total de estoque agora considera a quantidade disponível de cada item
+            let totalEstoque = estoque.reduce((acc, e) => acc + ((e.preco || 0) * (e.qtd || 1)), 0);
             let valorTotal = totalVendasRecebidas + valorALiberar + totalEstoque;
 
             document.getElementById('dashTotalVendas').innerText = formatarMoeda(totalVendasRecebidas);
@@ -1338,6 +1421,10 @@
             document.getElementById('dashValorTotal').innerText = formatarMoeda(valorTotal);
             
             document.getElementById('dashTotalNotas').innerText = notas.length;
+
+            // Nova funcionalidade: Total de itens na loja (Soma de todas as quantidades)
+            let totalItensLoja = estoque.reduce((acc, curr) => acc + (parseInt(curr.qtd) || 1), 0);
+            document.getElementById('dashTotalItensLoja').innerText = `${totalItensLoja} ${totalItensLoja === 1 ? 'item' : 'itens'}`;
 
             let agora = new Date().toISOString().split('T')[0];
             let agFiltro = agenda.filter(a => a.data >= agora).sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
